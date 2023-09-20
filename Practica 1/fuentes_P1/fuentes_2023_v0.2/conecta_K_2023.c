@@ -55,7 +55,12 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 	#include "tablero_test.h"	
 
 	//for... for... tablero_insertar_color...
-
+	for(size_t i = 0; i < NUM_FILAS; i++){
+		for(size_t j = 0; j < NUM_COLUMNAS; j++) {
+			tablero_insertar_color(t, i, j, tablero_test[i][j]);
+		}
+	}
+	
 }
 
 // funcion que visualiza en "pantalla" el contenido de las 7 primeras filas y columnas 
@@ -71,8 +76,38 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 // F7 00 00 00 00 00 00 00 
 void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 {
+	const uint8_t DIM_TABLERO = NUM_FILAS + 1;
+	const uint8_t ID_FILA_TAB = 192; // 0xF0 
+	const uint8_t ID_COL_TAB = 240; // 0xC0 
+	//uint8_t color;
+	CELDA celda;
+	// marcar celda como invalida
+	celda_inicializar(&celda);
+	
 //.... tablero_leer_celda...
 //... celda_color ....
+		for(size_t i = 0; i < DIM_TABLERO; i++){
+			
+			if(i == 0) {
+					// insertar borde superior del tablero en "pantalla"
+					pantalla[0][0] = 0;
+					for(size_t k = 1; k < DIM_TABLERO; k++) {
+						pantalla[0][k] = 192 + k;
+					}
+			}
+			else{
+				// escribir indicador de fila de la "pantalla"
+				pantalla[i][0] = 240 + i; 
+			}
+			// escribir fila i de la "pantalla"
+			for(size_t j = 0; j < DIM_TABLERO; j++) {
+					celda = tablero_leer_celda(t, i, j);
+					celda = celda_color(celda);
+					// escribir color de celda en "pantalla"
+					pantalla[i+1][j+1] = celda * 16 + celda ;
+			}
+			
+	}
 }  
 
 //

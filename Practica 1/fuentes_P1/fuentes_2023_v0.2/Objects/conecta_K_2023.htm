@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\conecta_K_2023.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\conecta_K_2023.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Sep 14 18:11:07 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Sep 20 16:32:22 2023
 <BR><P>
 <H3>Maximum Stack Usage =        240 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -243,8 +243,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[1b]"></a>conecta_K_test_cargar_tablero</STRONG> (ARM, 4 bytes, Stack size 0 bytes, conecta_k_2023.o(i.conecta_K_test_cargar_tablero))
-<BR><BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
+<P><STRONG><a name="[1b]"></a>conecta_K_test_cargar_tablero</STRONG> (ARM, 88 bytes, Stack size 16 bytes, conecta_k_2023.o(i.conecta_K_test_cargar_tablero))
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = conecta_K_test_cargar_tablero &rArr; tablero_insertar_color &rArr; tablero_leer_celda
+</UL>
+<BR>[Calls]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tablero_insertar_color
+</UL>
+<BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
 </UL>
 
 <P><STRONG><a name="[22]"></a>conecta_K_verificar_K_en_linea</STRONG> (ARM, 56 bytes, Stack size 24 bytes, conecta_k_2023.o(i.conecta_K_verificar_K_en_linea))
@@ -255,8 +259,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
 </UL>
 
-<P><STRONG><a name="[1c]"></a>conecta_K_visualizar_tablero</STRONG> (ARM, 4 bytes, Stack size 0 bytes, conecta_k_2023.o(i.conecta_K_visualizar_tablero))
-<BR><BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
+<P><STRONG><a name="[1c]"></a>conecta_K_visualizar_tablero</STRONG> (ARM, 192 bytes, Stack size 32 bytes, conecta_k_2023.o(i.conecta_K_visualizar_tablero))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = conecta_K_visualizar_tablero &rArr; tablero_leer_celda
+</UL>
+<BR>[Calls]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tablero_leer_celda
+</UL>
+<BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
 </UL>
 
 <P><STRONG><a name="[1d]"></a>entrada_inicializar</STRONG> (ARM, 24 bytes, Stack size 0 bytes, entrada.o(i.entrada_inicializar))
@@ -303,7 +311,8 @@ Global Symbols
 <LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;celda_vacia
 <LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tablero_leer_celda
 </UL>
-<BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
+<BR>[Called By]<UL><LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_test_cargar_tablero
+<LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
 </UL>
 
 <P><STRONG><a name="[20]"></a>tablero_leer_celda</STRONG> (ARM, 152 bytes, Stack size 24 bytes, tablero.o(i.tablero_leer_celda))
@@ -313,6 +322,7 @@ Global Symbols
 <LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tablero_columna_valida
 </UL>
 <BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tablero_insertar_color
+<LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_visualizar_tablero
 <LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;conecta_K_jugar
 </UL>
 <P>

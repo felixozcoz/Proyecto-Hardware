@@ -1,4 +1,5 @@
 #include "conecta_K_2023.h"
+#include <stdio.h>
 
 // MAIN 
 int main (void) {
