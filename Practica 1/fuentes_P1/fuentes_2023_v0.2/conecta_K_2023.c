@@ -57,7 +57,7 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 	//for... for... tablero_insertar_color...
 	for(size_t i = 0; i < NUM_FILAS; i++){
 		for(size_t j = 0; j < NUM_COLUMNAS; j++) {
-			tablero_insertar_color(t, i, j, tablero_test[i][j]);
+			tablero_insertar_color(t, i, j, tablero_test8[i][j]);
 		}
 	}
 	
@@ -67,6 +67,7 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 // de las m*n del tablero en juego (suponemos que m y n son >= 7 siempre)
 // en memoria se deberia ver algo tal que asi:
 // 00 C1 C2 C3 C4 C5 C6 C7
+
 // F1 00 00 00 00 00 00 00
 // F2 00 00 11 00 00 00 00
 // F3 00 11 22 22 00 00 00
@@ -74,11 +75,12 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 // F5 00 00 00 00 00 00 00
 // F6 00 00 00 00 00 00 00
 // F7 00 00 00 00 00 00 00 
-void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
+// Nota: cambiado parámetro pantalla[8][8] por pantalla[NUM_FILAS][NUM_COLUMNAS]
+void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[NUM_FILAS+1][NUM_COLUMNAS+1])
 {
 	const uint8_t DIM_TABLERO = NUM_FILAS + 1;
-	const uint8_t ID_FILA_TAB = 192; // 0xF0 
-	const uint8_t ID_COL_TAB = 240; // 0xC0 
+	const uint8_t ID_FILA_PANTALLA = 240; // 0xF0 
+	const uint8_t ID_COLUMNA_PANTALLA = 192; // 0xC0 
 	//uint8_t color;
 	CELDA celda;
 	// marcar celda como invalida
@@ -86,27 +88,24 @@ void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 	
 //.... tablero_leer_celda...
 //... celda_color ....
-		for(size_t i = 0; i < DIM_TABLERO; i++){
-			
-			if(i == 0) {
-					// insertar borde superior del tablero en "pantalla"
-					pantalla[0][0] = 0;
-					for(size_t k = 1; k < DIM_TABLERO; k++) {
-						pantalla[0][k] = 192 + k;
-					}
-			}
-			else{
-				// escribir indicador de fila de la "pantalla"
-				pantalla[i][0] = 240 + i; 
-			}
-			// escribir fila i de la "pantalla"
-			for(size_t j = 0; j < DIM_TABLERO; j++) {
-					celda = tablero_leer_celda(t, i, j);
-					celda = celda_color(celda);
-					// escribir color de celda en "pantalla"
-					pantalla[i+1][j+1] = celda * 16 + celda ;
-			}
-			
+	
+// escribir indicador de columna en
+// borde superior del tablero en "pantalla"
+	for(size_t k = 1; k < DIM_TABLERO; k++) {
+		pantalla[0][k] = ID_COLUMNA_PANTALLA + k; // 0xC0 + k
+	}
+	
+	for(size_t i = 0; i < DIM_TABLERO; i++){
+		 // escribir indicador de fila en "pantalla" (se trata caso pantalla[0][0]
+		(i > 0) ? pantalla[i][0] = ID_FILA_PANTALLA + i : 0; // 0xF0 + i
+		
+		// escribir fila i del tablero en "pantalla"
+		for(size_t j = 0; j < DIM_TABLERO; j++) {
+				celda = tablero_leer_celda(t, i, j);
+				celda = celda_color(celda);
+				// escribir color de celda en "pantalla"
+				pantalla[i+1][j+1] = celda * 16 + celda ;
+		}	
 	}
 }  
 
@@ -123,7 +122,8 @@ void conecta_K_jugar(void){
 	// new, row, column, colour, padding to prevent desalinating to 8 bytes
 	static volatile uint8_t entrada[8] = {0, 0, 0, 0, 0, 0, 0, 0 }; //jugada, fila, columna, color, ...
 	// 8x8 intentando que este alineada para que se vea bien en memoria
-	static uint8_t salida[8][8];
+	// Nota: modificada para que imprima un tablero de cualquier dimensión
+	static uint8_t salida[NUM_FILAS + 1][NUM_COLUMNAS + 1];
 	
 	TABLERO cuadricula;
 

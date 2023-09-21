@@ -3,8 +3,8 @@
 #ifndef __CONFIG_CONECTA_K_H__
 #define __CONFIG_CONECTA_K_H__
 
-enum { NUM_FILAS = 7,   //m
-    NUM_COLUMNAS = 7,   //n
+enum { NUM_FILAS = 8,   //m
+    NUM_COLUMNAS = 8,   //n
     K_SIZE = 4,         //k
     P_SIZE = 2,         //p
     Q_SIZE = 1          //q

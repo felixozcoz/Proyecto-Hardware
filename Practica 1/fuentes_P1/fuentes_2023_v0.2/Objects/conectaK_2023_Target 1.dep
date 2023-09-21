@@ -4,18 +4,18 @@ F (.\celda.h)(0x65081068)()
 F (.\conecta_K_2023.h)(0x65081068)()
 F (.\entrada.h)(0x65081068)()
 F (.\tablero.h)(0x65081068)()
-F (.\config_conecta_K.h)(0x65081068)()
-F (.\tablero_test.h)(0x6509DECF)()
-F (.\conecta_K_2023.c)(0x650B0273)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta_k_2023.o --omf_browse .\objects\conecta_k_2023.crf --depend .\objects\conecta_k_2023.d)
+F (.\config_conecta_K.h)(0x650C18C1)()
+F (.\tablero_test.h)(0x650C1901)()
+F (.\conecta_K_2023.c)(0x650C1E16)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta_k_2023.o --omf_browse .\objects\conecta_k_2023.crf --depend .\objects\conecta_k_2023.d)
 I (conecta_K_2023.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x65081068)
 I (tablero.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
-I (config_conecta_K.h)(0x65081068)
+I (config_conecta_K.h)(0x650C18C1)
 I (entrada.h)(0x65081068)
-I (tablero_test.h)(0x6509DECF)
+I (tablero_test.h)(0x650C1901)
 F (.\main.c)(0x6509DE4F)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (conecta_K_2023.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
@@ -23,14 +23,14 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x65081068)
 I (tablero.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
-I (config_conecta_K.h)(0x65081068)
+I (config_conecta_K.h)(0x650C18C1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
 F (.\entrada.c)(0x65081068)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\entrada.o --omf_browse .\objects\entrada.crf --depend .\objects\entrada.d)
 I (entrada.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 F (.\tablero.c)(0x65086C3C)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\tablero.o --omf_browse .\objects\tablero.crf --depend .\objects\tablero.d)
-I (config_conecta_K.h)(0x65081068)
+I (config_conecta_K.h)(0x650C18C1)
 I (tablero.h)(0x65081068)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (celda.h)(0x65081068)
