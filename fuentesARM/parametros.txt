@@ -1,0 +1,14 @@
+
+// Ubicacion de los parametros de conecta_K_buscar_alineamiento tras la llamada
+dir de Tablero: r0
+fila: r1
+columna: r2
+colror: r3
+
+
+delta_fila y delta_columna: en la pila
+// Se pueden leer a partir del framepointer sumando a la direccion y usando LDMIA
+
+// En el disassembly se obtiene asi pero creo que no es aplicable al usar otro prologo
+ADD       R7,R13,#0x00000030
+DMIA     R7,{R6-R7}
