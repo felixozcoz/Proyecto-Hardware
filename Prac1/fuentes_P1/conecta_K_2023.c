@@ -2,10 +2,7 @@
 #include "entrada.h"
 
 // devuelve la longitud de la línea más larga en un determinado sentido
-uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
-	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
-	delta_columna)
-{
+uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila, 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna) {
 		// comprobar si la celda es valida y del mismo color
 		if (tablero_buscar_color(t, fila, columna, color) != EXITO) {
 			return 0;
