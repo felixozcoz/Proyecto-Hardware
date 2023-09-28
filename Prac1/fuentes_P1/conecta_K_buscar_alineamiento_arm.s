@@ -5,7 +5,7 @@ conecta_K_buscar_alineamiento_arm:
 	MOV IP, SP
 	STMDB SP!, {r4-r10,FP,IP,LR,PC}
 	SUB FP, IP, #4
-	SUB SP, #SpaceForLocalVaribles // No vamos a guardar variables locales en pila
+	//SUB SP, #SpaceForLocalVaribles // No vamos a guardar variables locales en pila
 //-----------------------
 
 	// Cargar parametros a otros registros que no sean los de pasar parametros,
@@ -23,7 +23,7 @@ conecta_K_buscar_alineamiento_arm:
 	CMP r0,EXITO    	// Comparamos el resultado de tablero_buscar_color en r0 con EXITO
 	BEQ Exito			// Si exito continuamos
 	LDR r0, #0      		// Si no es exito cargamos 0 en r0 para devolverlo
-	B Prologo       		// Saltamos al final de la funcion
+	B Epilogo       		// Saltamos al final de la funcion
 
 Exito:
 	ADD r2, r2, r6  		// nueva_fila = fila + delta_fila;
@@ -41,13 +41,10 @@ Exito:
 	
 	ADD r0,r0,#1
 
-Prologo:
+Epilogo:
 	// Epilogo
 	LDMIA FP, {r4-r10,FP,SP,PC}
 	//----------------
-
-
-
 
 
 

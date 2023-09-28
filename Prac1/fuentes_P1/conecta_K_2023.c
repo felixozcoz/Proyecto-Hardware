@@ -17,9 +17,7 @@ uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila, 	uint8_t colum
 }
 
 // devuelve true si encuentra una línea de longitud mayor o igual a _K
-uint8_t
-conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
-{
+uint8_t conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
 	 enum { N_DELTAS = 4};
    int8_t deltas_fila[N_DELTAS] = {0, -1, -1, 1};
    int8_t deltas_columna[N_DELTAS] = {-1, 0, -1, -1};
