@@ -30,7 +30,7 @@ uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t
 	fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
 	delta_columna);
 
-#if 0
+#if 1
 // devuelve true si encuentra una línea de longitud mayor o igual a K
 uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t
 	columna, uint8_t color);
@@ -39,7 +39,7 @@ uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t
 uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t
 	columna, uint8_t color);
 
-#endif // 0
+#endif // 1
 
 /* *****************************************************************************
  * declaración funciones internas conecta_K

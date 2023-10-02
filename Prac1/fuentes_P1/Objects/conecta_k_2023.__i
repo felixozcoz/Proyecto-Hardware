@@ -1,6 +1,0 @@
---c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork --split_sections
--IC:\Keil_v5\ARM\RV31\INC
--IC:\Keil_v5\ARM\CMSIS\Include
--IC:\Keil_v5\ARM\INC\Philips
--D__UVISION_VERSION="526"
--o .\objects\conecta_k_2023.o --omf_browse .\objects\conecta_k_2023.crf --depend .\objects\conecta_k_2023.d "conecta_K_2023.c"
