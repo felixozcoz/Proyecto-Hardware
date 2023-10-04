@@ -137,40 +137,24 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>98</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>828</Address>
+          <LineNumber>161</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>884</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_hay_linea_arm_arm.s</Filename>
+          <Filename>.\conecta_K_2023.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_hay_linea_arm_arm.s\98</Expression>
+          <Expression></Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>61</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>760</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_hay_linea_arm_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_hay_linea_arm_arm.s\61</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>170</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
+          <LineNumber>171</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
           <Address>1048</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
@@ -179,182 +163,6 @@
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\conecta_K_2023.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_2023.c\170</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>168</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>1004</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_2023.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_2023.c\168</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>166</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>984</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_2023.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_2023.c\166</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>164</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>948</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_2023.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_2023.c\164</Expression>
-        </Bp>
-        <Bp>
-          <Number>6</Number>
-          <Type>0</Type>
-          <LineNumber>18</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>476</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_buscar_alineamiento_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_buscar_alineamiento_arm.s\18</Expression>
-        </Bp>
-        <Bp>
-          <Number>7</Number>
-          <Type>0</Type>
-          <LineNumber>48</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>732</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_hay_linea_arm_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_hay_linea_arm_arm.s\48</Expression>
-        </Bp>
-        <Bp>
-          <Number>8</Number>
-          <Type>0</Type>
-          <LineNumber>73</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>784</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_hay_linea_arm_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_hay_linea_arm_arm.s\73</Expression>
-        </Bp>
-        <Bp>
-          <Number>9</Number>
-          <Type>0</Type>
-          <LineNumber>98</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>644</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_buscar_alineamiento_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_buscar_alineamiento_arm.s\98</Expression>
-        </Bp>
-        <Bp>
-          <Number>10</Number>
-          <Type>0</Type>
-          <LineNumber>24</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>484</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_buscar_alineamiento_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_buscar_alineamiento_arm.s\24</Expression>
-        </Bp>
-        <Bp>
-          <Number>11</Number>
-          <Type>0</Type>
-          <LineNumber>59</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>548</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_buscar_alineamiento_arm.s</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_buscar_alineamiento_arm.s\59</Expression>
-        </Bp>
-        <Bp>
-          <Number>12</Number>
-          <Type>0</Type>
-          <LineNumber>161</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>912</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_2023.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_2023.c\161</Expression>
-        </Bp>
-        <Bp>
-          <Number>13</Number>
-          <Type>0</Type>
-          <LineNumber>111</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\conecta_K_buscar_alineamiento_arm.s</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>

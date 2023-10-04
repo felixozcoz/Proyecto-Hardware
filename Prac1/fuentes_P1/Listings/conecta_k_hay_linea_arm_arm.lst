@@ -1,0 +1,263 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             datos, DATA
+    2 00000000         
+    3 00000000         ; vectores de deltas
+    4 00000000 00 FF FF 
+              01       dta_fila
+                               DCB              0, -1, -1, 1
+    5 00000004 FF 00 FF 
+              FF       dta_columna
+                               DCB              -1, 0, -1, -1
+    6 00000008         
+    7 00000008                 AREA             codigo, CODE
+    8 00000000         
+    9 00000000                 EXPORT           conecta_K_hay_linea_arm_arm
+   10 00000000                 IMPORT           conecta_K_buscar_alineamiento_a
+rm
+   11 00000000                 PRESERVE8        {TRUE}
+   12 00000000         
+   13 00000000         ; NOTA: FALSE = 0
+   14 00000000         ; NOTA: N_DELTAS = 4  (K_SIZE)
+   15 00000000         
+   16 00000000         conecta_K_hay_linea_arm_arm
+   17 00000000         
+   18 00000000         ; PROLOGO
+   19 00000000 E1A0C00D        MOV              IP, SP
+   20 00000004 E92DDFF0        STMDB            SP!, {r4-r10,FP,IP,LR,PC}
+   21 00000008 E24CB004        SUB              FP, IP, #4
+   22 0000000C         ;-----------------------
+   23 0000000C         
+   24 0000000C E1A04000        MOV              r4, r0      ; cuadrícula
+   25 00000010 E1A05001        MOV              r5, r1      ; fila
+   26 00000014 E1A06002        MOV              r6, r2      ; columna
+   27 00000018 E1A07003        MOV              r7, r3      ; color
+   28 0000001C         
+   29 0000001C         ; Inicio 
+   30 0000001C         
+   31 0000001C E3A08000        MOV              r8, #0      ; unsigned int i = 
+                                                            0
+   32 00000020 E3A09000        MOV              r9, #0      ; uint8_t linea = 0
+                                                            
+   33 00000024 E3A0A000        MOV              r10, #0     ; uint8_t long_line
+                                                            a = 0
+   34 00000028         
+   35 00000028         ; for(i=0; (i < 4) && (linea == FALSE); ++i)
+   36 00000028         bucle_for
+   37 00000028         
+   38 00000028         ; Condición de bucle 
+   39 00000028         ; (i < N_DELTAS) && (linea == FALSE)
+   40 00000028 E3580004        CMP              r8, #4
+   41 0000002C AA000021        BGE              return
+   42 00000030 E3590000        CMP              r9, #0
+   43 00000034 1A00001F        BNE              return
+   44 00000038         
+   45 00000038         ; Apilar deltas como parámetros
+   46 00000038         
+   47 00000038         ; @ de vectores de deltas
+   48 00000038 E59F1080        LDR              r1, =dta_fila
+   49 0000003C E59F2080        LDR              r2, =dta_columna
+   50 00000040         
+   51 00000040         ; lectura de la i-ésima componente
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   52 00000040         ; de cada vector
+   53 00000040 E19110D8        LDRSB            r1, [r1, r8] ; dta_fila[i]
+   54 00000044 E19220D8        LDRSB            r2, [r2, r8] ; dta_columna[i]
+   55 00000048 E92D0006        STMDB            sp!, {r1, r2}
+   56 0000004C         
+   57 0000004C         ; parámetros fila y columna originales
+   58 0000004C E1A01005        MOV              r1, r5      ; r1 = fila_origina
+                                                            l
+   59 00000050 E1A02006        MOV              r2, r6      ; r2 = columna_orig
+                                                            inal
+   60 00000054         
+   61 00000054 EBFFFFFE        BL               conecta_K_buscar_alineamiento_a
+rm
+   62 00000058 E1A0A000        MOV              r10, r0     ; long_linea = cone
+                                                            cta_K_buscar_alinea
+                                                            miento_arm()
+   63 0000005C         
+   64 0000005C         ; 
+   65 0000005C E35A0004        CMP              r10, #4     ; long_linea >= K_S
+                                                            IZE
+   66 00000060 A3A09001        MOVGE            r9, #1
+   67 00000064 B3A09000        MOVLT            r9, #0
+   68 00000068 AA00000F        BGE              sigue_bucle_for
+   69 0000006C         
+   70 0000006C         ; Buscar sentido inverso
+   71 0000006C         
+   72 0000006C         ; @ de vectores de deltas
+   73 0000006C E59F104C        LDR              r1, =dta_fila
+   74 00000070 E59F204C        LDR              r2, =dta_columna
+   75 00000074         
+   76 00000074         ; lectura de la i-ésima componente
+   77 00000074         ; de cada vector
+   78 00000074 E19110D8        LDRSB            r1, [r1, r8] ; dta_fila[i]
+   79 00000078 E19220D8        LDRSB            r2, [r2, r8] ; dta_columna[i]
+   80 0000007C         
+   81 0000007C         ; -deltas_fila[i]
+   82 0000007C E2611000        NEG              r1, r1
+   83 00000080         ; -deltas_columna[i]
+   84 00000080 E2622000        NEG              r2, r2
+   85 00000084         ; apilamos los deltas negados (parámetros 5 y 6)
+   86 00000084 E92D0006        STMDB            sp!, {r1, r2}
+   87 00000088         
+   88 00000088         ; fila + (- delta_fila[i])
+   89 00000088 E0851001        ADD              r1, r5, r1
+   90 0000008C         
+   91 0000008C         ; columna + (- delta_columna[i])
+   92 0000008C E0862002        ADD              r2, r6, r2
+   93 00000090         
+   94 00000090         ; parámetros r0-r3
+   95 00000090 E1A00004        MOV              r0, r4      ; cuadricula
+   96 00000094 E1A03007        MOV              r3, r7      ; color
+   97 00000098         
+   98 00000098 EBFFFFFE        BL               conecta_K_buscar_alineamiento_a
+rm
+   99 0000009C         
+  100 0000009C E08AA000        ADD              r10, r10, r0 ; long_linea += co
+                                                            necta..._arm()
+  101 000000A0         
+  102 000000A0 E35A0004        CMP              r10, #4     ;  linea = long_lin
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+                                                            ea >= K_SIZE
+  103 000000A4 A3A09001        MOVGE            r9, #1
+  104 000000A8 B3A09000        MOVLT            r9, #0
+  105 000000AC         
+  106 000000AC         sigue_bucle_for
+  107 000000AC         
+  108 000000AC         ; i++ y volver a inicio del bucle
+  109 000000AC         ; para comprobar condiciones
+  110 000000AC E2888001        ADD              r8, r8, #1
+  111 000000B0 E1A00004        MOV              r0, r4      ; recuperar cuadríc
+                                                            ula
+  112 000000B4 EAFFFFDB        B                bucle_for
+  113 000000B8         
+  114 000000B8         return
+  115 000000B8         
+  116 000000B8 E1A00009        MOV              r0, r9      ; r0 = linea
+  117 000000BC         
+  118 000000BC         ; Epilogo
+  119 000000BC E91BAFF0        LDMDB            FP, {r4-r10,FP,SP,PC}
+  120 000000C0         ;----------------
+  121 000000C0         
+  122 000000C0                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\conecta_k_hay_linea_arm_arm.d -o.\objects\conecta_k_hay_linea_arm_arm.o 
+-IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\P
+hilips --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --l
+ist=.\listings\conecta_k_hay_linea_arm_arm.lst conecta_K_hay_linea_arm_arm.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+datos 00000000
+
+Symbol: datos
+   Definitions
+      At line 1 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      None
+Comment: datos unused
+dta_columna 00000004
+
+Symbol: dta_columna
+   Definitions
+      At line 5 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 49 in file conecta_K_hay_linea_arm_arm.s
+      At line 74 in file conecta_K_hay_linea_arm_arm.s
+
+dta_fila 00000000
+
+Symbol: dta_fila
+   Definitions
+      At line 4 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 48 in file conecta_K_hay_linea_arm_arm.s
+      At line 73 in file conecta_K_hay_linea_arm_arm.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+bucle_for 00000028
+
+Symbol: bucle_for
+   Definitions
+      At line 36 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 112 in file conecta_K_hay_linea_arm_arm.s
+Comment: bucle_for used once
+codigo 00000000
+
+Symbol: codigo
+   Definitions
+      At line 7 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      None
+Comment: codigo unused
+conecta_K_hay_linea_arm_arm 00000000
+
+Symbol: conecta_K_hay_linea_arm_arm
+   Definitions
+      At line 16 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 9 in file conecta_K_hay_linea_arm_arm.s
+Comment: conecta_K_hay_linea_arm_arm used once
+return 000000B8
+
+Symbol: return
+   Definitions
+      At line 114 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 41 in file conecta_K_hay_linea_arm_arm.s
+      At line 43 in file conecta_K_hay_linea_arm_arm.s
+
+sigue_bucle_for 000000AC
+
+Symbol: sigue_bucle_for
+   Definitions
+      At line 106 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 68 in file conecta_K_hay_linea_arm_arm.s
+Comment: sigue_bucle_for used once
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+conecta_K_buscar_alineamiento_arm 00000000
+
+Symbol: conecta_K_buscar_alineamiento_arm
+   Definitions
+      At line 10 in file conecta_K_hay_linea_arm_arm.s
+   Uses
+      At line 61 in file conecta_K_hay_linea_arm_arm.s
+      At line 98 in file conecta_K_hay_linea_arm_arm.s
+
+1 symbol
+343 symbols in table

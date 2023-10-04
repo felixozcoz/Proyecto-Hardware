@@ -7,109 +7,121 @@ conecta_K_buscar_alineamiento_arm
 	MOV IP, SP
 	STMDB SP!, {r1-r10,FP,IP,LR,PC}
 	SUB FP, IP, #4
-	;SUB SP, #SpaceForLocalVaribles ; No vamos a guardar variables locales en pila
 	;-----------------------
 
-	; Cargar parametros a otros registros que no sean los de pasar parametros,
-	; por lo menos tablero de r0 a r5 ya que r5 se sobreescribe
+	; Se preservan inalterados los registros
+	; destinados a los parámetros r1-r3.
+	; Se guarda tablero (r0) en r5
 	MOV r5, r0
 
-	; Deltas en r6 y r7
-	LDR r6, [fp, #4]	; fila
-	LDR r7, [fp, #8]	; columna
-	
-	; Los parametros nos llegan perfectos para pasarlos directos a tablero_buscar_color
-	; ya estan en los registros correspondientes
+	; Desapilar Parámetros Deltas
+	LDR r6, [fp, #4]	; delta_fila
+	LDR r7, [fp, #8]	; delta_columna
 	
 	BL tablero_buscar_color
-	CMP r0,#0    	; Comparamos el resultado de tablero_buscar_color en r0 con EXITO
-	BEQ Exito			; Si exito continuamos
-	MOV r0, #0      		; Si no es exito cargamos 0 en r0 para devolverlo
-	B Epilogo       		; Saltamos al final de la funcion
+	
+	; r0 == EXITO ? seguir alineamieno : retornar r0 = 0 (EXIT0)
+	CMP r0, #0    	
+	MOVNE r0, #0     
+	BNE epilogo_buscar_alineamiento     
+	
+sigue_buscar_alineamiento
 
-Exito
-	ADD r1, r1, r6  		; nueva_fila = fila + delta_fila;
-	ADD r2, r2, r7  		; nueva_columna = columna + delta_columna;
+	; Calcular fila y columna nueva
+	ADD r1, r1, r6  	; fila + delta_fila
+	ADD r2, r2, r7  	; columna + delta_columna
 
-	; Cargar los delta en la pila
-	STR r7,[sp,#-4]! 	; Apilamos delta_columna
-	STR r6,[sp,#-4]!		; Apilamos delta_fila /// NOTA
+	; Cargar deltas en pila
+	STR r7, [sp,#-4]! 	; delta_columna
+	STR r6, [sp,#-4]!	; delta_fila
 
-	MOV r0, r5 			; Devolvemos tablero t a r0 para pasarlo como primer parametro
+	; restaurar tablero a r0
+	MOV r0, r5 	
 
 	BL conecta_K_buscar_alineamiento_arm
 	
-	; La subrutina deveria guardar el valor devuelto en r0
-	
-	ADD r0,r0,#1
-
-Epilogo
-	; Epilogo
-	LDMDB FP, {r1-r10,FP,SP,PC}	; Original: LDMDB FP, {r4-r10,FP,SP,PC}
-	;----------------
+	ADD r0,r0,#1	; return 1 + conecta_K_buscar_alineamiento_arm()
 
 tablero_buscar_color
-; PROLOGO
+	; PROLOGO
 	MOV IP, SP
 	STMDB SP!, {r4-r10,FP,IP,LR,PC}
 	SUB FP, IP, #4
-	;SUB SP, #SpaceForLocalVaribles 		; No vamos a guardar variables locales en pila
-;-----------------------
+	;-----------------------
 	
-	CMP r1, #7										; tablero_fila_valida con NUM_FILAS hardcodeado 
-	BGE tablero_buscar_color_ERROR		; Si es mayor o igiual devolvemos ERROR
-	CMP r2, #7										; tablero_columna_valida con NUM_COLUMNAS hardcodeado 
-	BGE tablero_buscar_color_ERROR		; Si es mayor o igiual devolvemos ERROR
+	; Verificar condiciones de fila y columna
+	; sobre dimensiones de tablero
 	
-	; col = 0
-	MOV r4, #0;			
+	; fila < NUM_FILAS
+	CMP r1, #7			
+	BGE tablero_buscar_color_ERROR
 	
+	; columna < NUM_COLUMNAS
+	CMP r2, #7										
+	BGE tablero_buscar_color_ERROR
+	
+	; size_t col = 0
+	MOV r4, #0
+	
+	; r5 = fila * MAX_NO_CERO
+	MOV r5, #6	;
+	MUL r5, r1, r5
+
 tablero_buscar_color_FOR
-	; (col < MAX_NO_CERO) 
-	CMP r4, #6			; Comparamos con MAX_NO_CERO hardcodeado
-	BGE loop_exit
-	; && (t->columnas[fila][col] != columna)
-	MOV r6, #6
-	MUL r5,r1,r6			; Cuantas filas hay que desplazarse		r5 = fila * 6
-	ADD r5,r5,r4			; Desplazamiento de filas + col      	r5 = (fila * 6) + col
-	ADD r5,r0,r5			; &t + desplazamiento fila,col			r5 = t + (fila * 6 + col)    (== t.columnas[fila][col])
-	LDRSB r6, [r5]   	; r6 = t->columnas[fila][col]
-    CMP r6, r2
-	ADDEQ r4,r4,#1	; col++
-    BEQ tablero_buscar_color_FOR
+
+	; condición 1: col < MAX_NO_CERO 
+	CMP r4, #6			
+	BGE loop_exit_col_igual_MAX_NO_CERO
+	
+	; condición 2: ... && (t->columnas[fila][col] != columna)
+
+	; calcular @ de la celda
+	ADD r6, r4, r5
+	LDRSB r7, [r0, r6]     ; r5 = t->columnas[fila][col]
+	
+	; t->columnas[fila][col] != columna ? col++ e iterar : salir bucle
+    CMP r7, r2
+	ADDNE r4, r4, #1	; col++
+    BNE tablero_buscar_color_FOR ; iterar
 	
 loop_exit
 
-	;	if(col == MAX_NO_CERO) {
-	;		return ERROR;
-	;	 }
-	CMP r4, #6										; Comparamos con MAX_NO_CERO hardcodeado
-	BEQ tablero_buscar_color_ERROR		; Si col == MAX_NO_CERO devolvemos ERROR
+	; col == MAX_NO_CERO ? ERROR : seguir bucle
+	CMP r4, #6		
+	BEQ tablero_buscar_color_ERROR
+
+loop_exit_col_igual_MAX_NO_CERO
 	
-	; t->no_ceros[fila][col];
-	MOV r7,#6
-	MOV r8,#7
-	MUL r5, r7, r8		; Cuanto ocupa la parte comunas de tablero MAX_NO_CERO * 7
+	; r7 = NUM_FILAS * MAX_NO_CERO
+	MOV r7, #42	
 	
-	MUL r6, r1, r7		; Desplazamiento de fila en no_ceros
-	ADD r6, r6, r4		; Desplazamiento de fila + col en no_ceros
-	ADD r6, r5, r6 		; desplazamiento a no_ceros + desplazamiento fila y columna
-	ADD r6, r0, r6 		; &t + desplazamiento a no_ceros + desplazamiento fila y columna
-	LDRB r6, [r6]   	; r6 = t->no_ceros[fila][col]
-	AND r6, r6, #0x03		; celda_color(CELDA celda) {return (celda & 0x03);}
-	CMP r6, r3	; celda_color(t->no_ceros[fila][col]) == color)
+	; extrar valor de celda
+	ADD r7, r6, r7		; r7 + @columna[fila][col]
+	LDRSB r7, [r0, r7] 	; @tablero + r7 = t->no_cero[fila][col]		
+	
+	; check color celda
+	AND r7, r7, #0x03	; celda_color(CELDA celda) {return (celda & 0x03);}
+	
+	CMP r7, r3	; celda_color(t->no_ceros[fila][col]) == color)
 	BNE tablero_buscar_color_ERROR
 
-tablero_buscar_color_EXITO
+	; exito en tablero_buscar_color
 	MOV r0,#0
 	B tablero_buscar_color_fin
 
 tablero_buscar_color_ERROR
 	MOV r0, #-1
 
-tablero_buscar_color_fin
-	; Epilogo
-	LDMDB FP, {r4-r10,FP,SP,PC}
-	;----------------
+epilogo_tablero_buscar_color
+
+	LDMDB FP, {r4-r10,FP,SP,PC}	
+
+
+epilogo_buscar_alineamiento
+
+	; restaurar marco de pila
+	LDMDB FP, {r1-r10,FP,SP,PC}
+
+
 
 	END
