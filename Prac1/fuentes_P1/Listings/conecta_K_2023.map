@@ -294,23 +294,23 @@ Image Symbol Table
     .text                                    0x000001bc   Section        0  sys_exit.o(.text)
     .text                                    0x000001c8   Section        4  use_no_semi.o(.text)
     .text                                    0x000001cc   Section        0  indicate_semi.o(.text)
-    codigo                                   0x000001cc   Section      188  conecta_k_buscar_alineamiento_arm.o(codigo)
-    codigo                                   0x00000288   Section      200  conecta_k_hay_linea_arm_arm.o(codigo)
-    i.conecta_K_jugar                        0x00000350   Section        0  conecta_k_2023.o(i.conecta_K_jugar)
-    i.conecta_K_test_cargar_tablero          0x00000430   Section        0  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
-    i.conecta_K_verificar_K_en_linea         0x00000484   Section        0  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
-    i.conecta_K_visualizar_tablero           0x00000488   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
-    i.entrada_inicializar                    0x00000514   Section        0  entrada.o(i.entrada_inicializar)
-    i.entrada_leer                           0x0000052c   Section        0  entrada.o(i.entrada_leer)
-    i.entrada_nueva                          0x00000550   Section        0  entrada.o(i.entrada_nueva)
-    i.main                                   0x00000558   Section        0  main.o(i.main)
-    i.tablero_columna_valida                 0x00000560   Section        0  tablero.o(i.tablero_columna_valida)
-    tablero_columna_valida                   0x00000560   ARM Code      16  tablero.o(i.tablero_columna_valida)
-    i.tablero_fila_valida                    0x00000570   Section        0  tablero.o(i.tablero_fila_valida)
-    tablero_fila_valida                      0x00000570   ARM Code      16  tablero.o(i.tablero_fila_valida)
-    i.tablero_inicializar                    0x00000580   Section        0  tablero.o(i.tablero_inicializar)
-    i.tablero_insertar_color                 0x000005c8   Section        0  tablero.o(i.tablero_insertar_color)
-    i.tablero_leer_celda                     0x0000067c   Section        0  tablero.o(i.tablero_leer_celda)
+    codigo                                   0x000001cc   Section      208  conecta_k_buscar_alineamiento_arm.o(codigo)
+    codigo                                   0x0000029c   Section      200  conecta_k_hay_linea_arm_arm.o(codigo)
+    i.conecta_K_jugar                        0x00000364   Section        0  conecta_k_2023.o(i.conecta_K_jugar)
+    i.conecta_K_test_cargar_tablero          0x00000444   Section        0  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
+    i.conecta_K_verificar_K_en_linea         0x00000498   Section        0  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
+    i.conecta_K_visualizar_tablero           0x0000049c   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
+    i.entrada_inicializar                    0x00000528   Section        0  entrada.o(i.entrada_inicializar)
+    i.entrada_leer                           0x00000540   Section        0  entrada.o(i.entrada_leer)
+    i.entrada_nueva                          0x00000564   Section        0  entrada.o(i.entrada_nueva)
+    i.main                                   0x0000056c   Section        0  main.o(i.main)
+    i.tablero_columna_valida                 0x00000574   Section        0  tablero.o(i.tablero_columna_valida)
+    tablero_columna_valida                   0x00000574   ARM Code      16  tablero.o(i.tablero_columna_valida)
+    i.tablero_fila_valida                    0x00000584   Section        0  tablero.o(i.tablero_fila_valida)
+    tablero_fila_valida                      0x00000584   ARM Code      16  tablero.o(i.tablero_fila_valida)
+    i.tablero_inicializar                    0x00000594   Section        0  tablero.o(i.tablero_inicializar)
+    i.tablero_insertar_color                 0x000005dc   Section        0  tablero.o(i.tablero_insertar_color)
+    i.tablero_leer_celda                     0x00000690   Section        0  tablero.o(i.tablero_leer_celda)
     .data                                    0x40000000   Section       57  conecta_k_2023.o(.data)
     entrada                                  0x40000000   Data           8  conecta_k_2023.o(.data)
     tablero_test7                            0x40000008   Data          49  conecta_k_2023.o(.data)
@@ -425,20 +425,20 @@ Image Symbol Table
     __use_no_semihosting_swi                 0x000001c8   ARM Code       4  use_no_semi.o(.text)
     __semihosting_library_function           0x000001cc   ARM Code       0  indicate_semi.o(.text)
     conecta_K_buscar_alineamiento_arm        0x000001cc   ARM Code       0  conecta_k_buscar_alineamiento_arm.o(codigo)
-    conecta_K_hay_linea_arm_arm              0x00000288   ARM Code       0  conecta_k_hay_linea_arm_arm.o(codigo)
-    conecta_K_jugar                          0x00000350   ARM Code     216  conecta_k_2023.o(i.conecta_K_jugar)
-    conecta_K_test_cargar_tablero            0x00000430   ARM Code      80  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
-    conecta_K_verificar_K_en_linea           0x00000484   ARM Code       4  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
-    conecta_K_visualizar_tablero             0x00000488   ARM Code     140  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
-    entrada_inicializar                      0x00000514   ARM Code      24  entrada.o(i.entrada_inicializar)
-    entrada_leer                             0x0000052c   ARM Code      36  entrada.o(i.entrada_leer)
-    entrada_nueva                            0x00000550   ARM Code       8  entrada.o(i.entrada_nueva)
-    main                                     0x00000558   ARM Code       8  main.o(i.main)
-    tablero_inicializar                      0x00000580   ARM Code      72  tablero.o(i.tablero_inicializar)
-    tablero_insertar_color                   0x000005c8   ARM Code     180  tablero.o(i.tablero_insertar_color)
-    tablero_leer_celda                       0x0000067c   ARM Code     116  tablero.o(i.tablero_leer_celda)
-    Region$$Table$$Base                      0x000006f0   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00000710   Number         0  anon$$obj.o(Region$$Table)
+    conecta_K_hay_linea_arm_arm              0x0000029c   ARM Code       0  conecta_k_hay_linea_arm_arm.o(codigo)
+    conecta_K_jugar                          0x00000364   ARM Code     216  conecta_k_2023.o(i.conecta_K_jugar)
+    conecta_K_test_cargar_tablero            0x00000444   ARM Code      80  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
+    conecta_K_verificar_K_en_linea           0x00000498   ARM Code       4  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
+    conecta_K_visualizar_tablero             0x0000049c   ARM Code     140  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
+    entrada_inicializar                      0x00000528   ARM Code      24  entrada.o(i.entrada_inicializar)
+    entrada_leer                             0x00000540   ARM Code      36  entrada.o(i.entrada_leer)
+    entrada_nueva                            0x00000564   ARM Code       8  entrada.o(i.entrada_nueva)
+    main                                     0x0000056c   ARM Code       8  main.o(i.main)
+    tablero_inicializar                      0x00000594   ARM Code      72  tablero.o(i.tablero_inicializar)
+    tablero_insertar_color                   0x000005dc   ARM Code     180  tablero.o(i.tablero_insertar_color)
+    tablero_leer_celda                       0x00000690   ARM Code     116  tablero.o(i.tablero_leer_celda)
+    Region$$Table$$Base                      0x00000704   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00000724   Number         0  anon$$obj.o(Region$$Table)
     __libspace_start                         0x40000084   Data          96  libspace.o(.bss)
     __temporary_stack_top$libspace           0x400000e4   Data           0  libspace.o(.bss)
 
@@ -450,9 +450,9 @@ Memory Map of the image
 
   Image Entry point : 0x00000000
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00000754, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00000768, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000710, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000724, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -516,40 +516,40 @@ Memory Map of the image
     0x000001bc   0x000001bc   0x0000000c   Code   RO          303    .text               c_t.l(sys_exit.o)
     0x000001c8   0x000001c8   0x00000004   Code   RO          314    .text               c_t.l(use_no_semi.o)
     0x000001cc   0x000001cc   0x00000000   Code   RO          316    .text               c_t.l(indicate_semi.o)
-    0x000001cc   0x000001cc   0x000000bc   Code   RO          199    codigo              conecta_k_buscar_alineamiento_arm.o
-    0x00000288   0x00000288   0x000000c8   Code   RO          207    codigo              conecta_k_hay_linea_arm_arm.o
-    0x00000350   0x00000350   0x000000e0   Code   RO           14    i.conecta_K_jugar   conecta_k_2023.o
-    0x00000430   0x00000430   0x00000054   Code   RO           15    i.conecta_K_test_cargar_tablero  conecta_k_2023.o
-    0x00000484   0x00000484   0x00000004   Code   RO           16    i.conecta_K_verificar_K_en_linea  conecta_k_2023.o
-    0x00000488   0x00000488   0x0000008c   Code   RO           17    i.conecta_K_visualizar_tablero  conecta_k_2023.o
-    0x00000514   0x00000514   0x00000018   Code   RO          111    i.entrada_inicializar  entrada.o
-    0x0000052c   0x0000052c   0x00000024   Code   RO          112    i.entrada_leer      entrada.o
-    0x00000550   0x00000550   0x00000008   Code   RO          113    i.entrada_nueva     entrada.o
-    0x00000558   0x00000558   0x00000008   Code   RO           89    i.main              main.o
-    0x00000560   0x00000560   0x00000010   Code   RO          137    i.tablero_columna_valida  tablero.o
-    0x00000570   0x00000570   0x00000010   Code   RO          138    i.tablero_fila_valida  tablero.o
-    0x00000580   0x00000580   0x00000048   Code   RO          139    i.tablero_inicializar  tablero.o
-    0x000005c8   0x000005c8   0x000000b4   Code   RO          141    i.tablero_insertar_color  tablero.o
-    0x0000067c   0x0000067c   0x00000074   Code   RO          142    i.tablero_leer_celda  tablero.o
-    0x000006f0   0x000006f0   0x00000020   Data   RO          371    Region$$Table       anon$$obj.o
+    0x000001cc   0x000001cc   0x000000d0   Code   RO          199    codigo              conecta_k_buscar_alineamiento_arm.o
+    0x0000029c   0x0000029c   0x000000c8   Code   RO          207    codigo              conecta_k_hay_linea_arm_arm.o
+    0x00000364   0x00000364   0x000000e0   Code   RO           14    i.conecta_K_jugar   conecta_k_2023.o
+    0x00000444   0x00000444   0x00000054   Code   RO           15    i.conecta_K_test_cargar_tablero  conecta_k_2023.o
+    0x00000498   0x00000498   0x00000004   Code   RO           16    i.conecta_K_verificar_K_en_linea  conecta_k_2023.o
+    0x0000049c   0x0000049c   0x0000008c   Code   RO           17    i.conecta_K_visualizar_tablero  conecta_k_2023.o
+    0x00000528   0x00000528   0x00000018   Code   RO          111    i.entrada_inicializar  entrada.o
+    0x00000540   0x00000540   0x00000024   Code   RO          112    i.entrada_leer      entrada.o
+    0x00000564   0x00000564   0x00000008   Code   RO          113    i.entrada_nueva     entrada.o
+    0x0000056c   0x0000056c   0x00000008   Code   RO           89    i.main              main.o
+    0x00000574   0x00000574   0x00000010   Code   RO          137    i.tablero_columna_valida  tablero.o
+    0x00000584   0x00000584   0x00000010   Code   RO          138    i.tablero_fila_valida  tablero.o
+    0x00000594   0x00000594   0x00000048   Code   RO          139    i.tablero_inicializar  tablero.o
+    0x000005dc   0x000005dc   0x000000b4   Code   RO          141    i.tablero_insertar_color  tablero.o
+    0x00000690   0x00000690   0x00000074   Code   RO          142    i.tablero_leer_celda  tablero.o
+    0x00000704   0x00000704   0x00000020   Data   RO          371    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Exec base: 0x40000000, Load base: 0x00000710, Size: 0x00000044, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x40000000, Load base: 0x00000724, Size: 0x00000044, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x40000000   0x00000710   0x00000039   Data   RW           19    .data               conecta_k_2023.o
-    0x40000039   0x00000749   0x00000003   PAD
-    0x4000003c   0x0000074c   0x00000008   Data   RW          206    datos               conecta_k_hay_linea_arm_arm.o
+    0x40000000   0x00000724   0x00000039   Data   RW           19    .data               conecta_k_2023.o
+    0x40000039   0x0000075d   0x00000003   PAD
+    0x4000003c   0x00000760   0x00000008   Data   RW          206    datos               conecta_k_hay_linea_arm_arm.o
 
 
-    Execution Region ER_ZI (Exec base: 0x40000044, Load base: 0x00000754, Size: 0x0000052c, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x40000044, Load base: 0x00000768, Size: 0x0000052c, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x40000044        -       0x00000040   Zero   RW           18    .bss                conecta_k_2023.o
     0x40000084        -       0x00000060   Zero   RW          243    .bss                c_t.l(libspace.o)
-    0x400000e4   0x00000754   0x00000004   PAD
+    0x400000e4   0x00000768   0x00000004   PAD
     0x400000e8        -       0x00000000   Zero   RW            2    HEAP                startup.o
     0x400000e8        -       0x00000488   Zero   RW            1    STACK               startup.o
 
@@ -562,7 +562,7 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        452         12          0         57         64      10218   conecta_k_2023.o
-       188          0          0          0          0        360   conecta_k_buscar_alineamiento_arm.o
+       208          0          0          0          0        360   conecta_k_buscar_alineamiento_arm.o
        200          8          0          8          0        344   conecta_k_hay_linea_arm_arm.o
         68          0          0          0          0       1925   entrada.o
          8          0          0          0          0        423   main.o
@@ -570,7 +570,7 @@ Image component sizes
        400          0          0          0          0       5740   tablero.o
 
     ----------------------------------------------------------------------
-      1348         32         32         68       1224      19302   Object Totals
+      1368         32         32         68       1224      19302   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          0          0          0          3          0          0   (incl. Padding)
 
@@ -619,15 +619,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      1776         52         32         68       1324      19302   Grand Totals
-      1776         52         32         68       1324      19302   ELF Image Totals
-      1776         52         32         68          0          0   ROM Totals
+      1796         52         32         68       1324      19302   Grand Totals
+      1796         52         32         68       1324      19302   ELF Image Totals
+      1796         52         32         68          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 1808 (   1.77kB)
+    Total RO  Size (Code + RO Data)                 1828 (   1.79kB)
     Total RW  Size (RW Data + ZI Data)              1392 (   1.36kB)
-    Total ROM Size (Code + RO Data + RW Data)       1876 (   1.83kB)
+    Total ROM Size (Code + RO Data + RW Data)       1896 (   1.85kB)
 
 ==============================================================================
 

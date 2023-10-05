@@ -41,7 +41,8 @@ sigue_buscar_alineamiento
 	BL conecta_K_buscar_alineamiento_arm
 	
 	ADD r0,r0,#1	; return 1 + conecta_K_buscar_alineamiento_arm()
-
+	B epilogo_buscar_alineamiento
+	
 tablero_buscar_color
 	; PROLOGO
 	MOV IP, SP
@@ -55,10 +56,14 @@ tablero_buscar_color
 	; fila < NUM_FILAS
 	CMP r1, #7			
 	BGE tablero_buscar_color_ERROR
+	CMP r1, #0
+	BLT tablero_buscar_color_ERROR
 	
 	; columna < NUM_COLUMNAS
 	CMP r2, #7										
 	BGE tablero_buscar_color_ERROR
+	CMP r2, #0
+	BLT tablero_buscar_color_ERROR
 	
 	; size_t col = 0
 	MOV r4, #0
@@ -71,12 +76,12 @@ tablero_buscar_color_FOR
 
 	; condición 1: col < MAX_NO_CERO 
 	CMP r4, #6			
-	BGE loop_exit_col_igual_MAX_NO_CERO
+	BGE sigue
 	
 	; condición 2: ... && (t->columnas[fila][col] != columna)
 
 	; calcular @ de la celda
-	ADD r6, r4, r5
+	ADD r6, r5, r4		; r6 = (fila * 6) + col
 	LDRSB r7, [r0, r6]     ; r5 = t->columnas[fila][col]
 	
 	; t->columnas[fila][col] != columna ? col++ e iterar : salir bucle
@@ -90,7 +95,7 @@ loop_exit
 	CMP r4, #6		
 	BEQ tablero_buscar_color_ERROR
 
-loop_exit_col_igual_MAX_NO_CERO
+sigue
 	
 	; r7 = NUM_FILAS * MAX_NO_CERO
 	MOV r7, #42	
@@ -107,7 +112,7 @@ loop_exit_col_igual_MAX_NO_CERO
 
 	; exito en tablero_buscar_color
 	MOV r0,#0
-	B tablero_buscar_color_fin
+	B epilogo_tablero_buscar_color
 
 tablero_buscar_color_ERROR
 	MOV r0, #-1
