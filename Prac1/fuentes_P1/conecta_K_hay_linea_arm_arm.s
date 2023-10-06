@@ -8,6 +8,7 @@ dta_columna	DCB	-1, 0, -1, -1
 		
 	EXPORT conecta_K_hay_linea_arm_arm
 	IMPORT conecta_K_buscar_alineamiento_arm
+	IMPORT conecta_K_buscar_alineamiento_arm_iter
 		PRESERVE8 {TRUE}
 			
 	; NOTA: FALSE = 0
@@ -58,7 +59,7 @@ bucle_for
 	MOV r1, r5	; r1 = fila_original
 	MOV r2, r6	; r2 = columna_original
 	
-	BL conecta_K_buscar_alineamiento_arm
+	BL conecta_K_buscar_alineamiento_arm_iter
 	MOV r10, r0	; long_linea = conecta_K_buscar_alineamiento_arm()
 	
 	; 
@@ -95,7 +96,7 @@ bucle_for
 	MOV r0, r4  ; cuadricula
 	MOV r3, r7  ; color
 	
-	BL conecta_K_buscar_alineamiento_arm
+	BL conecta_K_buscar_alineamiento_arm_iter
 	
 	ADD r10, r10, r0 ; long_linea += conecta..._arm()
 	

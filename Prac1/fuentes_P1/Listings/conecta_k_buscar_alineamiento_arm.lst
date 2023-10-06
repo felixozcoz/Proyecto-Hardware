@@ -95,7 +95,7 @@ ARM Macro Assembler    Page 2
    76 00000080         
    77 00000080         ; condición 1: col < MAX_NO_CERO 
    78 00000080 E3540006        CMP              r4, #6
-   79 00000084 AA000006        BGE              sigue
+   79 00000084 AA000004        BGE              loop_exit
    80 00000088         
    81 00000088         ; condición 2: ... && (t->columnas[fila][col] != columna
                        )
@@ -119,7 +119,7 @@ ARM Macro Assembler    Page 2
    95 0000009C E3540006        CMP              r4, #6
    96 000000A0 0A000007        BEQ              tablero_buscar_color_ERROR
    97 000000A4         
-   98 000000A4         sigue
+   98 000000A4         ; sigue buscar_alineamiento()
    99 000000A4         
   100 000000A4         ; r7 = NUM_FILAS * MAX_NO_CERO
   101 000000A4 E3A0702A        MOV              r7, #42
@@ -219,16 +219,8 @@ Symbol: loop_exit
    Definitions
       At line 92 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      None
-Comment: loop_exit unused
-sigue 000000A4
-
-Symbol: sigue
-   Definitions
-      At line 98 in file conecta_K_buscar_alineamiento_arm.s
-   Uses
       At line 79 in file conecta_K_buscar_alineamiento_arm.s
-Comment: sigue used once
+Comment: loop_exit used once
 sigue_buscar_alineamiento 00000028
 
 Symbol: sigue_buscar_alineamiento
@@ -239,12 +231,6 @@ Symbol: sigue_buscar_alineamiento
 Comment: sigue_buscar_alineamiento unused
 tablero_buscar_color 00000048
 
-
-
-ARM Macro Assembler    Page 2 Alphabetic symbol ordering
-Relocatable symbols
-
-
 Symbol: tablero_buscar_color
    Definitions
       At line 46 in file conecta_K_buscar_alineamiento_arm.s
@@ -252,6 +238,12 @@ Symbol: tablero_buscar_color
       At line 21 in file conecta_K_buscar_alineamiento_arm.s
 Comment: tablero_buscar_color used once
 tablero_buscar_color_ERROR 000000C4
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
 
 Symbol: tablero_buscar_color_ERROR
    Definitions
@@ -272,5 +264,5 @@ Symbol: tablero_buscar_color_FOR
    Uses
       At line 90 in file conecta_K_buscar_alineamiento_arm.s
 Comment: tablero_buscar_color_FOR used once
-10 symbols
-342 symbols in table
+9 symbols
+341 symbols in table

@@ -29,6 +29,11 @@ uint8_t conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t
 uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t
 	fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
 	delta_columna);
+	
+// devuelve la longitud de la línea más larga en un determinado sentido
+uint8_t conecta_K_buscar_alineamiento_arm_iter(TABLERO *t, uint8_t
+	fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
+	delta_columna);
 
 #if 1
 // devuelve true si encuentra una línea de longitud mayor o igual a K
