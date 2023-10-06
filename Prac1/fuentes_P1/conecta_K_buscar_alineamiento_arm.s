@@ -76,7 +76,7 @@ tablero_buscar_color_FOR
 
 	; condición 1: col < MAX_NO_CERO 
 	CMP r4, #6			
-	BGE sigue
+	BGE loop_exit
 	
 	; condición 2: ... && (t->columnas[fila][col] != columna)
 
@@ -95,7 +95,7 @@ loop_exit
 	CMP r4, #6		
 	BEQ tablero_buscar_color_ERROR
 
-sigue
+	; sigue buscar_alineamiento()
 	
 	; r7 = NUM_FILAS * MAX_NO_CERO
 	MOV r7, #42	
