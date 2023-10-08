@@ -4,6 +4,9 @@
 dta_fila	DCB	0, -1, -1, 1
 dta_columna	DCB	-1, 0, -1, -1
 	
+	
+	
+	
 	AREA codigo, CODE
 		
 	EXPORT conecta_K_hay_linea_arm_arm
@@ -11,9 +14,20 @@ dta_columna	DCB	-1, 0, -1, -1
 	IMPORT conecta_K_buscar_alineamiento_arm_iter
 		PRESERVE8 {TRUE}
 			
-	; NOTA: FALSE = 0
-	; NOTA: N_DELTAS = 4  (K_SIZE)
-		
+
+; Funcionamiento:
+; Devuelve true (1) si encuentra una línea de 
+; longitud mayor o igual a _K y false (0) en caso contrario.
+
+; Parámetros:
+; 	- Cuadrícula
+; 	- Fila
+; 	- Columna
+;	- Color
+;	- delta_fila (parámetro en pila)
+;	- delta_columna (parámetro en pila)
+
+
 conecta_K_hay_linea_arm_arm
 	
 	; PROLOGO
@@ -22,13 +36,15 @@ conecta_K_hay_linea_arm_arm
 	SUB FP, IP, #4
 	;-----------------------
 	
+	; preservación de parámetros
 	MOV r4, r0	; cuadrícula
 	MOV r5, r1	; fila
 	MOV r6, r2	; columna
 	MOV r7, r3	; color
 	
-	; Inicio	
+	; Inicio
 	
+	; inicialización de variables
 	MOV r8, #0 	; unsigned int i = 0
 	MOV r9, #0	; uint8_t linea = 0
 	MOV r10, #0	; uint8_t long_linea = 0
@@ -62,7 +78,6 @@ bucle_for
 	BL conecta_K_buscar_alineamiento_arm_iter
 	MOV r10, r0	; long_linea = conecta_K_buscar_alineamiento_arm()
 	
-	; 
 	CMP r10, #4		; long_linea >= K_SIZE
 	MOVGE r9, #1	
 	MOVLT r9, #0
@@ -114,9 +129,10 @@ sigue_bucle_for
 
 return
 
-	MOV r0, r9 ; r0 = linea
+	; guardar resultado en r0
+	MOV r0, r9 
 	
-	; Epilogo
+	; Epilogo, restaurar control
 	LDMDB FP, {r4-r10,FP,SP,PC}
 	;----------------
 	

@@ -1,7 +1,29 @@
+; conecta_K_buscar_alineamiento_arm.s	
+	
 	AREA codigo,CODE
 		
 	EXPORT conecta_K_buscar_alineamiento_arm
-		
+
+; Funcionamiento:
+; Esta función es encargada de devolver la longitud de 
+; la línea más larga entre las 4 posibles direcciones 
+; en total.
+; Dada la posición de una ficha, devuelve la suma de
+; en un sentido y otro del número de fichas consecutivas 
+; del mismo color
+; El valor que devuelve esta función se utiliza en 
+; conecta_K_hay_linea para verificar si hay una línea de K 
+; fichas del mismo color
+
+; Parámetros:
+; 	- Cuadrícula
+; 	- Fila
+; 	- Columna
+;	- Color
+;	- delta_fila (parámetro en pila)
+;	- delta_columna (parámetro en pila)
+
+
 conecta_K_buscar_alineamiento_arm
 	; PROLOGO
 	MOV IP, SP
