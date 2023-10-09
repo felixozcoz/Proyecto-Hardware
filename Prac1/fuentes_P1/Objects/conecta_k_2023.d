@@ -7,4 +7,5 @@
 .\objects\conecta_k_2023.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\conecta_k_2023.o: config_conecta_K.h
 .\objects\conecta_k_2023.o: entrada.h
+.\objects\conecta_k_2023.o: entradas_test.h
 .\objects\conecta_k_2023.o: tablero_test.h

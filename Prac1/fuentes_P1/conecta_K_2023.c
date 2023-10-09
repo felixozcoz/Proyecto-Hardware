@@ -1,5 +1,6 @@
 #include "conecta_K_2023.h"
 #include "entrada.h"
+#include "entradas_test.h"
 
 // devuelve true si encuentra una línea de longitud mayor o igual a _K
 uint8_t conecta_K_hay_linea_c_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
@@ -165,10 +166,11 @@ void conecta_K_jugar(void){
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 
 	entrada_inicializar(entrada);
+	uint8_t ind = 0;
 	
 	while (1){
-		while (entrada_nueva(entrada) == 0){};
-		entrada_leer(entrada, &row, &column, &colour);
+		//while (entrada_nueva(entrada) == 0){};
+		entrada_leer(entradas_test[ind], &row, &column, &colour);
 		//validada la entrada en rango, mirar color valido?
 		if(tablero_fila_valida(row) && tablero_columna_valida(column) && tablero_color_valido(colour)){	
 			//podriamos no validarla ya que tablero_insertar_valor vuelve a validar
@@ -178,6 +180,7 @@ void conecta_K_jugar(void){
 					conecta_K_visualizar_tablero(&cuadricula, salida);
 					if(conecta_K_verificar_K_en_linea(&cuadricula, row, column, colour)) {
 						while(1); // equivaldria a K_linea encontrada, fin de partida... 
+						// continue;
 					}
 				}
 				else {
@@ -187,7 +190,8 @@ void conecta_K_jugar(void){
 			//else: celda no vacia
 		}
 		//else: fuera de rango fila, columna o color
-		entrada_inicializar (entrada);
+		ind++;
+		//entrada_inicializar (entrada);
 	}
 }
 

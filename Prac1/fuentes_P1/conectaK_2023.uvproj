@@ -461,6 +461,11 @@
               <FileType>5</FileType>
               <FilePath>.\tablero_test.h</FilePath>
             </File>
+            <File>
+              <FileName>entradas_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\entradas_test.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
