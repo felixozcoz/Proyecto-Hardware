@@ -74,12 +74,13 @@ bucle_for
 	
 	BL conecta_K_buscar_alineamiento_c
 	MOV r10, r0	; long_linea = conecta_K_buscar_alineamiento_c()
-	
-	; 
+	MOV r0, r4	; recuperar @ cuadrícula
+	 
 	CMP r10, #4		; long_linea >= K_SIZE
 	MOVGE r9, #1	
-	MOVLT r9, #0
 	BGE sigue_bucle_for
+	MOV r9, #0
+	
 	
 	; Buscar sentido inverso
 	
@@ -112,6 +113,7 @@ bucle_for
 	BL conecta_K_buscar_alineamiento_c
 	
 	ADD r10, r10, r0 ; long_linea += conecta...()
+	MOV r0, r4	; recuperar @ tablero
 	
 	CMP r10, #4		;  linea = long_linea >= K_SIZE
 	MOVGE r9, #1

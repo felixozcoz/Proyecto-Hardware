@@ -4,171 +4,201 @@
 ARM Macro Assembler    Page 1 
 
 
-    1 00000000                 AREA             codigo,CODE
+    1 00000000         ; conecta_K_buscar_alineamiento_arm.s 
     2 00000000         
-    3 00000000                 EXPORT           conecta_K_buscar_alineamiento_a
-rm
+    3 00000000                 AREA             codigo,CODE
     4 00000000         
-    5 00000000         conecta_K_buscar_alineamiento_arm
-    6 00000000         ; PROLOGO
-    7 00000000 E1A0C00D        MOV              IP, SP
-    8 00000004 E92DDFFE        STMDB            SP!, {r1-r10,FP,IP,LR,PC}
-    9 00000008 E24CB004        SUB              FP, IP, #4
-   10 0000000C         ;-----------------------
-   11 0000000C         
-   12 0000000C         ; Se preservan inalterados los registros
-   13 0000000C         ; destinados a los parámetros r1-r3.
-   14 0000000C         ; Se guarda tablero (r0) en r5
-   15 0000000C E1A05000        MOV              r5, r0
-   16 00000010         
-   17 00000010         ; Desapilar Parámetros Deltas
-   18 00000010 E59B6004        LDR              r6, [fp, #4] ; delta_fila
-   19 00000014 E59B7008        LDR              r7, [fp, #8] ; delta_columna
-   20 00000018         
-   21 00000018 EB00000A        BL               tablero_buscar_color
-   22 0000001C         
-   23 0000001C         ; r0 == EXITO ? seguir alineamieno : retornar r0 = 0 (EX
-                       IT0)
-   24 0000001C E3500000        CMP              r0, #0
-   25 00000020 13A00000        MOVNE            r0, #0
-   26 00000024 1A000028        BNE              epilogo_buscar_alineamiento
-   27 00000028         
-   28 00000028         sigue_buscar_alineamiento
-   29 00000028         
-   30 00000028         ; Calcular fila y columna nueva
-   31 00000028 E0811006        ADD              r1, r1, r6  ; fila + delta_fila
-                                                            
-   32 0000002C E0822007        ADD              r2, r2, r7  ; columna + delta_c
-                                                            olumna
-   33 00000030         
-   34 00000030         ; Cargar deltas en pila
-   35 00000030 E52D7004        STR              r7, [sp,#-4]! ; delta_columna
-   36 00000034 E52D6004        STR              r6, [sp,#-4]! ; delta_fila
-   37 00000038         
-   38 00000038         ; restaurar tablero a r0
-   39 00000038 E1A00005        MOV              r0, r5
-   40 0000003C         
-   41 0000003C EBFFFFFE        BL               conecta_K_buscar_alineamiento_a
+    5 00000000                 EXPORT           conecta_K_buscar_alineamiento_a
 rm
-   42 00000040         
-   43 00000040 E2800001        ADD              r0,r0,#1    ; return 1 + conect
-                                                            a_K_buscar_alineami
-                                                            ento_arm()
-   44 00000044 EA000020        B                epilogo_buscar_alineamiento
-   45 00000048         
-   46 00000048         tablero_buscar_color
-   47 00000048         ; PROLOGO
-   48 00000048 E1A0C00D        MOV              IP, SP
-   49 0000004C E92DDFF0        STMDB            SP!, {r4-r10,FP,IP,LR,PC}
-   50 00000050 E24CB004        SUB              FP, IP, #4
-   51 00000054         ;-----------------------
-   52 00000054         
+    6 00000000         
+    7 00000000         ; Funcionamiento:
+    8 00000000         ; Esta función es encargada de devolver la longitud de 
+    9 00000000         ; la línea más larga entre las 4 posibles direcciones 
+   10 00000000         ; en total.
+   11 00000000         ; Dada la posición de una ficha, devuelve la suma de
+   12 00000000         ; en un sentido y otro del número de fichas consecutivas
+                        
+   13 00000000         ; del mismo color
+   14 00000000         ; El valor que devuelve esta función se utiliza en 
+   15 00000000         ; conecta_K_hay_linea para verificar si hay una línea de
+                        K 
+   16 00000000         ; fichas del mismo color
+   17 00000000         
+   18 00000000         ; Parámetros:
+   19 00000000         ;  - Cuadrícula
+   20 00000000         ;  - Fila
+   21 00000000         ;  - Columna
+   22 00000000         ; - Color
+   23 00000000         ; - delta_fila (parámetro en pila)
+   24 00000000         ; - delta_columna (parámetro en pila)
+   25 00000000         
+   26 00000000         
+   27 00000000         conecta_K_buscar_alineamiento_arm
+   28 00000000         ; PROLOGO
+   29 00000000 E1A0C00D        MOV              IP, SP
+   30 00000004 E92DDFFE        STMDB            SP!, {r1-r10,FP,IP,LR,PC}
+   31 00000008 E24CB004        SUB              FP, IP, #4
+   32 0000000C         ;-----------------------
+   33 0000000C         
+   34 0000000C         ; Se preservan inalterados los registros
+   35 0000000C         ; destinados a los parámetros r1-r3.
+   36 0000000C         ; Se guarda tablero (r0) en r5
+   37 0000000C E1A05000        MOV              r5, r0
+   38 00000010         
+   39 00000010         ; Desapilar Parámetros Deltas
+   40 00000010 E59B6004        LDR              r6, [fp, #4] ; delta_fila
+   41 00000014 E59B7008        LDR              r7, [fp, #8] ; delta_columna
+   42 00000018         
+   43 00000018 EB00000A        BL               tablero_buscar_color
+   44 0000001C         
+   45 0000001C         ; r0 == EXITO ? seguir alineamieno : retornar r0 = 0 (EX
+                       IT0)
+   46 0000001C E3500000        CMP              r0, #0
+   47 00000020 13A00000        MOVNE            r0, #0
+   48 00000024 1A000028        BNE              epilogo_buscar_alineamiento
+   49 00000028         
+   50 00000028         sigue_buscar_alineamiento
+   51 00000028         
+   52 00000028         ; Calcular fila y columna nueva
+   53 00000028 E0811006        ADD              r1, r1, r6  ; fila + delta_fila
+                                                            
+   54 0000002C E0822007        ADD              r2, r2, r7  ; columna + delta_c
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   53 00000054         ; Verificar condiciones de fila y columna
-   54 00000054         ; sobre dimensiones de tablero
-   55 00000054         
-   56 00000054         ; fila < NUM_FILAS
-   57 00000054 E3510007        CMP              r1, #7
-   58 00000058 AA000019        BGE              tablero_buscar_color_ERROR
-   59 0000005C E3510000        CMP              r1, #0
-   60 00000060 BA000017        BLT              tablero_buscar_color_ERROR
-   61 00000064         
-   62 00000064         ; columna < NUM_COLUMNAS
-   63 00000064 E3520007        CMP              r2, #7
-   64 00000068 AA000015        BGE              tablero_buscar_color_ERROR
-   65 0000006C E3520000        CMP              r2, #0
-   66 00000070 BA000013        BLT              tablero_buscar_color_ERROR
-   67 00000074         
-   68 00000074         ; size_t col = 0
-   69 00000074 E3A04000        MOV              r4, #0
-   70 00000078         
-   71 00000078         ; r5 = fila * MAX_NO_CERO
-   72 00000078 E3A05006        MOV              r5, #6      ;
-   73 0000007C E0050591        MUL              r5, r1, r5
-   74 00000080         
-   75 00000080         tablero_buscar_color_FOR
-   76 00000080         
-   77 00000080         ; condición 1: col < MAX_NO_CERO 
-   78 00000080 E3540006        CMP              r4, #6
-   79 00000084 AA000004        BGE              loop_exit
-   80 00000088         
-   81 00000088         ; condición 2: ... && (t->columnas[fila][col] != columna
+                                                            olumna
+   55 00000030         
+   56 00000030         ; Cargar deltas en pila
+   57 00000030 E52D7004        STR              r7, [sp,#-4]! ; delta_columna
+   58 00000034 E52D6004        STR              r6, [sp,#-4]! ; delta_fila
+   59 00000038         
+   60 00000038         ; restaurar tablero a r0
+   61 00000038 E1A00005        MOV              r0, r5
+   62 0000003C         
+   63 0000003C EBFFFFFE        BL               conecta_K_buscar_alineamiento_a
+rm
+   64 00000040         
+   65 00000040 E2800001        ADD              r0,r0,#1    ; return 1 + conect
+                                                            a_K_buscar_alineami
+                                                            ento_arm()
+   66 00000044 EA000020        B                epilogo_buscar_alineamiento
+   67 00000048         
+   68 00000048         tablero_buscar_color
+   69 00000048         ; PROLOGO
+   70 00000048 E1A0C00D        MOV              IP, SP
+   71 0000004C E92DDFF0        STMDB            SP!, {r4-r10,FP,IP,LR,PC}
+   72 00000050 E24CB004        SUB              FP, IP, #4
+   73 00000054         ;-----------------------
+   74 00000054         
+   75 00000054         ; Verificar condiciones de fila y columna
+   76 00000054         ; sobre dimensiones de tablero
+   77 00000054         
+   78 00000054         ; fila < NUM_FILAS
+   79 00000054 E3510007        CMP              r1, #7
+   80 00000058 AA000019        BGE              tablero_buscar_color_ERROR
+   81 0000005C E3510000        CMP              r1, #0
+   82 00000060 BA000017        BLT              tablero_buscar_color_ERROR
+   83 00000064         
+   84 00000064         ; columna < NUM_COLUMNAS
+   85 00000064 E3520007        CMP              r2, #7
+   86 00000068 AA000015        BGE              tablero_buscar_color_ERROR
+   87 0000006C E3520000        CMP              r2, #0
+   88 00000070 BA000013        BLT              tablero_buscar_color_ERROR
+   89 00000074         
+   90 00000074         ; size_t col = 0
+   91 00000074 E3A04000        MOV              r4, #0
+   92 00000078         
+   93 00000078         ; r5 = fila * MAX_NO_CERO
+   94 00000078 E3A05006        MOV              r5, #6      ;
+   95 0000007C E0050591        MUL              r5, r1, r5
+   96 00000080         
+   97 00000080         tablero_buscar_color_FOR
+   98 00000080         
+   99 00000080         ; condición 1: col < MAX_NO_CERO 
+  100 00000080 E3540006        CMP              r4, #6
+  101 00000084 AA000004        BGE              loop_exit
+  102 00000088         
+  103 00000088         ; condición 2: ... && (t->columnas[fila][col] != columna
                        )
-   82 00000088         
-   83 00000088         ; calcular @ de la celda
-   84 00000088 E0856004        ADD              r6, r5, r4  ; r6 = (fila * 6) +
+  104 00000088         
+  105 00000088         ; calcular @ de la celda
+  106 00000088 E0856004        ADD              r6, r5, r4  ; r6 = (fila * 6) +
                                                              col
-   85 0000008C E19070D6        LDRSB            r7, [r0, r6] ; r5 = t->columnas
-                                                            [fila][col]
-   86 00000090         
-   87 00000090         ; t->columnas[fila][col] != columna ? col++ e iterar : s
-                       alir bucle
-   88 00000090 E1570002        CMP              r7, r2
-   89 00000094 12844001        ADDNE            r4, r4, #1  ; col++
-   90 00000098 1AFFFFF8        BNE              tablero_buscar_color_FOR 
-                                                            ; iterar
-   91 0000009C         
-   92 0000009C         loop_exit
-   93 0000009C         
-   94 0000009C         ; col == MAX_NO_CERO ? ERROR : seguir bucle
-   95 0000009C E3540006        CMP              r4, #6
-   96 000000A0 0A000007        BEQ              tablero_buscar_color_ERROR
-   97 000000A4         
-   98 000000A4         ; sigue buscar_alineamiento()
-   99 000000A4         
-  100 000000A4         ; r7 = NUM_FILAS * MAX_NO_CERO
-  101 000000A4 E3A0702A        MOV              r7, #42
-  102 000000A8         
-  103 000000A8         ; extrar valor de celda
-  104 000000A8 E0867007        ADD              r7, r6, r7  ; r7 + @columna[fil
-                                                            a][col]
-  105 000000AC E19070D7        LDRSB            r7, [r0, r7] ; @tablero + r7 = 
+  107 0000008C E19070D6        LDRSB            r7, [r0, r6] ; r5 = t->columnas
 
 
 
 ARM Macro Assembler    Page 3 
 
 
+                                                            [fila][col]
+  108 00000090         
+  109 00000090         ; t->columnas[fila][col] != columna ? col++ e iterar : s
+                       alir bucle
+  110 00000090 E1570002        CMP              r7, r2
+  111 00000094 12844001        ADDNE            r4, r4, #1  ; col++
+  112 00000098 1AFFFFF8        BNE              tablero_buscar_color_FOR 
+                                                            ; iterar
+  113 0000009C         
+  114 0000009C         loop_exit
+  115 0000009C         
+  116 0000009C         ; col == MAX_NO_CERO ? ERROR : seguir bucle
+  117 0000009C E3540006        CMP              r4, #6
+  118 000000A0 0A000007        BEQ              tablero_buscar_color_ERROR
+  119 000000A4         
+  120 000000A4         ; sigue buscar_alineamiento()
+  121 000000A4         
+  122 000000A4         ; r7 = NUM_FILAS * MAX_NO_CERO
+  123 000000A4 E3A0702A        MOV              r7, #42
+  124 000000A8         
+  125 000000A8         ; extrar valor de celda
+  126 000000A8 E0867007        ADD              r7, r6, r7  ; r7 + @columna[fil
+                                                            a][col]
+  127 000000AC E19070D7        LDRSB            r7, [r0, r7] ; @tablero + r7 = 
                                                             t->no_cero[fila][co
                                                             l]  
-  106 000000B0         
-  107 000000B0         ; check color celda
-  108 000000B0 E2077003        AND              r7, r7, #0x03 ; celda_color(CEL
+  128 000000B0         
+  129 000000B0         ; check color celda
+  130 000000B0 E2077003        AND              r7, r7, #0x03 ; celda_color(CEL
                                                             DA celda) {return (
                                                             celda & 0x03);}
-  109 000000B4         
-  110 000000B4 E1570003        CMP              r7, r3      ; celda_color(t->no
+  131 000000B4         
+  132 000000B4 E1570003        CMP              r7, r3      ; celda_color(t->no
                                                             _ceros[fila][col]) 
                                                             == color)
-  111 000000B8 1A000001        BNE              tablero_buscar_color_ERROR
-  112 000000BC         
-  113 000000BC         ; exito en tablero_buscar_color
-  114 000000BC E3A00000        MOV              r0,#0
-  115 000000C0 EA000000        B                epilogo_tablero_buscar_color
-  116 000000C4         
-  117 000000C4         tablero_buscar_color_ERROR
-  118 000000C4 E3E00000        MOV              r0, #-1
-  119 000000C8         
-  120 000000C8         epilogo_tablero_buscar_color
-  121 000000C8         
-  122 000000C8 E91BAFF0        LDMDB            FP, {r4-r10,FP,SP,PC}
-  123 000000CC         
-  124 000000CC         
-  125 000000CC         epilogo_buscar_alineamiento
-  126 000000CC         
-  127 000000CC         ; restaurar marco de pila
-  128 000000CC E91BAFFE        LDMDB            FP, {r1-r10,FP,SP,PC}
-  129 000000D0         
-  130 000000D0         
-  131 000000D0         
-  132 000000D0                 END
+  133 000000B8 1A000001        BNE              tablero_buscar_color_ERROR
+  134 000000BC         
+  135 000000BC         ; exito en tablero_buscar_color
+  136 000000BC E3A00000        MOV              r0,#0
+  137 000000C0 EA000000        B                epilogo_tablero_buscar_color
+  138 000000C4         
+  139 000000C4         tablero_buscar_color_ERROR
+  140 000000C4 E3E00000        MOV              r0, #-1
+  141 000000C8         
+  142 000000C8         epilogo_tablero_buscar_color
+  143 000000C8         
+  144 000000C8 E91BAFF0        LDMDB            FP, {r4-r10,FP,SP,PC}
+  145 000000CC         
+  146 000000CC         
+  147 000000CC         epilogo_buscar_alineamiento
+  148 000000CC         
+  149 000000CC         ; restaurar marco de pila
+  150 000000CC E91BAFFE        LDMDB            FP, {r1-r10,FP,SP,PC}
+  151 000000D0         
+  152 000000D0         
+  153 000000D0         
+  154 000000D0                 END
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
 bjects\conecta_k_buscar_alineamiento_arm.d -o.\objects\conecta_k_buscar_alineam
+
+
+
+ARM Macro Assembler    Page 4 
+
+
 iento_arm.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_
 v5\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION S
 ETA 526" --list=.\listings\conecta_k_buscar_alineamiento_arm.lst conecta_K_busc
@@ -183,7 +213,7 @@ codigo 00000000
 
 Symbol: codigo
    Definitions
-      At line 1 in file conecta_K_buscar_alineamiento_arm.s
+      At line 3 in file conecta_K_buscar_alineamiento_arm.s
    Uses
       None
 Comment: codigo unused
@@ -191,41 +221,41 @@ conecta_K_buscar_alineamiento_arm 00000000
 
 Symbol: conecta_K_buscar_alineamiento_arm
    Definitions
-      At line 5 in file conecta_K_buscar_alineamiento_arm.s
+      At line 27 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 3 in file conecta_K_buscar_alineamiento_arm.s
-      At line 41 in file conecta_K_buscar_alineamiento_arm.s
+      At line 5 in file conecta_K_buscar_alineamiento_arm.s
+      At line 63 in file conecta_K_buscar_alineamiento_arm.s
 
 epilogo_buscar_alineamiento 000000CC
 
 Symbol: epilogo_buscar_alineamiento
    Definitions
-      At line 125 in file conecta_K_buscar_alineamiento_arm.s
+      At line 147 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 26 in file conecta_K_buscar_alineamiento_arm.s
-      At line 44 in file conecta_K_buscar_alineamiento_arm.s
+      At line 48 in file conecta_K_buscar_alineamiento_arm.s
+      At line 66 in file conecta_K_buscar_alineamiento_arm.s
 
 epilogo_tablero_buscar_color 000000C8
 
 Symbol: epilogo_tablero_buscar_color
    Definitions
-      At line 120 in file conecta_K_buscar_alineamiento_arm.s
+      At line 142 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 115 in file conecta_K_buscar_alineamiento_arm.s
+      At line 137 in file conecta_K_buscar_alineamiento_arm.s
 Comment: epilogo_tablero_buscar_color used once
 loop_exit 0000009C
 
 Symbol: loop_exit
    Definitions
-      At line 92 in file conecta_K_buscar_alineamiento_arm.s
+      At line 114 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 79 in file conecta_K_buscar_alineamiento_arm.s
+      At line 101 in file conecta_K_buscar_alineamiento_arm.s
 Comment: loop_exit used once
 sigue_buscar_alineamiento 00000028
 
 Symbol: sigue_buscar_alineamiento
    Definitions
-      At line 28 in file conecta_K_buscar_alineamiento_arm.s
+      At line 50 in file conecta_K_buscar_alineamiento_arm.s
    Uses
       None
 Comment: sigue_buscar_alineamiento unused
@@ -233,9 +263,9 @@ tablero_buscar_color 00000048
 
 Symbol: tablero_buscar_color
    Definitions
-      At line 46 in file conecta_K_buscar_alineamiento_arm.s
+      At line 68 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 21 in file conecta_K_buscar_alineamiento_arm.s
+      At line 43 in file conecta_K_buscar_alineamiento_arm.s
 Comment: tablero_buscar_color used once
 tablero_buscar_color_ERROR 000000C4
 
@@ -247,22 +277,22 @@ Relocatable symbols
 
 Symbol: tablero_buscar_color_ERROR
    Definitions
-      At line 117 in file conecta_K_buscar_alineamiento_arm.s
+      At line 139 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 58 in file conecta_K_buscar_alineamiento_arm.s
-      At line 60 in file conecta_K_buscar_alineamiento_arm.s
-      At line 64 in file conecta_K_buscar_alineamiento_arm.s
-      At line 66 in file conecta_K_buscar_alineamiento_arm.s
-      At line 96 in file conecta_K_buscar_alineamiento_arm.s
-      At line 111 in file conecta_K_buscar_alineamiento_arm.s
+      At line 80 in file conecta_K_buscar_alineamiento_arm.s
+      At line 82 in file conecta_K_buscar_alineamiento_arm.s
+      At line 86 in file conecta_K_buscar_alineamiento_arm.s
+      At line 88 in file conecta_K_buscar_alineamiento_arm.s
+      At line 118 in file conecta_K_buscar_alineamiento_arm.s
+      At line 133 in file conecta_K_buscar_alineamiento_arm.s
 
 tablero_buscar_color_FOR 00000080
 
 Symbol: tablero_buscar_color_FOR
    Definitions
-      At line 75 in file conecta_K_buscar_alineamiento_arm.s
+      At line 97 in file conecta_K_buscar_alineamiento_arm.s
    Uses
-      At line 90 in file conecta_K_buscar_alineamiento_arm.s
+      At line 112 in file conecta_K_buscar_alineamiento_arm.s
 Comment: tablero_buscar_color_FOR used once
 9 symbols
 341 symbols in table
