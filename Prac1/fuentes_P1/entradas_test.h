@@ -28,7 +28,7 @@ static entradasType entradas_test[] =
 { 1, 3, 6, 2 , 0, 0, 0, 0}, 	// vertical
 { 1, 2, 4, 2 , 0, 0, 0, 0},		// horizontal
 { 1, 4, 4, 2 , 0, 0, 0, 0}, 	// diagonal positiva sobre eje x
-{ 1, 4, 3, 1 , 0, 0, 0, 0}  	// diagonal negativa sobre eje x
+{ 1, 5, 4, 1 , 0, 0, 0, 0}  	// diagonal negativa sobre eje x
 };
 
 #endif

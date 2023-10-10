@@ -1,14 +1,14 @@
 Dependencies for Project 'conectaK_2023', Target 'Target 1': (DO NOT MODIFY !)
 F (.\Startup.s)(0x65130BA8)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
 F (.\celda.h)(0x65130BA8)()
-F (.\conecta_K_2023.h)(0x652022F7)()
+F (.\conecta_K_2023.h)(0x65258A6B)()
 F (.\entrada.h)(0x65130BA8)()
 F (.\tablero.h)(0x6515A778)()
 F (.\config_conecta_K.h)(0x651874EB)()
-F (.\tablero_test.h)(0x6524182B)()
-F (.\entradas_test.h)(0x6524414D)()
-F (.\conecta_K_2023.c)(0x6524440E)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O2 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta_k_2023.o --omf_browse .\objects\conecta_k_2023.crf --depend .\objects\conecta_k_2023.d)
-I (conecta_K_2023.h)(0x652022F7)
+F (.\tablero_test.h)(0x65258AFD)()
+F (.\entradas_test.h)(0x65258AF8)()
+F (.\conecta_K_2023.c)(0x65258A90)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O2 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta_k_2023.o --omf_browse .\objects\conecta_k_2023.crf --depend .\objects\conecta_k_2023.d)
+I (conecta_K_2023.h)(0x65258A6B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x65130BA8)
@@ -16,10 +16,10 @@ I (tablero.h)(0x6515A778)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (config_conecta_K.h)(0x651874EB)
 I (entrada.h)(0x65130BA8)
-I (entradas_test.h)(0x6524414D)
-I (tablero_test.h)(0x6524182B)
+I (entradas_test.h)(0x65258AF8)
+I (tablero_test.h)(0x65258AFD)
 F (.\main.c)(0x652439DE)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O2 --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (conecta_K_2023.h)(0x652022F7)
+I (conecta_K_2023.h)(0x65258A6B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x65130BA8)
@@ -38,7 +38,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (celda.h)(0x65130BA8)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-F (.\conecta_K_buscar_alineamiento_arm.s)(0x65241F8B)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta_k_buscar_alineamiento_arm.lst --xref -o .\objects\conecta_k_buscar_alineamiento_arm.o --depend .\objects\conecta_k_buscar_alineamiento_arm.d)
+F (.\conecta_K_buscar_alineamiento_arm.s)(0x652571CF)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta_k_buscar_alineamiento_arm.lst --xref -o .\objects\conecta_k_buscar_alineamiento_arm.o --depend .\objects\conecta_k_buscar_alineamiento_arm.d)
 F (.\conecta_K_hay_linea_arm_c.s)(0x65243A92)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta_k_hay_linea_arm_c.lst --xref -o .\objects\conecta_k_hay_linea_arm_c.o --depend .\objects\conecta_k_hay_linea_arm_c.d)
 F (.\conecta_K_hay_linea_arm_arm.s)(0x65231104)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta_k_hay_linea_arm_arm.lst --xref -o .\objects\conecta_k_hay_linea_arm_arm.o --depend .\objects\conecta_k_hay_linea_arm_arm.d)
 F (.\conecta_K_buscar_alineamiento_arm_iterativo.s)(0x65230FA0)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta_k_buscar_alineamiento_arm_iterativo.lst --xref -o .\objects\conecta_k_buscar_alineamiento_arm_iterativo.o --depend .\objects\conecta_k_buscar_alineamiento_arm_iterativo.d)
