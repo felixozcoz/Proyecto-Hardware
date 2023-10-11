@@ -3,7 +3,7 @@
 #include "entradas_test.h"
 
 // devuelve true si encuentra una línea de longitud mayor o igual a _K
-uint8_t conecta_K_hay_linea_c_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
+                                                                                                    uint8_t conecta_K_hay_linea_c_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
 	 enum { N_DELTAS = 4};
    int8_t deltas_fila[N_DELTAS] = {0, -1, -1, 1};
    int8_t deltas_columna[N_DELTAS] = {-1, 0, -1, -1};
@@ -135,7 +135,7 @@ void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[NUM_FILAS+1][NUM_
 int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color){
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
 	uint8_t resultado_c_c = conecta_K_hay_linea_c_c(t, fila, columna, color);
-	// uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
+	uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
 	// uint8_t resultado_arm_c = conecta_K_hay_linea_arm_c(t, fila, columna, color);
 	// uint8_t resultado_arm_arm = conecta_K_hay_linea_arm_arm(t, fila, columna, color);
 	
@@ -168,10 +168,10 @@ void conecta_K_jugar(void){
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 
 	entrada_inicializar(entrada);
-	uint8_t ind = 0;
+	uint8_t ind = 0;	// número de jugada a probar durante el test
 	
 	while (1){
-		//while (entrada_nueva(entrada) == 0){};
+		// while (entrada_nueva(entrada) == 0){};
 		entrada_leer(entradas_test[ind], &row, &column, &colour);
 		//validada la entrada en rango, mirar color valido?
 		if(tablero_fila_valida(row) && tablero_columna_valida(column) && tablero_color_valido(colour)){	
@@ -181,8 +181,10 @@ void conecta_K_jugar(void){
 				if(tablero_insertar_color(&cuadricula, row, column, colour) == EXITO) {
 					conecta_K_visualizar_tablero(&cuadricula, salida);
 					if(conecta_K_verificar_K_en_linea(&cuadricula, row, column, colour)) {
-						while(1); // equivaldria a K_linea encontrada, fin de partida... 
-						// continue;
+						// while(1); // equivaldria a K_linea encontrada, fin de partida... 
+						if(ind+1 == n_jugadas_test)
+							while(1);
+						continue;	// seguir probando jugadas de test
 					}
 				}
 				else {

@@ -5,6 +5,8 @@
 #include "entrada.h"
 #include "config_conecta_K.h"
 	
+uint8_t n_jugadas_test = 8;	
+	
 // Entradas de test 
 
 //	uint8_t entrada[ALIGN_8]
