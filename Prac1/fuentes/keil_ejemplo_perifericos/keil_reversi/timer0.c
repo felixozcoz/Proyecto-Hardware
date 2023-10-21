@@ -5,7 +5,6 @@
 // variable para contabilizar el número de interrupciones
 static volatile unsigned int timer0_int_count = 0;
 
-
 void timer0_ISR (void) __irq;    // Generate Interrupt 
 
 /* Setup the Timer Counter 0 Interrupt */

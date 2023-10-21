@@ -3,24 +3,26 @@
 
 #include <stdint.h>
 
-// 	TIMER 0
+// Utiliza Timer 0 de LPC2105
 
-// inicializar temporizador0
-void temporizador_hal_iniciar();
+extern const float temporizador_hal_ticks2us;
 
-// empezar temporizador0
-void temporizador_hal_empezar();
 
+// inicializar contador
+void temporizador_hal_iniciar(void);
+
+// empezar contador
+void temporizador_hal_empezar(void);
 
 // lee el tiempo que lleva contando el temporizador0 
 // desde la última vez que se ejecutó 
 // temporizador0_hal_empezar y lo devuelve en ticks.
-uint64_t temporizador_hal_leer();
+uint64_t temporizador_hal_leer(void);
 
-// detiene el temporizador0 y 
+// detiene el timer0 y 
 // devuelve el tiempo transcurrido en ticks
-// desde el último temporizador0_hal_empezar.
-uint64_t temporizador_hal_parar();
+// desde el último temporizador_hal_empezar.
+uint64_t temporizador_hal_parar(void);
 
 
 

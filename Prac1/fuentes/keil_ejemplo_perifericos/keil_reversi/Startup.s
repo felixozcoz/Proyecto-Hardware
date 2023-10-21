@@ -301,9 +301,7 @@ __user_initial_stackheap
                 LDR     R3, = Stack_Mem
                 BX      LR
 
-				EXPORT Switch_to_PLL
-
-;	Switch to PLL Clock
+				EXPORT	Switch_to_PLL
 Switch_to_PLL
 				LDR		R0, =PLL_BASE
 				MOV		R1, #0XAA
@@ -325,9 +323,5 @@ PLL_Loop2		LDR		R3, [R0, #PLLSTAT_OFS]
 				STR		R1, [R0, #PLLFEED_OFS]
 				STR		R2, [R0, #PLLFEED_OFS] 
 				BX		LR
-				END
-
-
-
 
                 END

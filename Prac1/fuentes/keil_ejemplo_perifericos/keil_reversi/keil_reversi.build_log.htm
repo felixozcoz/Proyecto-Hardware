@@ -22,31 +22,26 @@ Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\felix\Downloads\keil_ejemplo_perifericos\keil_reversi\keil_reversi.uvproj
-Project File Date:  10/07/2020
+Project File Date:  10/19/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Simulator'
-compiling Retarget.c...
-compiling boton_eint0.c...
 assembling Startup.s...
-compiling main.c...
-Power_management.h(2): warning:  #1295-D: Deprecated declaration Switch_to_PLL - give arg types
-  extern void Switch_to_PLL();
-main.c(11): warning:  #223-D: function "timer0_read_int_count" declared implicitly
-    i = timer0_read_int_count(); // reads the number of previous timer IRQs
-main.c(30): warning:  #223-D: function "timer0_init" declared implicitly
-  	timer0_init(); // generates an interrupt every 0,05ms and increments timeval0
-main.c: 3 warnings, 0 errors
+compiling Retarget.c...
+compiling temporizador_drv.c...
+compiling temporizador_hal.c...
 compiling Power_management.c...
 Power_management.c(7): warning:  #223-D: function "Switch_to_PLL" declared implicitly
   	Switch_to_PLL();
 Power_management.c: 1 warning, 0 errors
+compiling main.c...
 compiling timer0.c...
+compiling boton_eint0.c...
 linking...
 Program Size: Code=1244 RO-data=32 RW-data=12 ZI-data=2276  
-".\keil_reversi.axf" - 0 Error(s), 4 Warning(s).
-Build Time Elapsed:  00:00:01
+".\keil_reversi.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
