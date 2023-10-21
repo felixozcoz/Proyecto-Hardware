@@ -33,19 +33,20 @@ void timer_ISR (void) __irq {
 // Función que programa un contador para que pueda ser utilizado
 void temporizador_hal_iniciar(void) 
 {
-		// inicializar contador de timer 0
-		countTimer0= 0;	
 	
 		// Configuración de Timer 0
 	
-		T0MR0 = 0XFFFFFFE;  // cuenta lo máximo para interrumpir lo mínimo
+		// Timer como algún periférico va a una velocidad de 60MHz/VPBDIV ,
+		// donde VPBDIV = 4 por defecto, entonces va a 15MHz
+		T0MR0 = 14999;  // una interrupción cada 1ms
+	
 	
 		// Genera una interrupción (bit 0)
 		// 	y reinicia TC si T0TC == T0MR0 (bit 1)
     T0MCR = 3;	// Match Control Register
 
-		// Habilitar registro del Timer 0
-    T0TCR = 1;	// Timer Control Register	
+		// Deshabilitar/Detener registro del Timer 0 después de reinicio
+    T0TCR = 0;	// Timer Control Register	
 	
 		// Configuración del IRQ slot number 0 of 
 		// 	the VIC for Timer 0 Interrupt

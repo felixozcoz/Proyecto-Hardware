@@ -3,6 +3,7 @@
 #include "timer0.h"
 #include "Power_management.h"
 #include "boton_eint0.h"
+#include "temporizador_drv.h"
 
 // Nota: wait es una espera activa. Se puede eliminar poniendo el procesador en modo iddle. Probad a hacerlo
 
@@ -10,7 +11,7 @@ void wait (void)  {                         /* wait function */
   unsigned int i;
 
   i = timer0_read_int_count(); // reads the number of previous timer IRQs
-  while ((i + 10) != timer0_read_int_count());              /* waits for 10 interrupts, i.e. 50ms */
+  while ((i + 10) > timer0_read_int_count());              /* waits for 10 interrupts, i.e. 10ms */
 }
 
 int main (void) {

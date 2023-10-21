@@ -18,7 +18,7 @@ void temporizador_drv_iniciar(void)
 
 void temporizador_drv_empezar(void) 
 {
-	temporizador_drv_empezar();
+	temporizador_hal_empezar();
 }
 
 // Implementa la lectura del tiempo transcurrido
