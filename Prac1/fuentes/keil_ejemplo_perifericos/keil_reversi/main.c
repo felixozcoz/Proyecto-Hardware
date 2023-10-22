@@ -34,13 +34,13 @@ int main (void) {
     for (j = 0x010000; j < 0x800000; j <<= 1) { /* Blink LED 0,1,2,3,4,5,6 */
       // Nota la gestión del GPIO vosotros la debeís hacer en GPIO.c no en el main o en el reversi
 			IOSET = j;                               /* Turn on LED */
-      wait ();                                  /* call wait function */
+			wait ();                                  /* call wait function */
       IOCLR = j;                               /* Turn off LED */
-    }
+		}
     for (j = 0x800000; j > 0x010000; j >>=1 ) { /* Blink LED 7,6,5,4,3,2,1 */
       // Nota la gestión del GPIO vosotros la debeís hacer en GPIO.c no en el main o en el reversi
 			IOSET = j;                               /* Turn on LED */
-      wait ();                                  /* call wait function */
+			wait ();                                  /* call wait function */
       IOCLR = j;                               /* Turn off LED */
     }
   }

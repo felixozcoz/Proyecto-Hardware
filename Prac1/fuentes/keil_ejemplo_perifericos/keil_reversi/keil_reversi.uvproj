@@ -501,6 +501,31 @@
               <FileType>5</FileType>
               <FilePath>.\GPIO.h</FilePath>
             </File>
+            <File>
+              <FileName>io_reserva.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\io_reserva.h</FilePath>
+            </File>
+            <File>
+              <FileName>cola_FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cola_FIFO.c</FilePath>
+            </File>
+            <File>
+              <FileName>cola_FIFO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cola_FIFO.h</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\planificador.h</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\planificador.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
