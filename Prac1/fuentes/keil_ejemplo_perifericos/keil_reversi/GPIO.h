@@ -32,7 +32,7 @@ __inline void gpio_hal_iniciar(void)
 __inline void gpio_hal_sentido(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, gpio_hal_pin_dir_t direccion) 
 {			
 	
-	GPIO_HAL_PIN_T mask = (1 << num_bits) -1; // crear máscara con tantos 1's como num_bits se van a modificar
+	GPIO_HAL_PIN_T mask = (1 << num_bits) - 1; // crear máscara con tantos 1's como num_bits se van a modificar
 	mask = mask << gpio_inicial;	// desplazar a la izq gpio_inicial bits
 	
 	if (direccion == GPIO_HAL_PIN_DIR_INPUT) {
@@ -78,7 +78,7 @@ __inline void gpio_hal_escribir(GPIO_HAL_PIN_T bit_inicial, uint8_t num_bits, ui
 	
 		// Desplazar a la izq bit_inicial bits para limpiar los bits donde se va a escribir
 		IOCLR = mask << bit_inicial;
-	
+  
 		// Aplicamos máscara para quedarnos con los bits en los que se quiere escribir
 		valor = valor & mask;
 	
