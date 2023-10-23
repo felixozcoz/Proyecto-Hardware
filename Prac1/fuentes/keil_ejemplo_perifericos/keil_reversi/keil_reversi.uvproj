@@ -467,16 +467,6 @@
               <FilePath>.\boton_eint0.h</FilePath>
             </File>
             <File>
-              <FileName>timer0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer0.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\timer0.h</FilePath>
-            </File>
-            <File>
               <FileName>temporizador_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\temporizador_hal.c</FilePath>
@@ -525,6 +515,21 @@
               <FileName>planificador.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\planificador.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\timer0.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\timer0.h</FilePath>
+            </File>
+            <File>
+              <FileName>hello_world.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hello_world.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -4,5 +4,8 @@
 .\temporizador_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
 .\temporizador_drv.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\temporizador_drv.o: temporizador_drv.h
+.\temporizador_drv.o: cola_FIFO.h
+.\temporizador_drv.o: GPIO.h
+.\temporizador_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\temporizador_drv.o: temporizador_hal.h
 .\temporizador_drv.o: pulsacion.h
