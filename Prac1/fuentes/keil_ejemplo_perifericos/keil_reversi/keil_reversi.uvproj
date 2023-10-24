@@ -517,19 +517,24 @@
               <FilePath>.\planificador.c</FilePath>
             </File>
             <File>
-              <FileName>timer0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer0.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\timer0.h</FilePath>
-            </File>
-            <File>
               <FileName>hello_world.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\hello_world.c</FilePath>
+            </File>
+            <File>
+              <FileName>hello_world.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hello_world.h</FilePath>
+            </File>
+            <File>
+              <FileName>power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\power.c</FilePath>
+            </File>
+            <File>
+              <FileName>power.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\power.h</FilePath>
             </File>
           </Files>
         </Group>

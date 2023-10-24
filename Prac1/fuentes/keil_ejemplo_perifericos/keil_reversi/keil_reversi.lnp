@@ -8,7 +8,7 @@
 ".\temporizador_drv.o"
 ".\cola_fifo.o"
 ".\planificador.o"
-".\timer0.o"
 ".\hello_world.o"
+".\power.o"
 --strict --scatter ".\keil_reversi.sct"
 --summary_stderr --info summarysizes -o .\keil_reversi.axf

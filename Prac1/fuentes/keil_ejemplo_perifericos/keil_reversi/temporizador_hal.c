@@ -5,6 +5,8 @@
 #include <LPC210X.H> // LPC21XX Peripheral Registers
 #include "temporizador_hal.h"
 #include "pulsacion.h"
+#include "cola_FIFO.h"
+#include <inttypes.h>
 
 // Constante que permite convertir de ticks a microsegundos
 // con una frecuencia de procesador de 60MHz y VPBDIV = 4 (por defecto)
@@ -15,7 +17,11 @@ const float temporizador_hal_ticks2us =  1.0f/(15000.0f);
 static volatile unsigned int countTimer0 = 0;
 static volatile unsigned int countTimer1 = 0;
 
+// Variable que guarda la función de callback
+// static void (*funcion_callback)();
+static unsigned long  func_address;
 
+// Se utiliza ??
 int periodo = 0;
 
 // ----------- GESTIÓN DE INTERRUPCIONES -----------
@@ -37,6 +43,10 @@ void timer0_ISR (void) __irq {
 void timer1_ISR (void) __irq;    
 
 void timer1_ISR (void) __irq {
+		// Guardamos función y convertimos según parámetro de la función de callback
+		void (*funcion_callback)(EVENTO_T, uint32_t) = (void (*)(EVENTO_T, uint32_t))func_address;
+		funcion_callback(EVENTO_HELLO_WORLD, 0);
+	
 			// incrementamos contador de interrupciones de timer 0
     countTimer1++;
 			// limpiar flag de interrupción
@@ -112,8 +122,7 @@ uint64_t temporizador0_hal_parar(void) {
 // Si el periodo es 0 se para el temporizador
 void temporizador_hal_reloj (uint32_t _periodo, void (*funcion_callback)())
 {
-	
-		
+
 		periodo = _periodo;
 		// Inicializar contador con periodo en ticks
 		T1MR0 = periodo / temporizador_hal_ticks2us;
@@ -128,15 +137,15 @@ void temporizador_hal_reloj (uint32_t _periodo, void (*funcion_callback)())
 		// Configuración del IRQ slot number 1 of 
 		// 	the VIC for Timer 1 Interrupt
 	
+
+		func_address = (unsigned long)funcion_callback;
 		// Se especifica la @ de la rutina de manejo 
 		// de las interrupciones para el slot 0 del VIC
-		VICVectAddr1 = (unsigned long)funcion_callback; 
+		VICVectAddr1 = (unsigned long)timer1_ISR; 
     // 0x20 bit 5 enables vectored IRQs. 
 		// 5 is the number of the interrupt assigned. Number 5 is the Timer 0 (see table 40 of the LPC2105 user manual  
 		VICVectCntl1 = 0x20 | 5;                   
     VICIntEnable = VICIntEnable | 0x00000020;
-	
-
 }
 
 

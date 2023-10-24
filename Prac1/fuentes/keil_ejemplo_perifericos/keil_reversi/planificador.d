@@ -6,3 +6,5 @@
 .\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\planificador.o: cola_fifo.h
 .\planificador.o: io_reserva.h
+.\planificador.o: hello_world.h
+.\planificador.o: power.h
