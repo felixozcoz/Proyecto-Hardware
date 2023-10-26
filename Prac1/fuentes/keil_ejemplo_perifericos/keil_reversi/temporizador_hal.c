@@ -17,12 +17,11 @@ const float temporizador_hal_ticks2us =  1.0f/(15000.0f);
 static volatile unsigned int countTimer0 = 0;
 static volatile unsigned int countTimer1 = 0;
 
-// Variable que guarda la función de callback
-// static void (*funcion_callback)();
-static unsigned long  func_address;
+// función de callback
+void (*funcion_callback)(void) = NULL;
 
-// Se utiliza ??
-int periodo = 0;
+// periodo
+static unsigned int periodo = 0;
 
 // ----------- GESTIÓN DE INTERRUPCIONES -----------
 
@@ -44,9 +43,7 @@ void timer1_ISR (void) __irq;
 
 void timer1_ISR (void) __irq {
 		// Guardamos función y convertimos según parámetro de la función de callback
-		void (*funcion_callback)(EVENTO_T, uint32_t) = (void (*)(EVENTO_T, uint32_t))func_address;
-		funcion_callback(EVENTO_HELLO_WORLD, 0);
-	
+		funcion_callback();
 			// incrementamos contador de interrupciones de timer 0
     countTimer1++;
 			// limpiar flag de interrupción
@@ -120,7 +117,7 @@ uint64_t temporizador0_hal_parar(void) {
 // Función que programa el reloj para que llame a la función de 
 // callback cada periodo. El periodo se indica en ms.
 // Si el periodo es 0 se para el temporizador
-void temporizador_hal_reloj (uint32_t _periodo, void (*funcion_callback)())
+void temporizador_hal_reloj (uint32_t _periodo, void (*_funcion_callback)())
 {
 
 		periodo = _periodo;
@@ -137,8 +134,9 @@ void temporizador_hal_reloj (uint32_t _periodo, void (*funcion_callback)())
 		// Configuración del IRQ slot number 1 of 
 		// 	the VIC for Timer 1 Interrupt
 	
-
-		func_address = (unsigned long)funcion_callback;
+		// guardamos función de callback cuando interrupción
+		funcion_callback = _funcion_callback;
+	
 		// Se especifica la @ de la rutina de manejo 
 		// de las interrupciones para el slot 0 del VIC
 		VICVectAddr1 = (unsigned long)timer1_ISR; 

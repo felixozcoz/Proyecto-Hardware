@@ -8,6 +8,12 @@
 #include "pulsacion.h"
 
 
+// Variables para inserción de variables
+static EVENTO_T evento = EVENTO_VOID;
+
+// Variable que guarda la función de callback
+// static void (*funcion_callback)();
+static void(*func_address)(EVENTO_T) = NULL ;
 
 // ----------- API DRIVER ----------------
 
@@ -46,11 +52,19 @@ uint64_t temporizador_drv_parar(void) {
 // en la cola del planificador. El periodo se indica en ms
 void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(), EVENTO_T ID_evento) 
 {
+	// guardamos el id del evento a encola en la próxima interrupción del reloj
+	evento = ID_evento;
+	func_address = funcion_encolar_evento;
 	// inicializar parte dependiente del hardware
-	temporizador_hal_reloj(periodo, funcion_encolar_evento);
-	// y ahora que hago con el evento
+	temporizador_hal_reloj(periodo, temporizador_drv_callback_reloj);
 }
 
 
-void temporizador_drv
+// Permite al hardware llamar a la función 
+// de callback a través de la asbtracción del 
+// harware
+void temporizador_drv_callback_reloj(void){
+		// llama a función de callback proporcionada por el temporizador_drv_reloj
+		func_address(evento);
+}
 
