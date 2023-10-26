@@ -10,3 +10,4 @@
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\main.o: planificador.h
 .\main.o: io_reserva.h
+.\main.o: tests.h

@@ -3,7 +3,6 @@
 #include "hello_world.h"
 #include "power.h"
 
-
 // Inicilizar cola de eventos
 void inicializar_cola_eventos(void) {
 	EVENTO_T evento;
@@ -14,6 +13,7 @@ void inicializar_cola_eventos(void) {
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	while(1){
+		// debería dormir para probar a acumular eventos
 		// extraer evento no tratado
 		int seguir_tratando = FIFO_extraer(&evento, &auxData);
 		

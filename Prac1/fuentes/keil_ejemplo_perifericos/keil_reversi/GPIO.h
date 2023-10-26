@@ -23,6 +23,7 @@ __inline void gpio_hal_iniciar(void)
 	// IOCLR: Clear Output Register, controla el estado de salida de los pins
 	// Escribir 1's produce un 0's en la salida y hace reset del IOSET
 	IOCLR = 0xFFFFFFFF;
+	IODIR = 0x00000000; // cambiar a INPUT por seguridad
 }
 
 // Función para configurar la dirección de los pines

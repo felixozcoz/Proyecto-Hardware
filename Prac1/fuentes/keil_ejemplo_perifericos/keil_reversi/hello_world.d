@@ -4,3 +4,4 @@
 .\hello_world.o: hello_world.h
 .\hello_world.o: GPIO.h
 .\hello_world.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\hello_world.o: io_reserva.h

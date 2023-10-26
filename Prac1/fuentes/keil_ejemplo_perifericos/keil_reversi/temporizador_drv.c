@@ -8,6 +8,7 @@
 #include "pulsacion.h"
 
 
+
 // ----------- API DRIVER ----------------
 
 // inicializar un temporizador
@@ -49,4 +50,7 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(),
 	temporizador_hal_reloj(periodo, funcion_encolar_evento);
 	// y ahora que hago con el evento
 }
+
+
+void temporizador_drv
 

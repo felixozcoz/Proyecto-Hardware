@@ -23,9 +23,8 @@ static uint32_t estadisticas[MAX_SIZE] = {0};
 
 void FIFO_inicializar(GPIO_HAL_PIN_T _pin_overflow) {
 		fifo_fin = 0;
-		fifo_fin = 0;
+		fifo_inicio = 0;
 		pin_overflow = _pin_overflow;
-		// inicializar la fifo ??
 }
 
 void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
@@ -42,7 +41,7 @@ void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
 				fifo[fifo_fin].ID_evento = ID_evento;
         fifo[fifo_fin].auxData = auxData;
 			
-        fifo_fin = (fifo_fin + 1);
+        fifo_fin = (fifo_fin + 1) % MAX_SIZE;
 			
         estadisticas[ID_evento]++;	// contabiliza evento
     }
