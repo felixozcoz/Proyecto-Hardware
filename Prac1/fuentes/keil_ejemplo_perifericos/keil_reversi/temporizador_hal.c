@@ -42,7 +42,7 @@ void timer0_ISR (void) __irq {
 void timer1_ISR (void) __irq;    
 
 void timer1_ISR (void) __irq {
-		// Guardamos función y convertimos según parámetro de la función de callback
+			// función del driver que ejecuta función de callback
 		funcion_callback();
 			// incrementamos contador de interrupciones de timer 0
     countTimer1++;

@@ -61,8 +61,7 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(),
 
 
 // Permite al hardware llamar a la función 
-// de callback a través de la asbtracción del 
-// harware
+// de callback
 void temporizador_drv_callback_reloj(void){
 		// llama a función de callback proporcionada por el temporizador_drv_reloj
 		func_address(evento);

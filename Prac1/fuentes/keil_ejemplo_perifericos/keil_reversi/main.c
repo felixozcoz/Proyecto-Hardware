@@ -10,22 +10,22 @@
 
 
 // MAIN: Hello world
-int main() {
-	// inicialiar timer, interrumpe cada 10ms
-	temporizador_drv_reloj(10, FIFO_encolar, EVENTO_HELLO_WORLD);
-	
-	// inicializar planificador
-	inicializar_cola_eventos();
-	
-	while(1);
-}
-
-
-// MAIN: Test
-//int main(){
-//	// Test unitarios de periféricos
-//	testGPIO();
-//	testFIFO();
+//int main() {
+//	// inicialiar timer, interrumpe cada 10ms
+//	temporizador_drv_reloj(10, FIFO_encolar, EVENTO_HELLO_WORLD);
+//	
+//	// inicializar planificador
+//	inicializar_cola_eventos();
 //	
 //	while(1);
 //}
+
+
+// MAIN: Test
+int main(){
+	// Test unitarios de periféricos
+	testGPIO();
+	testFIFO();
+	
+	while(1);
+}

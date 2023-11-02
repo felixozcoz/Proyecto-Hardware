@@ -23,19 +23,7 @@ void testGPIO(void)
 	pinLed7 = gpio_hal_leer(GPIO_LED_7, 1);
 }
 
-//// Test periférico Timer 0
-//void testT0(void)
-//{
-//	return;
-//}
-
-//// Test periférico Timer 1
-//void testT1(void) {
-//	return;
-//}
-//	
-	
-// Test cola FIFO (no incluye overflow)
+// Test cola FIFO
 void testFIFO(void){
 		// variables
 		EVENTO_T types_E[4] = { EVENTO_VOID, EVENTO_TIMER0, EVENTO_BOTON_EINT0, EVENTO_HELLO_WORLD};
@@ -85,7 +73,8 @@ void testFIFO(void){
 			res = FIFO_extraer(&event, &aux);
 		}
 		
-		// Llenar FIFO
+		// Llenar FIFO (poner breakpoint 
+		// antes del bucle para probar overflow)
 		for(i = 0; i < 50; i++){
 			FIFO_encolar(types_E[i%3], 0);
 			est = FIFO_estadisticas(types_E[1]);
