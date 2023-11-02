@@ -419,12 +419,12 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Assembly</GroupName>
+          <GroupName>Startup Code</GroupName>
           <Files>
             <File>
               <FileName>Startup.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Startup.s</FilePath>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Startup.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -466,10 +466,40 @@
               <FileType>5</FileType>
               <FilePath>.\entradas_test.h</FilePath>
             </File>
+            <File>
+              <FileName>boton_eint0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\boton_eint0.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\GPIO.h</FilePath>
+            </File>
+            <File>
+              <FileName>Power_management.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Power_management.h</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\temporizador_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\temporizador_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\timer0.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>Sources</GroupName>
+          <GroupName>Source Code</GroupName>
           <Files>
             <File>
               <FileName>conecta_K_2023.c</FileName>
@@ -510,6 +540,41 @@
               <FileName>conecta_K_buscar_alineamiento_arm_iterativo.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\conecta_K_buscar_alineamiento_arm_iterativo.s</FilePath>
+            </File>
+            <File>
+              <FileName>boton_eint0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\boton_eint0.c</FilePath>
+            </File>
+            <File>
+              <FileName>Power_management.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Power_management.c</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\temporizador_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\temporizador_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\timer0.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>System Calls</GroupName>
+          <Files>
+            <File>
+              <FileName>Retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Retarget.c</FilePath>
             </File>
           </Files>
         </Group>
