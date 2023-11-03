@@ -351,8 +351,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
-            <oTime>0</oTime>
+            <Optim>4</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -472,11 +472,6 @@
               <FilePath>.\keil_ejemplo_perifericos\keil_reversi\boton_eint0.h</FilePath>
             </File>
             <File>
-              <FileName>GPIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\GPIO.h</FilePath>
-            </File>
-            <File>
               <FileName>Power_management.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Power_management.h</FilePath>
@@ -525,6 +520,11 @@
               <FileName>tests.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\tests.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GPIO.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -592,14 +592,24 @@
               <FilePath>.\keil_ejemplo_perifericos\keil_reversi\temporizador_hal.c</FilePath>
             </File>
             <File>
-              <FileName>GPIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\GPIO.h</FilePath>
+              <FileName>cola_FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cola_FIFO.c</FilePath>
             </File>
             <File>
-              <FileName>Retarget.c</FileName>
+              <FileName>planificador.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\keil_ejemplo_perifericos\keil_reversi\Retarget.c</FilePath>
+              <FilePath>.\planificador.c</FilePath>
+            </File>
+            <File>
+              <FileName>power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\power.c</FilePath>
+            </File>
+            <File>
+              <FileName>hello_world.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hello_world.c</FilePath>
             </File>
           </Files>
         </Group>

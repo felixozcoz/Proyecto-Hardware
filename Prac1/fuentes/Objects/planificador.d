@@ -1,0 +1,10 @@
+.\objects\planificador.o: planificador.c
+.\objects\planificador.o: planificador.h
+.\objects\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\planificador.o: GPIO.h
+.\objects\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\objects\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\objects\planificador.o: cola_fifo.h
+.\objects\planificador.o: io_reserva.h
+.\objects\planificador.o: hello_world.h
+.\objects\planificador.o: power.h

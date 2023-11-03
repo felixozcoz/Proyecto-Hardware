@@ -7,3 +7,12 @@
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: config_conecta_K.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: Power_management.h
+.\objects\main.o: boton_eint0.h
+.\objects\main.o: temporizador_drv.h
+.\objects\main.o: cola_FIFO.h
+.\objects\main.o: GPIO.h
+.\objects\main.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\objects\main.o: planificador.h
+.\objects\main.o: io_reserva.h
+.\objects\main.o: tests.h

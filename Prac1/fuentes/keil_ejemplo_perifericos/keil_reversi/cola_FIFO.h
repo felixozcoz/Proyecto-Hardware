@@ -10,8 +10,8 @@ typedef enum {
     EVENTO_VOID = 0,  			// Evento de inicialización
     EVENTO_TIMER0 = 1,			// Eventos generados por el timer
 		EVENTO_BOTON_EINT0 = 2,     // Evento asíncrono generado por interacción del usuario (E/S) (interrupción EXTINT0)
-		EVENTO_HELLO_WORLD = 3	// para prueba
-	
+		EVENTO_HELLO_WORLD = 3,	// para prueba
+		ALARMA_OVERFLOW = 4,	// No hay alarmas disponibles
 } EVENTO_T;
 
 

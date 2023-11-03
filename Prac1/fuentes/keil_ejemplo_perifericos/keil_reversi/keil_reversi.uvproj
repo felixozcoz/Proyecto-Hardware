@@ -532,6 +532,11 @@
               <FilePath>.\power.c</FilePath>
             </File>
             <File>
+              <FileName>alarmas.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\alarmas.h</FilePath>
+            </File>
+            <File>
               <FileName>power.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\power.h</FilePath>
@@ -545,6 +550,11 @@
               <FileName>tests.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\tests.h</FilePath>
+            </File>
+            <File>
+              <FileName>alarmas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarmas.c</FilePath>
             </File>
           </Files>
         </Group>
