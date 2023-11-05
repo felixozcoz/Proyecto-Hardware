@@ -14,7 +14,7 @@ static const uint8_t ALARMAS_MAX = 4;
 
 // Estructura que recoge la información de cada alarma
 typedef struct {
-	bool status; // true = en uso, false = sin uso
+	bool libre; // true = libre, false = ocupada
 		// características de la alarma
 	uint32_t inicio; // timestamp en ms de inicio de alarma
 	uint32_t retardo;	

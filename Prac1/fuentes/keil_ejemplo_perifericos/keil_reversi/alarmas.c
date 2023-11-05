@@ -1,19 +1,22 @@
+#include <stdio.h>
+#include <limits.h>
 #include "alarmas.h"
+
 
 // Alarmas
 static alarma_t alarmas[ALARMAS_MAX];
 
 
 	// Indica el estado de la alarma
-const bool OCUPADA = true;
-const bool LIBRE = false;
+const bool OCUPADA = false;
+const bool LIBRE = true;
 	// Ctes para facilitar legibilidad
 const uint32_t DESACTIVAR_ALARMA = 0;
 const int8_t ALARMAS_OCUPADAS = -1;
 
 
 // Funciones auxiliares
-uint8_t buscar_alarma_libre(void);
+int8_t buscar_alarma_libre(void);
 
 // (Función auxiliar)
 bool is_periodic(uint32_t retardo);
@@ -31,8 +34,10 @@ bool cumplido_retardo(uint8_t id_alarma);
 // Reset alarmas
 void alarma_inicializar(void)
 {
-	for(int i = 0 ; i < ALARMAS_MAX; i++)
-			alarmas[i].status = LIBRE;
+	uint8_t i;
+	for(i = 0 ; i < ALARMAS_MAX; i++){
+			alarmas[i].libre = LIBRE;
+	}
 	
 	// el resto de parámetro son inicializados
 	// cuando se programa la alarma
@@ -42,22 +47,26 @@ void alarma_inicializar(void)
 // Inicializar nueva alarma
 void alarma_activar(EVENTO_T _ID_evento, uint32_t _retardo, uint32_t _auxData)
 {
+		int8_t id; // guarda id alarma
+	
 		if( _retardo == DESACTIVAR_ALARMA){
 				cancelar_alarma(_ID_evento);
 				return;
 		}
 		
-		// buscar alarma disponible, devuelve id si la hay
-		uint8_t id = buscar_alarma_libre();
+		// devuelve el id de la alarma si la hay, sino -1
+		id = buscar_alarma_libre();
 		
-		// si encontrada alguna alarma libre
 		if (id != ALARMAS_OCUPADAS){
-			alarmas[id].inicio = 0; // SEGURO ???
+				// set evento
 			alarmas[id].ID_evento = _ID_evento;
 			alarmas[id].auxData = _auxData;
+				// set tiempo de duración y contador
+			alarmas[id].inicio = 0; // SEGURO ???
 			alarmas[id].retardo = _retardo;
-			alarmas[id].status = OCUPADA;
 			alarmas[id].periodica = is_periodic(_retardo);
+				// set estado de la alarma
+			alarmas[id].libre = OCUPADA;
 		}
 }
 
@@ -65,7 +74,8 @@ void alarma_activar(EVENTO_T _ID_evento, uint32_t _retardo, uint32_t _auxData)
 // Revisar alarmas
 void alarma_tratar_evento(void)
 {
-	for(uint8_t i = 0; i < ALARMAS_MAX; i++){
+	uint8_t i;
+	for( i = 0; i < ALARMAS_MAX; i++){
 		
 		if( cumplido_retardo(i) ){
 			// tratar según si es periódica
@@ -73,10 +83,10 @@ void alarma_tratar_evento(void)
 					alarmas[i].inicio = 0;  // reset tiempo 
 			} 
 			else {
-					alarmas[i].status = LIBRE; // liberar alarma
+					alarmas[i].libre = LIBRE; // liberar alarma
 			}
 			
-			// encolar evento
+			// encolar evento de la alarma i-ésima
 			FIFO_encolar(alarmas[i].ID_evento, alarmas[i].auxData);
 		}
 	}
@@ -96,19 +106,19 @@ void alarma_tratar_evento(void)
 // genera un evento ALARMA_OVERFLOW
 // y devuelve -1
 // 
-uint8_t buscar_alarma_libre(void)
+int8_t buscar_alarma_libre(void)
 {
-	for( uint8_t i = 0; i < ALARMAS_MAX; i++)
-		if (! alarmas[i].status) return i;
+	uint8_t i;
+	for(i = 0; i < ALARMAS_MAX; i++)
+		if (! alarmas[i].libre) return i;
 	
-	// no hay alarmas libres: generar evento
-	// ALARMA_OVERFLOW
+	// no hay alarmas libres
+	// generar evento
 	FIFO_encolar(ALARMA_OVERFLOW, 0);
 	
 	return ALARMAS_OCUPADAS;
 	// nota: cuándo lo gestionará el planificador??
 	// y si para cuando lo gestione ya hay una libre
-	
 }
 	
 // is_periodic
@@ -122,12 +132,9 @@ uint8_t buscar_alarma_libre(void)
 // Devuelve verdadero si el bit de más peso es 1
 // en cualquier otro caso devuelve false
 // 
-bool is_periodic(const uint32_t retardo)
+__inline bool is_periodic(const uint32_t _retardo)
 {
-	uint8_t num_bits = sizeof(uint32_t) * __CHAR_BIT__;
-	uint8_t mask = 1 << (num_bits -1); 
-	
-	return retardo & mask;
+	return (_retardo >> (sizeof(uint32_t) * CHAR_BIT - 1)) ? true : false;
 }
 
 
@@ -140,11 +147,12 @@ bool is_periodic(const uint32_t retardo)
 //
 // Comprueba cuál de las alarmas gestiona ese evento
 // e indica que ahora está libre
-void cancelar_alarma(EVENTO_T _ID_evento)
+void cancelar_alarma(const EVENTO_T _ID_evento)
 {
-	for(int i = 0 ; i < ALARMAS_MAX; i++){
+	uint8_t i;
+	for(i = 0 ; i < ALARMAS_MAX; i++){
 		if(alarmas[i].ID_evento == _ID_evento) {
-				alarmas[i].status = LIBRE;
+				alarmas[i].libre = LIBRE;
 		}
 	}
 }
@@ -159,17 +167,9 @@ void cancelar_alarma(EVENTO_T _ID_evento)
 //
 // Devueve verdadero si ha cumplido el tiempo de la alarma
 // y false en cualquier otro caso
-bool cumplido_retardo(uint8_t id_alarma)
+__inline bool cumplido_retardo(const uint8_t id_alarma)
 {
-		if(alarmas[id_alarma].inicio >= alarmas[id_alarma].periodica)
-				return true;
-		
-		return false;
+		return true ? alarmas[id_alarma].inicio >= alarmas[id_alarma].retardo : false ;
 }
-
-
-
-
-
 
 

@@ -7,6 +7,8 @@
 #include "planificador.h"
 #include "tests.h"
 #include "GPIO.h"
+#include "alarmas.h"
+#include <limits.h>
 
 
 // MAIN: Hello world
@@ -23,9 +25,6 @@
 
 // MAIN: Test
 int main(){
-	// Test unitarios de periféricos
-	testGPIO();
-	testFIFO();
-	
+		
 	while(1);
 }
