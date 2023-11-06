@@ -9,7 +9,7 @@
 // Test periférico GPIO
 void testGPIO(void)
 {
-	uint32_t pinLed7; 
+	uint32_t variable_no_usada __attribute__((unused));
 	
 	// inicializar GPIO
 	gpio_hal_iniciar();
@@ -20,15 +20,15 @@ void testGPIO(void)
 	// escribir para encender pin de Overflow
 	gpio_hal_escribir(GPIO_LED_7, 1, 1);
 	
-	pinLed7 = gpio_hal_leer(GPIO_LED_7, 1);
+	variable_no_usada = gpio_hal_leer(GPIO_LED_7, 1);
 }
 
 // Test cola FIFO
 void testFIFO(void){
 		// variables
 		EVENTO_T types_E[4] = { EVENTO_VOID, EVENTO_TIMER0, EVENTO_BOTON_EINT0, EVENTO_HELLO_WORLD};
-		uint32_t est;
-		uint8_t res;
+		uint32_t est __attribute__((unused));
+		uint8_t res __attribute__((unused));
 		int i;
 		EVENTO_T event;
 		uint32_t aux;

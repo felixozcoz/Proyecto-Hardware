@@ -457,16 +457,6 @@
               <FilePath>.\Power_management.h</FilePath>
             </File>
             <File>
-              <FileName>boton_eint0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\boton_eint0.c</FilePath>
-            </File>
-            <File>
-              <FileName>boton_eint0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\boton_eint0.h</FilePath>
-            </File>
-            <File>
               <FileName>temporizador_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\temporizador_hal.c</FilePath>
@@ -555,6 +545,26 @@
               <FileName>alarmas.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\alarmas.c</FilePath>
+            </File>
+            <File>
+              <FileName>botones.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\botones.h</FilePath>
+            </File>
+            <File>
+              <FileName>botones.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\botones.c</FilePath>
+            </File>
+            <File>
+              <FileName>int_external_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\int_external_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>int_external_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\int_external_hal.c</FilePath>
             </File>
           </Files>
         </Group>

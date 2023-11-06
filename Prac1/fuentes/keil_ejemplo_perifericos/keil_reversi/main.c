@@ -25,6 +25,6 @@
 
 // MAIN: Test
 int main(){
-		
+
 	while(1);
 }
