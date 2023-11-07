@@ -8,10 +8,11 @@
 // conjunto de eventos posibles
 typedef enum {
     EVENTO_VOID = 0,  			// Evento de inicialización
-    EVENTO_TIMER0 = 1,			// Eventos generados por el timer
-		EVENTO_BOTON_EINT0 = 2,     // Evento asíncrono generado por interacción del usuario (E/S) (interrupción EXTINT0)
-		EVENTO_HELLO_WORLD = 3,	// para prueba
-		ALARMA_OVERFLOW = 4,	// No hay alarmas disponibles
+		EVENTO_HELLO_WORLD = 1,	// para prueba
+		ALARMAS_OVERFLOW = 2,		// No hay alarmas disponibles
+		REVISAR_ALARMAS = 3, 		// indica que el planificador tiene que revisar las alarmas
+		PULSACION = 4,					// se ha pulsado EINT1 o EINT2
+		CHECK_BOTON = 5,
 } EVENTO_T;
 
 
@@ -19,12 +20,12 @@ typedef enum {
 
 // Inicializa la cola FIFO
 // pin_overflow: pin del GPIO para marcar errores
-void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow);
+void FIFO_inicializar(const GPIO_HAL_PIN_T pin_overflow);
 
 // Guarda en la cola el evento
 //	ID_evento: identificación del evento
 //	auxData: información extra del evento
-void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData);
+void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData);
 
 // Si hay eventos sin procesar devuelve
 // la referencia al evento más antiguo sin procesar.
@@ -37,6 +38,6 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData);
 // ID_EVENTO se ha encolado
 // NOTA: el evento EVENTO_VOID devuelve el
 // 	total de eventos encolados desde el inicio
-uint32_t FIFO_estadisticas(EVENTO_T ID_evento);
+uint32_t FIFO_estadisticas(const EVENTO_T ID_evento);
 
 #endif // FIFO_H

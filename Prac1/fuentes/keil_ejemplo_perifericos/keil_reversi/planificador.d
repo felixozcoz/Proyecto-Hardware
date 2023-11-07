@@ -8,3 +8,5 @@
 .\planificador.o: io_reserva.h
 .\planificador.o: hello_world.h
 .\planificador.o: power.h
+.\planificador.o: alarmas.h
+.\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

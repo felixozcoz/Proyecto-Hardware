@@ -2,7 +2,6 @@
 ".\startup.o"
 ".\retarget.o"
 ".\main.o"
-".\power_management.o"
 ".\temporizador_hal.o"
 ".\temporizador_drv.o"
 ".\cola_fifo.o"
@@ -13,5 +12,6 @@
 ".\alarmas.o"
 ".\botones.o"
 ".\int_external_hal.o"
+".\test_alarmas.o"
 --strict --scatter ".\keil_reversi.sct"
 --summary_stderr --info summarysizes -o .\keil_reversi.axf

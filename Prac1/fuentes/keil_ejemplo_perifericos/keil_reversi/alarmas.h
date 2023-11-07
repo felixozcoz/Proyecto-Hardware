@@ -14,7 +14,7 @@ static const uint8_t ALARMAS_MAX = 4;
 
 // Estructura que recoge la información de cada alarma
 typedef struct {
-	bool libre; // true = libre, false = ocupada
+	bool activa; // true = libre, false = ocupada
 		// características de la alarma
 	uint32_t inicio; // timestamp en ms de inicio de alarma
 	uint32_t retardo;	
@@ -60,7 +60,7 @@ void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData);
 //	Las alarmas periódicas se cancelan 
 // tras lanzarse.
 //	
-void alarma_tratar_evento(void);
+void alarma_tratar_evento(const uint32_t periodo_timer1);
 
 
 #endif // __ALARMAS_H__

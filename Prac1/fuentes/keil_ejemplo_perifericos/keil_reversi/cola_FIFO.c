@@ -21,13 +21,16 @@ static GPIO_HAL_PIN_T pin_overflow;
 // que el evento i se ha encolado
 static uint32_t estadisticas[MAX_SIZE] = {0};
 
-void FIFO_inicializar(GPIO_HAL_PIN_T _pin_overflow) {
+
+
+
+void FIFO_inicializar(const GPIO_HAL_PIN_T _pin_overflow) {
 		fifo_fin = 0;
 		fifo_inicio = 0;
 		pin_overflow = _pin_overflow;
 }
 
-void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
+void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
     // Verifica si la cola está llena antes de encolar un evento
     if ((fifo_fin + 1) % MAX_SIZE == fifo_inicio) {
         // La cola está llena, manejar el desbordamiento/overflow
@@ -71,7 +74,7 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
 // ID_EVENTO se ha encolado
 // NOTA: el evento EVENTO_VOID devuelve el
 // 	total de eventos encolados desde el inicio
-uint32_t FIFO_estadisticas(EVENTO_T ID_evento) {
+uint32_t FIFO_estadisticas(const EVENTO_T ID_evento) {
     if (ID_evento == EVENTO_VOID) {
         // Si se solicitan estadísticas para EVENTO_VOID, se devuelve el total de eventos encolados
         return estadisticas[EVENTO_VOID];

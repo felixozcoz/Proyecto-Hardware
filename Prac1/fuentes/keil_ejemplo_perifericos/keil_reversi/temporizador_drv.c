@@ -60,6 +60,18 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(),
 }
 
 
+// Leer el valor del reloj (timer 1)
+uint64_t temporizador1_leer_drv(void){
+	return temporizador1_hal_leer();
+}
+
+// Detener reloj (timer 1) y devolver count
+uint64_t temporizador1_parar_drv(void){
+	return temporizador1_hal_parar();
+}
+
+
+
 // Permite al hardware llamar a la función 
 // de callback
 void temporizador_drv_callback_reloj(void){

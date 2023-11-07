@@ -26,7 +26,7 @@ void testGPIO(void)
 // Test cola FIFO
 void testFIFO(void){
 		// variables
-		EVENTO_T types_E[4] = { EVENTO_VOID, EVENTO_TIMER0, EVENTO_BOTON_EINT0, EVENTO_HELLO_WORLD};
+		EVENTO_T types_E[4] = { EVENTO_VOID, EVENTO_HELLO_WORLD, ALARMAS_OVERFLOW, PULSACION};
 		uint32_t est __attribute__((unused));
 		uint8_t res __attribute__((unused));
 		int i;
@@ -80,5 +80,7 @@ void testFIFO(void){
 			est = FIFO_estadisticas(types_E[1]);
 			
 		}
-		
 }
+
+
+

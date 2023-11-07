@@ -447,16 +447,6 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>Power_management.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Power_management.c</FilePath>
-            </File>
-            <File>
-              <FileName>Power_management.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Power_management.h</FilePath>
-            </File>
-            <File>
               <FileName>temporizador_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\temporizador_hal.c</FilePath>
@@ -565,6 +555,11 @@
               <FileName>int_external_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\int_external_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_alarmas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_alarmas.c</FilePath>
             </File>
           </Files>
         </Group>

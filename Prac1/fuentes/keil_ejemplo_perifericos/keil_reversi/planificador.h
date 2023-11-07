@@ -7,7 +7,7 @@
 #include "io_reserva.h"
 
 // Inicializar cola de eventos
-void inicializar_cola_eventos(void);
+void inicializar_cola_eventos(const uint32_t periodo_timer1);
 
 
 

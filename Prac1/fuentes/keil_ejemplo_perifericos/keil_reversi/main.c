@@ -10,6 +10,25 @@
 #include "alarmas.h"
 #include <limits.h>
 
+#define TEST 1
+
+
+#if TEST
+
+// MAIN: Test
+int main(){
+	uint32_t periodo_timer1_ms = 10;
+			// activar reloj
+	temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+	
+	inicializar_cola_eventos(periodo_timer1_ms);
+
+	test_alarmas();
+	
+	while(1);
+}
+
+#else 
 
 // MAIN: Hello world
 //int main() {
@@ -22,9 +41,5 @@
 //	while(1);
 //}
 
+#endif
 
-// MAIN: Test
-int main(){
-
-	while(1);
-}

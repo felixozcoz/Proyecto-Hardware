@@ -1,6 +1,7 @@
 // int_external_hal.c
 
 #include "int_external_hal.h"
+#include "botones.h"
 #include <LPC210X.h>
 
 // variables para comprobar que se hacen las 
@@ -18,27 +19,46 @@ static volatile unsigned int eint2_nueva_pulsacion = 0;
 
 void eint1_ISR (void) __irq
 {
-	eint1_cuenta++;
-	
 	VICIntEnClr = VICIntEnClr | (1 << (15 - 1)); // disable eint1 interrupt
 	EXTINT =  EXTINT | 2;   // clear interrupt flag        
 	VICVectAddr = 0;        // Acknowledge Interrupt
 	
+	eint1_cuenta++;
 	eint1_nueva_pulsacion = 1;
+	
+		// call módulo gestión de pulsaciones 
+	pulsacion_detectada(1);
 }
 
 
 unsigned int eint1_leer_nueva_pulsacion_hal (void)
-{ return eint1_nueva_pulsacion; }
+{ 
+	return eint1_nueva_pulsacion; 
+}
 
 
 void eint1_clear_nueva_pulsacion_hal (void)
-{ eint1_nueva_pulsacion = 0; }
+{ 
+	eint1_nueva_pulsacion = 0; 
+}
 
 
 unsigned int eint1_leer_cuenta_hal (void)
-{ return eint2_cuenta; }
+{ 
+	return eint2_cuenta; 
+}
 
+void eint1_reactivar_interrupciones_hal(void)
+{
+	VICIntEnable = VICIntEnable | (1 << (15 - 1));
+}
+
+// Comprueba que eint2 sigue pulsado
+unsigned int eint1_comprobar_flag(void)
+{
+	EXTINT = EXTINT | 2;	// limpiar flag 
+	return EXTINT & 2 ? 1 : 0;	// comprobar valor del flag
+}
 
 void eint1_iniciar_hal (void)
 {
@@ -79,29 +99,49 @@ void eint1_iniciar_hal (void)
 
 // EINT 2
 
-void eint2_ISR (void) __irq {
-	eint2_cuenta++;
-	
+void eint2_ISR (void) __irq 
+{	
 	VICIntEnClr = VICIntEnClr | (1 << (16 -1) ); // disable eint2 interrupt
 	EXTINT =  EXTINT | 4;   // clear interrupt flag        
 	VICVectAddr = 0;        // Acknowledge Interrupt
 	
-	eint2_nueva_pulsacion = 1;
+	eint2_cuenta++;
+	eint2_nueva_pulsacion = 1; 
+	
+		// call módulo gestión de pulsaciones 
+	pulsacion_detectada(2);
 }
 
 
 unsigned int eint2_leer_nueva_pulsacion_hal (void)
-{ return eint2_nueva_pulsacion; }
+{ 
+	return eint2_nueva_pulsacion; 
+}
 
 
 void eint2_clear_nueva_pulsacion_hal (void)
-{ eint2_nueva_pulsacion = 0; }
+{ 
+	eint2_nueva_pulsacion = 0; 
+}
 
 
 unsigned int eint2_leer_cuenta_hal (void)
-{ return eint2_cuenta; }
+{ 
+	return eint2_cuenta; 
+}
 
+void eint2_reactivar_interrupciones_hal(void)
+{
+	VICIntEnable = VICIntEnable | (1 << (16 - 1));
+}
 
+// Comprueba que eint2 sigue pulsado
+unsigned int eint2_comprobar_flag(void)
+{
+	EXTINT = EXTINT | 4; // limpiar flag
+	return EXTINT & 4 ? 1 : 0; // comprobar valor del flag
+}
+	
 void eint2_iniciar_hal (void)
 {
 // NOTA: según el manual se puede configurar cómo se activan las interrupciones: por flanco o nivel, alta o baja. 
