@@ -12,7 +12,7 @@ typedef enum {
 		ALARMAS_OVERFLOW = 2,		// No hay alarmas disponibles
 		REVISAR_ALARMAS = 3, 		// indica que el planificador tiene que revisar las alarmas
 		PULSACION = 4,					// se ha pulsado EINT1 o EINT2
-		CHECK_BOTON = 5,
+		BOTON_EINT = 5,				 // interrupción de EXINT, auxData indica el botón
 } EVENTO_T;
 
 

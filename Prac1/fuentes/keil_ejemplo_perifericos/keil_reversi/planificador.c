@@ -3,6 +3,7 @@
 #include "hello_world.h"
 #include "power.h"
 #include "alarmas.h"
+#include "botones.h"
 
 // Activa el pin de overflow en la GPIO // DEBERÍA ESTAR EN GPIO??
 void activar_overflow_gpio_pin(void);
@@ -46,6 +47,13 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1) {
 					activar_overflow_gpio_pin();
 					while(1); // fin de la ejecución
 				
+				case PULSACION:
+					if ( auxData )
+						eint1_gestionar_pulsacion(); // EINT1
+					else 
+						eint2_gestionar_pulsacion(); // EINT2	
+					break;
+					
 				default:
 					break;
 			}
