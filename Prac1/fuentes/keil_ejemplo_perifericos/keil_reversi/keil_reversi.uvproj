@@ -561,6 +561,11 @@
               <FileType>1</FileType>
               <FilePath>.\test_alarmas.c</FilePath>
             </File>
+            <File>
+              <FileName>test_botones.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_botones.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

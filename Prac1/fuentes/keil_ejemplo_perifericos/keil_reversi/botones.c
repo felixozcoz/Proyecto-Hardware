@@ -53,7 +53,7 @@ void eint1_gestionar_pulsacion(void)
 					estado_eint1 = NO_PULSADO;	// cambiar estado del boton
 					eint1_reactivar_interrupciones_drv();
 					// cancelar alarma
-					alarma_activar(BOTON_EINT, 0x00000000, 1);
+					alarma_activar(PULSACION, 0x00000000, 1);
 			}
 			break;
 		case NO_PULSADO:
@@ -61,7 +61,7 @@ void eint1_gestionar_pulsacion(void)
 			if ( eint1_comprobar_pulsado_drv() ){
 				estado_eint1 = PULSADO;
 				// programar alarma periódica con retardo 10ms
-				alarma_activar(BOTON_EINT, 0x8000000A, 1);
+				alarma_activar(PULSACION, 0x8000000A, 1);
 			}
 			break;
 		default:
@@ -109,7 +109,7 @@ void eint2_gestionar_pulsacion(void)
 					estado_eint2 = NO_PULSADO;	// cambiar estado del boton
 					eint2_reactivar_interrupciones_drv();
 					// cancelar alarma
-					alarma_activar(BOTON_EINT, 0x00000000, 2);
+					alarma_activar(PULSACION, 0x00000000, 2);
 			}
 			break;
 		case NO_PULSADO:
@@ -117,7 +117,7 @@ void eint2_gestionar_pulsacion(void)
 			if ( eint2_comprobar_pulsado_drv() ){
 				estado_eint2 = PULSADO;
 				// programar alarma periódica con retardo 10ms
-				alarma_activar(BOTON_EINT, 0x8000000A, 2);
+				alarma_activar(PULSACION, 0x8000000A, 2);
 			}
 			break;
 		default:

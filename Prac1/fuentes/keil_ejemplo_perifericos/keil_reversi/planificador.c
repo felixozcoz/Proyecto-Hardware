@@ -5,10 +5,13 @@
 #include "alarmas.h"
 #include "botones.h"
 
+
+// Tiempo sin actividad de usuario considerado
+// para pasar a estado power-down del procesador
+static const unsigned int USUARIO_AUSENTE = 12;
+
 // Activa el pin de overflow en la GPIO // DEBERÍA ESTAR EN GPIO??
 void activar_overflow_gpio_pin(void);
-
-
 
 // (Función auxiliar)
 //
@@ -17,11 +20,10 @@ void activar_overflow_gpio_pin(void);
 void GPIO_inicializar(void);
 
 
-
 // Inicilizar cola de eventos
 void inicializar_cola_eventos(const uint32_t periodo_timer1) {
-	EVENTO_T evento;
-	uint32_t auxData;
+	EVENTO_T evento = EVENTO_VOID; 
+	uint32_t auxData = 0;
 	FIFO_inicializar(GPIO_OVERFLOW);
 	
 		// inicializar módulos
@@ -29,9 +31,13 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1) {
 	GPIO_inicializar(); // inicializar módulo GPIO
 	alarma_inicializar(); // inicializar módulo Alarmas
 	
+	// programa alarma de inactividad (paso a power-down)
+	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
+	
 	while(1){
 		
-		if( FIFO_extraer(&evento, &auxData) ){
+			FIFO_extraer(&evento, &auxData);
+		
 			// tratar dato
 			switch(evento){
 				case EVENTO_HELLO_WORLD:
@@ -54,13 +60,17 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1) {
 						eint2_gestionar_pulsacion(); // EINT2	
 					break;
 					
-				default:
+				case POWER_DOWN:
+					// pasar a estado power-down
+					power_hal_deep_sleep();
+					break;
+					
+				default: 
+					// alarma para pasar a power-down en caso de inactividad
+					// paso a estado IDLE del procesador
+					power_hal_wait();
 					break;
 			}
-		} else{
-			// detener procesador y reaunador si ocurre interrupción
-			power_hal_wait();
-		}
 	}
 }
 
