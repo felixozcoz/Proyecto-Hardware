@@ -5,8 +5,12 @@
 .\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\planificador.o: cola_fifo.h
+.\planificador.o: tests.h
 .\planificador.o: io_reserva.h
 .\planificador.o: hello_world.h
 .\planificador.o: power.h
 .\planificador.o: alarmas.h
 .\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\planificador.o: botones.h
+.\planificador.o: int_external_hal.h
+.\planificador.o: tests.h

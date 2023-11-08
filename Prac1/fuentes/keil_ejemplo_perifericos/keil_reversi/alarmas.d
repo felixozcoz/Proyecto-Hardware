@@ -7,4 +7,5 @@
 .\alarmas.o: cola_FIFO.h
 .\alarmas.o: GPIO.h
 .\alarmas.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\alarmas.o: tests.h
 .\alarmas.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

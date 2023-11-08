@@ -10,21 +10,18 @@
 #include "alarmas.h"
 #include <limits.h>
 
-#define TEST 1
 
-
-#if TEST
+#if TEST_ALARMAS
 
 // MAIN: Test
 int main(){
 	uint32_t periodo_timer1_ms = 10;
+	test_alarmas();
 			// activar reloj
 	temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
 	
 	inicializar_cola_eventos(periodo_timer1_ms);
 
-	test_alarmas();
-	
 	while(1);
 }
 

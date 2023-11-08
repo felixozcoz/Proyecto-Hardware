@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "GPIO.h"
+#include "tests.h"
 
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles
@@ -13,6 +14,15 @@ typedef enum {
 		REVISAR_ALARMAS = 3, 		// indica que el planificador tiene que revisar las alarmas
 		PULSACION = 4,					// se ha pulsado EINT1 o EINT2
 	  POWER_DOWN = 5, 			  // pasar/salir a estado power-down
+	
+		#if TEST_ALARMAS					// eventos artificiales para test de alarmas
+			EVENTO_FICTICIO_1 = -1,
+			EVENTO_FICTICIO_2 = -2,
+			EVENTO_FICTICIO_3 = -3,
+			EVENTO_FICTICIO_4 = -4,
+			EVENTO_FICTICIO_5 = -5,
+		#endif
+	
 } EVENTO_T;
 
 

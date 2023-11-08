@@ -4,19 +4,19 @@ F (.\Retarget.c)(0x6543C6C1)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil
 I (C:\Keil_v5\ARM\ARMCC\include\rt_misc.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-F (.\main.c)(0x654A7D71)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (.\main.c)(0x654BE28E)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (timer0.h)(0x6543C6C1)
 I (Power_management.h)(0x6543C6C1)
 I (boton_eint0.h)(0x6548047C)
 I (temporizador_drv.h)(0x654A229C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
+I (tests.h)(0x654BEE79)
 I (planificador.h)(0x654A764A)
 I (io_reserva.h)(0x6544DB06)
-I (tests.h)(0x654A7384)
 I (alarmas.h)(0x654A775B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\limits.h)(0x599F2F9A)
@@ -27,9 +27,10 @@ I (C:\Keil_v5\ARM\ARMCC\include\time.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
 I (temporizador_hal.h)(0x6544DB07)
 I (pulsacion.h)(0x6543C6C1)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
+I (tests.h)(0x654BEE79)
 F (.\temporizador_hal.h)(0x6544DB07)()
 F (.\GPIO.h)(0x654A6DCE)()
 F (.\temporizador_drv.h)(0x654A229C)()
@@ -39,33 +40,38 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
 I (C:\Keil_v5\ARM\ARMCC\include\time.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
 I (temporizador_drv.h)(0x654A229C)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
+I (tests.h)(0x654BEE79)
 I (temporizador_hal.h)(0x6544DB07)
 I (pulsacion.h)(0x6543C6C1)
 F (.\io_reserva.h)(0x6544DB06)()
 F (.\cola_FIFO.c)(0x654A6D49)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\cola_fifo.o --omf_browse .\cola_fifo.crf --depend .\cola_fifo.d)
-I (cola_fifo.h)(0x654A1EB8)
+I (cola_fifo.h)(0x654BEFE2)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
+I (tests.h)(0x654BEE79)
 I (io_reserva.h)(0x6544DB06)
-F (.\cola_FIFO.h)(0x654A1EB8)()
+F (.\cola_FIFO.h)(0x654BEFE2)()
 F (.\planificador.h)(0x654A764A)()
-F (.\planificador.c)(0x654A7638)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
+F (.\planificador.c)(0x654BFCEC)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
 I (planificador.h)(0x654A764A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
-I (cola_fifo.h)(0x654A1EB8)
+I (cola_fifo.h)(0x654BEFE2)
+I (tests.h)(0x654BEE79)
 I (io_reserva.h)(0x6544DB06)
 I (hello_world.h)(0x6544DB06)
-I (power.h)(0x6544DB07)
+I (power.h)(0x654A8163)
 I (alarmas.h)(0x654A775B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
+I (botones.h)(0x654A8034)
+I (int_external_hal.h)(0x65492DB4)
 F (.\hello_world.c)(0x6544DB06)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\hello_world.o --omf_browse .\hello_world.crf --depend .\hello_world.d)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
@@ -74,12 +80,12 @@ I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
 I (io_reserva.h)(0x6544DB06)
 F (.\hello_world.h)(0x6544DB06)()
-F (.\power.c)(0x654A7120)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\power.o --omf_browse .\power.crf --depend .\power.d)
-I (power.h)(0x6544DB07)
+F (.\power.c)(0x654BDE72)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\power.o --omf_browse .\power.crf --depend .\power.d)
+I (power.h)(0x654A8163)
 I (Power_management.h)(0x6543C6C1)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 F (.\alarmas.h)(0x654A775B)()
-F (.\power.h)(0x6544DB07)()
+F (.\power.h)(0x654A8163)()
 F (.\tests.c)(0x654A1E23)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\tests.o --omf_browse .\tests.crf --depend .\tests.d)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (timer0.h)(0x6543C6C1)
@@ -87,49 +93,56 @@ I (Power_management.h)(0x6543C6C1)
 I (boton_eint0.h)(0x6548047C)
 I (temporizador_drv.h)(0x654A229C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
+I (tests.h)(0x654BEE79)
 I (planificador.h)(0x654A764A)
 I (io_reserva.h)(0x6544DB06)
-F (.\tests.h)(0x654A7384)()
-F (.\alarmas.c)(0x654A7D41)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\alarmas.o --omf_browse .\alarmas.crf --depend .\alarmas.d)
+F (.\tests.h)(0x654BEE79)()
+F (.\alarmas.c)(0x654BE406)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\alarmas.o --omf_browse .\alarmas.crf --depend .\alarmas.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
 I (C:\Keil_v5\ARM\ARMCC\include\limits.h)(0x599F2F9A)
 I (alarmas.h)(0x654A775B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
+I (tests.h)(0x654BEE79)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
-F (.\botones.h)(0x65494B75)()
-F (.\botones.c)(0x65494BA1)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\botones.o --omf_browse .\botones.crf --depend .\botones.d)
-I (botones.h)(0x65494B75)
+F (.\botones.h)(0x654A8034)()
+F (.\botones.c)(0x654A9626)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\botones.o --omf_browse .\botones.crf --depend .\botones.d)
+I (botones.h)(0x654A8034)
 I (int_external_hal.h)(0x65492DB4)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
+I (tests.h)(0x654BEE79)
 I (alarmas.h)(0x654A775B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
 F (.\int_external_hal.h)(0x65492DB4)()
 F (.\int_external_hal.c)(0x65494BA2)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\int_external_hal.o --omf_browse .\int_external_hal.crf --depend .\int_external_hal.d)
 I (int_external_hal.h)(0x65492DB4)
-I (botones.h)(0x65494B75)
+I (botones.h)(0x654A8034)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.h)(0x559D2F68)
-F (.\test_alarmas.c)(0x654A7D4A)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\test_alarmas.o --omf_browse .\test_alarmas.crf --depend .\test_alarmas.d)
+F (.\test_alarmas.c)(0x654BFD39)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\test_alarmas.o --omf_browse .\test_alarmas.crf --depend .\test_alarmas.d)
 I (alarmas.h)(0x654A775B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-I (cola_FIFO.h)(0x654A1EB8)
+I (cola_FIFO.h)(0x654BEFE2)
 I (GPIO.h)(0x654A6DCE)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
+I (tests.h)(0x654BEE79)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
 I (temporizador_drv.h)(0x654A229C)
 I (planificador.h)(0x654A764A)
 I (io_reserva.h)(0x6544DB06)
-I (tests.h)(0x654A7384)
+F (.\test_botones.c)(0x654A80DB)(-c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\test_botones.o --omf_browse .\test_botones.crf --depend .\test_botones.d)
+I (tests.h)(0x654BEE79)
+I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)

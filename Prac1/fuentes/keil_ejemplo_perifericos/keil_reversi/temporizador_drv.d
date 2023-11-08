@@ -7,5 +7,6 @@
 .\temporizador_drv.o: cola_FIFO.h
 .\temporizador_drv.o: GPIO.h
 .\temporizador_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\temporizador_drv.o: tests.h
 .\temporizador_drv.o: temporizador_hal.h
 .\temporizador_drv.o: pulsacion.h

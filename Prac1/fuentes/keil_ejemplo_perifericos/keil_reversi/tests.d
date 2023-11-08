@@ -8,5 +8,6 @@
 .\tests.o: cola_FIFO.h
 .\tests.o: GPIO.h
 .\tests.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\tests.o: tests.h
 .\tests.o: planificador.h
 .\tests.o: io_reserva.h

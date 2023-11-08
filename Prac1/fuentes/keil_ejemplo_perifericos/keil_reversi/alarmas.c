@@ -79,18 +79,21 @@ void alarma_tratar_evento(const uint32_t periodo_timer1)
 	uint8_t i;
 	for( i = 0; i < ALARMAS_MAX; i++){
 		
-		if( cumplido_retardo(i) ){
-			// tratar según si es periódica
-			if( alarmas[i].periodica )  
-				alarmas[i].inicio = 0;  // reset tiempo 
-			else  
-				alarmas[i].activa = DESACTIVADA; // liberar alarma
-			
-			// encolar evento de la alarma i-ésima
-			FIFO_encolar(alarmas[i].ID_evento, alarmas[i].auxData);
-		} 
-		else 
+		if( alarmas[i].activa ) {
+			// sumar retardo
 			alarmas[i].inicio += periodo_timer1;
+			
+			if( cumplido_retardo(i) ){
+				// tratar según si es periódica
+				if( alarmas[i].periodica )  
+					alarmas[i].inicio = 0;  // reset tiempo 
+				else  
+					alarmas[i].activa = DESACTIVADA; // liberar alarma
+				
+				// encolar evento de la alarma i-ésima
+				FIFO_encolar(alarmas[i].ID_evento, alarmas[i].auxData);
+			} 
+		}
 	}
 }
 
@@ -111,14 +114,18 @@ void alarma_tratar_evento(const uint32_t periodo_timer1)
 // 
 int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo)
 {
-	uint8_t i, primera_libre;
+	uint64_t i;
+	uint64_t primera_libre = ALARMAS_MAX;
 	
-	for(i = ALARMAS_MAX - 1; i >= 0; i--){
+	for(i = 0; i < ALARMAS_MAX; i++){
 		// si existe una alarma con _ID_evento se reprograma
 		if( alarmas[i].ID_evento == _ID_evento ) return i; 
 		// si no se devuelve la componente de la primera libre
-		else if (! alarmas[i].activa) i = primera_libre;
+		else if ( alarmas[i].activa == DESACTIVADA & i < primera_libre ) primera_libre = i;
 	}
+	
+	if ( primera_libre != ALARMAS_MAX)
+			return primera_libre;
 	
 	// no hay alarmas libres
 	// generar evento

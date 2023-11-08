@@ -5,6 +5,7 @@
 .\test_alarmas.o: cola_FIFO.h
 .\test_alarmas.o: GPIO.h
 .\test_alarmas.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\test_alarmas.o: tests.h
 .\test_alarmas.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\test_alarmas.o: temporizador_drv.h
 .\test_alarmas.o: planificador.h

@@ -8,3 +8,4 @@
 .\temporizador_hal.o: cola_FIFO.h
 .\temporizador_hal.o: GPIO.h
 .\temporizador_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\temporizador_hal.o: tests.h
