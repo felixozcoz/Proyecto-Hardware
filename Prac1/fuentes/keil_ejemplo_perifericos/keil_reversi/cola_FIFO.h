@@ -9,13 +9,15 @@
 // conjunto de eventos posibles
 typedef enum {
     EVENTO_VOID = 0,  			// Evento de inicialización
-		EVENTO_HELLO_WORLD = 1,	// para prueba
+		ev_VISUALIZAR_HELLO = 1,	// para visualización de nuevo hello_world
 		ALARMAS_OVERFLOW = 2,		// No hay alarmas disponibles
 		REVISAR_ALARMAS = 3, 		// indica que el planificador tiene que revisar las alarmas
 		PULSACION = 4,					// se ha pulsado EINT1 o EINT2
 	  POWER_DOWN = 5, 			  // pasar/salir a estado power-down
-	
-		#if TEST_ALARMAS					// eventos artificiales para test de alarmas
+		ev_VISUALIZAR_CUENTA = 6, // indica que se debe visualizar el evento en la gpio
+		ev_LATIDO = 7,					// heartbeat cada 10ms
+		
+		#if TEST_ALARMAS | TEST_FIFO				// eventos artificiales para test de alarmas
 			EVENTO_FICTICIO_1 = -1,
 			EVENTO_FICTICIO_2 = -2,
 			EVENTO_FICTICIO_3 = -3,

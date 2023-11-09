@@ -566,6 +566,31 @@
               <FileType>1</FileType>
               <FilePath>.\test_botones.c</FilePath>
             </File>
+            <File>
+              <FileName>juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\juego.c</FilePath>
+            </File>
+            <File>
+              <FileName>juego.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\juego.h</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\visualizar.c</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\visualizar.h</FilePath>
+            </File>
+            <File>
+              <FileName>test_juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_juego.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

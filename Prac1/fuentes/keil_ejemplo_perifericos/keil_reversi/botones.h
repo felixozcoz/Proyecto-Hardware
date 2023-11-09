@@ -9,6 +9,12 @@
 #include "int_external_hal.h"
 #include <inttypes.h>
 
+#define BOTON_1 1
+#define BOTON_2 2
+
+
+void inicializar_botones(void);
+
 // EINT1
 
 void eint1_iniciar_drv (void);

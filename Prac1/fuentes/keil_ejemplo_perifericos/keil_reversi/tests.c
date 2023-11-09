@@ -4,6 +4,8 @@
 #include "boton_eint0.h"
 #include "temporizador_drv.h"
 #include "planificador.h"
+#include "cola_FIFO.h"
+
 #include <inttypes.h>
 
 // Test periférico GPIO
@@ -26,7 +28,8 @@ void testGPIO(void)
 // Test cola FIFO
 void testFIFO(void){
 		// variables
-		EVENTO_T types_E[4] = { EVENTO_VOID, EVENTO_HELLO_WORLD, ALARMAS_OVERFLOW, PULSACION};
+	
+		EVENTO_T E =  EVENTO_VOID;
 		uint32_t est __attribute__((unused));
 		uint8_t res __attribute__((unused));
 		int i;
@@ -43,28 +46,21 @@ void testFIFO(void){
 		FIFO_inicializar(GPIO_OVERFLOW);
 		
 		// Comprobar estadisticas antes de hacer nada
-		est = FIFO_estadisticas(types_E[0]);
-		est = FIFO_estadisticas(types_E[1]);
-		est = FIFO_estadisticas(types_E[2]);
-		est = FIFO_estadisticas(types_E[3]);
+		est = FIFO_estadisticas(E);
 		
 	// Enconlar y extraer
-		FIFO_encolar(types_E[1], 0);
+		FIFO_encolar(E, 0);
 		res = FIFO_extraer(&event, &aux);
-		est = FIFO_estadisticas(types_E[1]);
+		est = FIFO_estadisticas(E);
 		
 		// Extraer con FIFO vacia
 		res = FIFO_extraer(&event, &aux);
-		est = FIFO_estadisticas(types_E[1]);
+		est = FIFO_estadisticas(E);
 		
 		
 		// Encolar muiltiples veces
 		for(i = 0; i < 8; i++){
-			FIFO_encolar(types_E[i%3], 0);
-			est = FIFO_estadisticas(types_E[0]);
-			est = FIFO_estadisticas(types_E[1]);
-			est = FIFO_estadisticas(types_E[2]);
-			est = FIFO_estadisticas(types_E[3]);
+			FIFO_encolar(E, 0);
 		}
 		
 		
@@ -76,9 +72,7 @@ void testFIFO(void){
 		// Llenar FIFO (poner breakpoint 
 		// antes del bucle para probar overflow)
 		for(i = 0; i < 50; i++){
-			FIFO_encolar(types_E[i%3], 0);
-			est = FIFO_estadisticas(types_E[1]);
-			
+			FIFO_encolar(E, 0);			
 		}
 }
 

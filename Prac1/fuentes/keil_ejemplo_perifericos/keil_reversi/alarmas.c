@@ -16,7 +16,7 @@ const int8_t ALARMAS_OCUPADAS = -1;
 
 
 // Funciones auxiliares
-int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo);
+int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo, const uint32_t _auxData);
 
 // (Función auxiliar)
 bool is_periodic(uint32_t retardo);
@@ -36,6 +36,14 @@ void alarma_inicializar(void)
 {
 	uint8_t i;
 	for(i = 0 ; i < ALARMAS_MAX; i++){
+							// set evento
+			alarmas[i].ID_evento = EVENTO_VOID;
+			alarmas[i].auxData = 0;
+				// set tiempo de duración y contador
+			alarmas[i].inicio = 0; 
+			alarmas[i].retardo = 0;
+			alarmas[i].periodica = false;
+				// set estado de la alarma
 			alarmas[i].activa = DESACTIVADA;
 	}
 	
@@ -55,7 +63,7 @@ void alarma_activar(EVENTO_T _ID_evento, uint32_t _retardo, uint32_t _auxData)
 		}
 		
 		// devuelve el id de la alarma si la hay, sino -1
-		id = buscar_alarma_libre(_ID_evento, _retardo);
+		id = buscar_alarma_libre(_ID_evento, _retardo, _auxData);
 		
 		if (id != ALARMAS_OCUPADAS){
 				// set evento
@@ -112,14 +120,14 @@ void alarma_tratar_evento(const uint32_t periodo_timer1)
 // genera un evento ALARMA_OVERFLOW
 // y devuelve ALARMAS_OCUPADAS (valor -1)
 // 
-int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo)
+int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo, const uint32_t _auxData)
 {
 	uint64_t i;
 	uint64_t primera_libre = ALARMAS_MAX;
 	
 	for(i = 0; i < ALARMAS_MAX; i++){
 		// si existe una alarma con _ID_evento se reprograma
-		if( alarmas[i].ID_evento == _ID_evento ) return i; 
+		if( alarmas[i].ID_evento == _ID_evento & alarmas[i].ID_evento == _auxData) return i; 
 		// si no se devuelve la componente de la primera libre
 		else if ( alarmas[i].activa == DESACTIVADA & i < primera_libre ) primera_libre = i;
 	}
@@ -184,7 +192,8 @@ void cancelar_alarma(const EVENTO_T _ID_evento)
 // y false en cualquier otro caso
 __inline bool cumplido_retardo(const uint8_t id_alarma)
 {
-		return alarmas[id_alarma].inicio >= alarmas[id_alarma].retardo;
+		// con la operación AND se suprime el bit de periodicidad del retardo
+		return alarmas[id_alarma].inicio >= (alarmas[id_alarma].retardo & 0x7fffffff);
 }
 
 

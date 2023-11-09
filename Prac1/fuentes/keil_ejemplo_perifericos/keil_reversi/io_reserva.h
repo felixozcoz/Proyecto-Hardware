@@ -19,3 +19,9 @@
 // Prueba "Hello World"
 #define GPIO_HELLO_WORLD 0
 #define GPIO_HELLO_WORLD_BITS 8
+
+// Bits EINT's
+#define GPIO_EINT1 14
+#define GPIO_BITS_EINT1 1
+#define GPIO_EINT2 15
+#define GPIO_BITS_EINT2 1

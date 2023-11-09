@@ -1,42 +1,63 @@
                   
 #include <LPC210x.H>                       /* LPC210x definitions */
-#include "timer0.h"
 #include "Power_management.h"
-#include "boton_eint0.h"
 #include "temporizador_drv.h"
 #include "planificador.h"
 #include "tests.h"
-#include "GPIO.h"
+#include "botones.h"
 #include "alarmas.h"
-#include <limits.h>
 
 
-#if TEST_ALARMAS
+#define TESTING 1
+#define DEMOSTRADOR 1
 
-// MAIN: Test
+
+
 int main(){
-	uint32_t periodo_timer1_ms = 10;
-	test_alarmas();
-			// activar reloj
-	temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
 	
-	inicializar_cola_eventos(periodo_timer1_ms);
+	#if ! TESTING
+	
+		// ... 
+	
+	#else
 
+		uint32_t periodo_timer1_ms __attribute__((unused)) = 10;
+	
+		#if TEST_ALARMAS
+		
+			test_alarmas();
+					// activar reloj
+			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+			
+			inicializar_cola_eventos(periodo_timer1_ms);
+
+		#elif TEST_BOTONES
+			
+			test_botones();
+			
+			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+			
+			inicializar_cola_eventos(periodo_timer1_ms);
+		
+		#elif TEST_CONSUMO
+				// settear tiempo en ms del delay de usuario ausente
+			set_retardo_USUARIO_AUSENTE(20); // en ms
+		
+			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+			
+			inicializar_cola_eventos(periodo_timer1_ms);
+		
+		#elif DEMOSTRADOR
+		
+			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+			
+			inicializar_cola_eventos(periodo_timer1_ms);
+			
+		
+		#endif
+		
+	#endif
+	
 	while(1);
 }
-
-#else 
-
-// MAIN: Hello world
-//int main() {
-//	// inicialiar timer, interrumpe cada 10ms
-//	temporizador_drv_reloj(10, FIFO_encolar, EVENTO_HELLO_WORLD);
-//	
-//	// inicializar planificador
-//	inicializar_cola_eventos();
-//	
-//	while(1);
-//}
-
-#endif
 

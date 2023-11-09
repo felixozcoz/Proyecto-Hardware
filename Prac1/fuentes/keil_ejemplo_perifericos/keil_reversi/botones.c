@@ -3,6 +3,7 @@
 #include "cola_FIFO.h"
 #include "alarmas.h"
 
+
 // Estados de los botones
 typedef enum {
 		PULSADO = 0,
@@ -13,6 +14,13 @@ typedef enum {
 static  estado_t estado_eint1 = NO_PULSADO;
 static  estado_t estado_eint2 = NO_PULSADO;
 
+// función para inicializar
+// ambos botones
+void inicializar_botones(void)
+{
+	eint1_iniciar_drv();
+	eint2_iniciar_drv();
+}
 
 // EINT1 (External Interrupt 1)
 
@@ -76,7 +84,7 @@ void eint1_gestionar_pulsacion(void)
 
 // iniciar EINT2
 void eint2_iniciar_drv (void)
-{ eint2_iniciar_drv(); }
+{ eint2_iniciar_hal(); }
 
 // leer pulsación EINT2
 unsigned int eint2_leer_nueva_pulsacion_drv( void)
@@ -128,8 +136,8 @@ void eint2_gestionar_pulsacion(void)
 // Función para gestión de pulsación
 void pulsacion_detectada(const uint8_t id_boton)
 {
-		if(id_boton == 1) estado_eint1 = PULSADO;
-		else if (id_boton == 2) estado_eint2 = PULSADO;
+		if(id_boton == BOTON_1) estado_eint1 = PULSADO;
+		else if (id_boton == BOTON_2) estado_eint2 = PULSADO;
 		else while(1); // Error
 		
 			// encolar evento tras pulsación

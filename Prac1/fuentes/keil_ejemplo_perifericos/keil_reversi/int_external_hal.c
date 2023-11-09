@@ -19,7 +19,7 @@ static volatile unsigned int eint2_nueva_pulsacion = 0;
 
 void eint1_ISR (void) __irq
 {
-	VICIntEnClr = VICIntEnClr | (1 << (15 - 1)); // disable eint1 interrupt
+	VICIntEnClr = VICIntEnClr | 0x00008000; // disable eint1 interrupt
 	EXTINT =  EXTINT | 2;   // clear interrupt flag        
 	VICVectAddr = 0;        // Acknowledge Interrupt
 	
@@ -50,7 +50,8 @@ unsigned int eint1_leer_cuenta_hal (void)
 
 void eint1_reactivar_interrupciones_hal(void)
 {
-	VICIntEnable = VICIntEnable | (1 << (15 - 1));
+	// write 1 on EINT1 interrupt bit (15) to enable
+	VICIntEnable = VICIntEnable | 0x00008000;
 }
 
 // Comprueba que eint2 sigue pulsado
@@ -82,15 +83,16 @@ void eint1_iniciar_hal (void)
 	VICVectAddr3 = (unsigned long)eint1_ISR;     
 		
 		// peripheral function EINT1 mapped to a related pin on pin connect block 
-	  // (see table 56 of the LPC2105 user manual(
+	  // (see table 56 of the LPC2105 user manual
+		// set to pin P0.14
 	PINSEL0 = PINSEL0 & 0xcfffffff;	//Sets bits 28 and 29 to 0
-	PINSEL0 = PINSEL0 | 2;	// Enable the EXTINT1 interrupt
+	PINSEL0 = PINSEL0 | 0x20000000;	// Enable the EXTINT1 interrupt
 	
 		// 0x20 bit 5 enables vectored IRQs. 
 		// 15 is the number of the interrupt assigned. 
 		// Number 15 is the eint2 (see table 40 of the LPC2105 user manual  
-	VICVectCntl3 = 0x20 | (1 << (15 - 1));                   
-	VICIntEnable = VICIntEnable | 0x00008000;  
+	VICVectCntl3 = 0x20 | 15;                   
+	VICIntEnable = VICIntEnable | 0x00008000;  // write 1 on bit 15 
 
 }
 
@@ -101,7 +103,7 @@ void eint1_iniciar_hal (void)
 
 void eint2_ISR (void) __irq 
 {	
-	VICIntEnClr = VICIntEnClr | (1 << (16 -1) ); // disable eint2 interrupt
+	VICIntEnClr = VICIntEnClr |  0x00010000; // disable eint2 interrupt
 	EXTINT =  EXTINT | 4;   // clear interrupt flag        
 	VICVectAddr = 0;        // Acknowledge Interrupt
 	
@@ -132,7 +134,8 @@ unsigned int eint2_leer_cuenta_hal (void)
 
 void eint2_reactivar_interrupciones_hal(void)
 {
-	VICIntEnable = VICIntEnable | (1 << (16 - 1));
+	// write 1 on EINT2 interrupt bit (14) to enable
+	VICIntEnable = VICIntEnable | 0x00010000;
 }
 
 // Comprueba que eint2 sigue pulsado
@@ -165,8 +168,9 @@ void eint2_iniciar_hal (void)
     
 		// peripheral function EINT2 mapped to a related pin on pin connect block 
 	  // (see table 56 of the LPC2105 user manual(
+		// set to pin P0.15
 	PINSEL0 = PINSEL0 & 0x3fffffff;	//Sets bits 30 and 31 to 0
-	PINSEL0 = PINSEL0 | 2;	// Enable the EXTINT2 interrupt
+	PINSEL0 = PINSEL0 | 0x80000000;	// Enable the EXTINT2 interrupt
 	
 		// 0x20 bit 5 enables vectored IRQs. 
 		// 16 is the number of the interrupt assigned. 
