@@ -1,12 +1,8 @@
-#include <stdint.h>
 #include <stdio.h>
-#include <time.h>
-
 #include <LPC210X.H> // LPC21XX Peripheral Registers
-#include "temporizador_hal.h"
-#include "pulsacion.h"
-#include "cola_FIFO.h"
 #include <inttypes.h>
+
+#include "temporizador_hal.h"
 
 // Constante que permite convertir de ticks a microsegundos
 // con una frecuencia de procesador de 60MHz y VPBDIV = 4 (por defecto)

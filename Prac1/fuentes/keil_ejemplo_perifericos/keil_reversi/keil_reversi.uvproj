@@ -447,9 +447,14 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>temporizador_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\temporizador_hal.c</FilePath>
+              <FileName>GPIO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GPIO.h</FilePath>
+            </File>
+            <File>
+              <FileName>io_reserva.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\io_reserva.h</FilePath>
             </File>
             <File>
               <FileName>temporizador_hal.h</FileName>
@@ -457,9 +462,9 @@
               <FilePath>.\temporizador_hal.h</FilePath>
             </File>
             <File>
-              <FileName>GPIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GPIO.h</FilePath>
+              <FileName>temporizador_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\temporizador_hal.c</FilePath>
             </File>
             <File>
               <FileName>temporizador_drv.h</FileName>
@@ -472,19 +477,14 @@
               <FilePath>.\temporizador_drv.c</FilePath>
             </File>
             <File>
-              <FileName>io_reserva.h</FileName>
+              <FileName>cola_FIFO.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\io_reserva.h</FilePath>
+              <FilePath>.\cola_FIFO.h</FilePath>
             </File>
             <File>
               <FileName>cola_FIFO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\cola_FIFO.c</FilePath>
-            </File>
-            <File>
-              <FileName>cola_FIFO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\cola_FIFO.h</FilePath>
             </File>
             <File>
               <FileName>planificador.h</FileName>
@@ -507,6 +507,11 @@
               <FilePath>.\hello_world.h</FilePath>
             </File>
             <File>
+              <FileName>power.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\power.h</FilePath>
+            </File>
+            <File>
               <FileName>power.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\power.c</FilePath>
@@ -517,24 +522,14 @@
               <FilePath>.\alarmas.h</FilePath>
             </File>
             <File>
-              <FileName>power.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\power.h</FilePath>
-            </File>
-            <File>
-              <FileName>tests.c</FileName>
+              <FileName>alarmas.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\tests.c</FilePath>
+              <FilePath>.\alarmas.c</FilePath>
             </File>
             <File>
               <FileName>tests.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\tests.h</FilePath>
-            </File>
-            <File>
-              <FileName>alarmas.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\alarmas.c</FilePath>
             </File>
             <File>
               <FileName>botones.h</FileName>
@@ -557,6 +552,36 @@
               <FilePath>.\int_external_hal.c</FilePath>
             </File>
             <File>
+              <FileName>juego.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\juego.h</FilePath>
+            </File>
+            <File>
+              <FileName>juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\juego.c</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\visualizar.h</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\visualizar.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_juego.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_GPIO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_GPIO.c</FilePath>
+            </File>
+            <File>
               <FileName>test_alarmas.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\test_alarmas.c</FilePath>
@@ -567,29 +592,9 @@
               <FilePath>.\test_botones.c</FilePath>
             </File>
             <File>
-              <FileName>juego.c</FileName>
+              <FileName>test_FIFO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\juego.c</FilePath>
-            </File>
-            <File>
-              <FileName>juego.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\juego.h</FilePath>
-            </File>
-            <File>
-              <FileName>visualizar.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\visualizar.c</FilePath>
-            </File>
-            <File>
-              <FileName>visualizar.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\visualizar.h</FilePath>
-            </File>
-            <File>
-              <FileName>test_juego.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_juego.c</FilePath>
+              <FilePath>.\test_FIFO.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,12 +1,4 @@
 #include "planificador.h"
-#include "cola_FIFO.h"
-#include "hello_world.h"
-#include "power.h"
-#include "alarmas.h"
-#include "botones.h"
-#include "tests.h"
-#include "visualizar.h"
-#include "juego.h"
 
 // Tiempo sin actividad de usuario considerado
 // para pasar a estado power-down del procesador

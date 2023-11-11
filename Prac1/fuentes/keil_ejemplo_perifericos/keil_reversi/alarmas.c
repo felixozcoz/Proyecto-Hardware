@@ -127,9 +127,9 @@ int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo, c
 	
 	for(i = 0; i < ALARMAS_MAX; i++){
 		// si existe una alarma con _ID_evento se reprograma
-		if( alarmas[i].ID_evento == _ID_evento & alarmas[i].ID_evento == _auxData) return i; 
+		if( alarmas[i].ID_evento == _ID_evento && alarmas[i].auxData == _auxData) return i; 
 		// si no se devuelve la componente de la primera libre
-		else if ( alarmas[i].activa == DESACTIVADA & i < primera_libre ) primera_libre = i;
+		else if ( alarmas[i].activa == DESACTIVADA && i < primera_libre ) primera_libre = i;
 	}
 	
 	if ( primera_libre != ALARMAS_MAX)

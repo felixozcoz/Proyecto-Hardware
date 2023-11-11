@@ -1,12 +1,7 @@
-#include <stdint.h>
-#include <stdio.h>
-#include <time.h>
-
-#include <LPC210X.H> // LPC21XX Peripheral Registers
 #include "temporizador_drv.h"
 #include "temporizador_hal.h"
-#include "pulsacion.h"
 
+#include <stdio.h>
 
 // Variables para inserción de variables
 static EVENTO_T evento = EVENTO_VOID;

@@ -1,6 +1,6 @@
 #include "botones.h"
 #include <LPC210X.H> // LPC21XX Peripheral Registers
-#include "cola_FIFO.h"
+
 #include "alarmas.h"
 
 

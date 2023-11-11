@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "GPIO.h"
 #include "tests.h"
+#include "io_reserva.h"
 
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles
@@ -17,7 +18,7 @@ typedef enum {
 		ev_VISUALIZAR_CUENTA = 6, // indica que se debe visualizar el evento en la gpio
 		ev_LATIDO = 7,					// heartbeat cada 10ms
 		
-		#if TEST_ALARMAS | TEST_FIFO				// eventos artificiales para test de alarmas
+		#if TEST_ALARMAS | TEST_FIFO | TEST_FIFO			// eventos artificiales para test de alarmas
 			EVENTO_FICTICIO_1 = -1,
 			EVENTO_FICTICIO_2 = -2,
 			EVENTO_FICTICIO_3 = -3,
@@ -51,5 +52,9 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData);
 // NOTA: el evento EVENTO_VOID devuelve el
 // 	total de eventos encolados desde el inicio
 uint32_t FIFO_estadisticas(const EVENTO_T ID_evento);
+
+
+// getter del tamaño de la cola
+unsigned int get_size_FIFO(void);
 
 #endif // FIFO_H

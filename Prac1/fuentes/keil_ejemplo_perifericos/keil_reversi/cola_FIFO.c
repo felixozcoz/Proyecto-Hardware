@@ -1,5 +1,4 @@
 #include "cola_fifo.h"
-#include "io_reserva.h"
 
 // Estructura para los 
 // elementos de la cola
@@ -8,8 +7,10 @@ typedef struct {
     uint32_t auxData;	// información extra del evento
 } FIFO_ELEMENTO_T;	
 
-// Declaración de la cola como un arreglo de elementos
-#define MAX_SIZE 32
+// Tamaño máximo de la cola
+const static unsigned int MAX_SIZE = 32;
+
+// Declaración de la cola mo un arreglo de elementos
 static FIFO_ELEMENTO_T fifo[MAX_SIZE];
 
 // Variables para control de la cola
@@ -32,7 +33,7 @@ void FIFO_inicializar(const GPIO_HAL_PIN_T _pin_overflow) {
 
 void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
     // Verifica si la cola está llena antes de encolar un evento
-    if ((fifo_fin + 1) % MAX_SIZE == fifo_inicio) {
+     if ((fifo_fin + 1) % MAX_SIZE == fifo_inicio) {
         // La cola está llena, manejar el desbordamiento/overflow
 				gpio_hal_sentido(pin_overflow, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
 				gpio_hal_escribir(pin_overflow, GPIO_OVERFLOW_BITS, 1);
@@ -81,4 +82,8 @@ uint32_t FIFO_estadisticas(const EVENTO_T ID_evento) {
     } else {
         return estadisticas[ID_evento];
     }
+}
+
+unsigned int get_size_FIFO(void){
+	return MAX_SIZE;
 }

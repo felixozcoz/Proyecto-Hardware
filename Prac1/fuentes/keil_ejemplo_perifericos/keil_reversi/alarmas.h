@@ -6,8 +6,10 @@
 #define __ALARMAS_H__
 
 #include <inttypes.h>
-#include "cola_FIFO.h"
 #include <stdbool.h>
+
+#include "cola_FIFO.h"
+
 
 // Número de alarmas activas simultáneamente
 static const uint8_t ALARMAS_MAX = 4;

@@ -3,7 +3,6 @@
 #ifndef __JUEGO_H__
 #define __JUEGO_H__
 
-#include "cola_FIFO.h"
 #include "temporizador_drv.h"
 
 void inicializar_juego(const int _cuenta, const unsigned int _intervalo);

@@ -1,0 +1,12 @@
+.\test_botones.o: test_botones.c
+.\test_botones.o: tests.h
+.\test_botones.o: alarmas.h
+.\test_botones.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\test_botones.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\test_botones.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\test_botones.o: cola_FIFO.h
+.\test_botones.o: GPIO.h
+.\test_botones.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\test_botones.o: io_reserva.h
+.\test_botones.o: botones.h
+.\test_botones.o: int_external_hal.h

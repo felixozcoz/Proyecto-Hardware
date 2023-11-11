@@ -2,6 +2,7 @@
 #define TEMPORIZADOR_HAL_H
 
 #include <stdint.h>
+//#include "cola_FIFO.h"
 
 
 // Constante que convierte de tics a ms

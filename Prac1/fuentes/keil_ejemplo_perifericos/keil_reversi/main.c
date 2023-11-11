@@ -9,7 +9,6 @@
 
 
 #define TESTING 1
-#define DEMOSTRADOR 1
 
 
 
@@ -23,7 +22,14 @@ int main(){
 
 		uint32_t periodo_timer1_ms __attribute__((unused)) = 10;
 	
-		#if TEST_ALARMAS
+		#if TEST_FIFO
+				
+			test_FIFO();
+	
+		#elif TEST_GPIO
+	
+	
+		#elif TEST_ALARMAS
 		
 			test_alarmas();
 					// activar reloj
