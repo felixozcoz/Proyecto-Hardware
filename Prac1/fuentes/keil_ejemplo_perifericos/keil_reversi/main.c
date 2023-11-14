@@ -37,18 +37,10 @@ int main(){
 			
 			inicializar_cola_eventos(periodo_timer1_ms);
 
-		#elif TEST_BOTONES
-			
-			test_botones();
-			
-			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
-			
-			inicializar_cola_eventos(periodo_timer1_ms);
-		
-		#elif TEST_CONSUMO
+		#elif TEST_BOTONES | TESTING_CONSUMO
 				// settear tiempo en ms del delay de usuario ausente
-			set_retardo_USUARIO_AUSENTE(20); // en ms
-		
+			set_retardo_USUARIO_AUSENTE(50); // en ms
+						
 			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
 			
 			inicializar_cola_eventos(periodo_timer1_ms);

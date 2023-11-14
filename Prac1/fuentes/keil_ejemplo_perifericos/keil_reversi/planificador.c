@@ -2,7 +2,7 @@
 
 // Tiempo sin actividad de usuario considerado
 // para pasar a estado power-down del procesador
-static unsigned int USUARIO_AUSENTE = 12000; // en ms //12000; // en ms
+static unsigned int USUARIO_AUSENTE = 1000; // en ms //12000; // en ms
 
 // Activa el pin de overflow en la GPIO // DEBERÍA ESTAR EN GPIO??
 void activar_overflow_gpio_pin(void);
@@ -63,8 +63,10 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1) {
 					#if DEMOSTRADOR
 						juego_tratar_evento(ev_VISUALIZAR_CUENTA, auxData);
 					#endif
+				
 						// resetear alarma de power-down
 					alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
+				
 						// handle pulsación
 					if ( auxData == BOTON_1 )
 						eint1_gestionar_pulsacion(); // EINT1
@@ -89,7 +91,7 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1) {
 				
 					// alarma para pasar a power-down en caso de inactividad
 					// paso a estado IDLE del procesador
-					power_hal_wait();
+  				power_hal_wait();
 					break;
 			}
 	}
@@ -113,7 +115,7 @@ __inline void activar_overflow_gpio_pin(void) {
 	
 }
 
-#if TEST_CONSUMO
+#if TEST_CONSUMO | TEST_BOTONES
 	void set_retardo_USUARIO_AUSENTE(const unsigned int time)
 	{
 		USUARIO_AUSENTE = time;

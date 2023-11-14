@@ -68,7 +68,8 @@ void eint1_gestionar_pulsacion(void)
 			// si flag activo (valor 1)
 			if ( eint1_comprobar_pulsado_drv() ){
 				estado_eint1 = PULSADO;
-				// programar alarma periódica con retardo 10ms
+				// programar alarma periódica con retardo 100ms
+				// TODO: recordar cambiar el retardo a 100ms
 				alarma_activar(PULSACION, 0x8000000A, 1);
 			}
 			break;
@@ -124,7 +125,8 @@ void eint2_gestionar_pulsacion(void)
 			// si flag activo (valor 1)
 			if ( eint2_comprobar_pulsado_drv() ){
 				estado_eint2 = PULSADO;
-				// programar alarma periódica con retardo 10ms
+				// programar alarma periódica con retardo 100ms
+				// TODO: recordar cambiar el retardo a 100ms
 				alarma_activar(PULSACION, 0x8000000A, 2);
 			}
 			break;
@@ -136,11 +138,6 @@ void eint2_gestionar_pulsacion(void)
 // Función para gestión de pulsación
 void pulsacion_detectada(const uint8_t id_boton)
 {
-		if(id_boton == BOTON_1) estado_eint1 = PULSADO;
-		else if (id_boton == BOTON_2) estado_eint2 = PULSADO;
-		else while(1); // Error
-		
-			// encolar evento tras pulsación
 		FIFO_encolar(PULSACION, id_boton);
 }
 	

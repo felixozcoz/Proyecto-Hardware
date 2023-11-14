@@ -16,12 +16,7 @@
 //	- Reactivar interrupciones
 void test_botones(void)
 {
-	
-	uint32_t retardo_per_10ms = 0x8000000A;
-	
-	// activar alarmas de los botones
-	alarma_activar(PULSACION, retardo_per_10ms, BOTON_1);
-	alarma_activar(PULSACION, retardo_per_10ms, BOTON_2);
+		// sin sentido
 }
 
 
