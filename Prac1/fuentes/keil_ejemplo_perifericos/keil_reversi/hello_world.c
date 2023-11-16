@@ -30,8 +30,11 @@ void hello_world_inicializar(GPIO_HAL_PIN_T _gpio_inicial, uint8_t _num_bits) {
 
 void hello_world_tratar_evento(void)
 {
+	if(contador == 0xFF){
+		FIFO_encolar(HELLO_OVERFLOW, 0);
+	}
 	contador++;
 	contador = contador % 256;
 	
-	gpio_hal_escribir(gpio_inicial, num_bits, contador);
+	FIFO_encolar(ev_VISUALIZAR_HELLO, 0);
 }

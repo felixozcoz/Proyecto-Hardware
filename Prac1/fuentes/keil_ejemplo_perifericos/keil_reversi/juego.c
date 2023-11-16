@@ -15,7 +15,8 @@ static int cuenta;
 	// entre las dos últimas pulsaciones
 static unsigned int	intervalo;
 
-
+// Ultima pulsación
+static unsigned int last_press = 0;
 
 void inicializar_juego(const int _cuenta, const unsigned int _intervalo){
 	cuenta = _cuenta;
@@ -25,7 +26,14 @@ void inicializar_juego(const int _cuenta, const unsigned int _intervalo){
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 	unsigned int now = temporizador1_leer_drv();
-	intervalo = now - intervalo;
+	intervalo = (now - last_press);
+	last_press = now;
+	
+	if(auxData == 1){
+		cuenta ++;
+	} else if(auxData == 2){
+		cuenta--;
+	}
 	
 	FIFO_encolar(ev_VISUALIZAR_CUENTA, cuenta);
 }
