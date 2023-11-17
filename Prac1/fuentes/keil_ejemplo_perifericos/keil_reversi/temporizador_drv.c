@@ -57,7 +57,10 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(),
 
 // Leer el valor del reloj (timer 1)
 uint64_t temporizador1_leer_drv(void){
-	return temporizador1_hal_leer();
+	float ticks = (float)temporizador1_hal_leer();
+	float tiempo = ticks/temporizador_hal_ticks2us;
+	
+	return (uint64_t)tiempo;
 }
 
 // Detener reloj (timer 1) y devolver count

@@ -15,46 +15,25 @@
 int main(){
 	
 	#if ! TESTING
-	
 		// ... 
-	
 	#else
-
 		uint32_t periodo_timer1_ms __attribute__((unused)) = 10;
 	
 		#if TEST_FIFO
-				
-			test_FIFO();
-	
-		#elif TEST_GPIO
-	
+			test_FIFO();	
 	
 		#elif TEST_ALARMAS
-		
 			test_alarmas();
-					// activar reloj
-			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
-			
-			inicializar_cola_eventos(periodo_timer1_ms);
-
-		#elif TEST_BOTONES | TESTING_CONSUMO
+	
+		#elif TEST_BOTONES | TEST_CONSUMO
 				// settear tiempo en ms del delay de usuario ausente
 			set_retardo_USUARIO_AUSENTE(50); // en ms
-						
-			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
-			
-			inicializar_cola_eventos(periodo_timer1_ms);
-		
-		#elif DEMOSTRADOR
-		
-			temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
-			
-			inicializar_cola_eventos(periodo_timer1_ms);
-			
 		
 		#endif
-		
 	#endif
+	
+	temporizador_drv_reloj(periodo_timer1_ms, FIFO_encolar, REVISAR_ALARMAS);
+	inicializar_cola_eventos(periodo_timer1_ms);
 	
 	while(1);
 }

@@ -4,18 +4,21 @@
 #include "alarmas.h"
 
 
-// Estados de los botones
+// Definir tipo para 
+// estados de los botones
 typedef enum {
 		PULSADO = 0,
 		NO_PULSADO = 1,
 } estado_t;
 
-// estados de los botones
+// Estados de los botones
 static  estado_t estado_eint1 = NO_PULSADO;
 static  estado_t estado_eint2 = NO_PULSADO;
 
-// función para inicializar
-// ambos botones
+
+
+// **** Funciones ****
+
 void inicializar_botones(void)
 {
 	eint1_iniciar_drv();
@@ -49,30 +52,33 @@ unsigned int eint1_comprobar_pulsado_drv(void)
 { return eint1_comprobar_flag(); }
 
 
-// Máquina de estados de botón EINT1
+// Máquina de estados finita de botón EINT1
 void eint1_gestionar_pulsacion(void)
 {
 	switch(estado_eint1){
 		
 		case PULSADO:
-			// si flag no activo (valor 0)
-			if ( ! eint1_comprobar_pulsado_drv() ) {
+			if ( ! eint1_comprobar_pulsado_drv() ) 
+			{
 					eint1_clear_nueva_pulsacion_drv();
+				
 					estado_eint1 = NO_PULSADO;	// cambiar estado del boton
-					eint1_reactivar_interrupciones_drv();
-					// cancelar alarma
-					alarma_activar(PULSACION, 0x00000000, 1);
+					eint1_reactivar_interrupciones_drv();	
+				
+					alarma_activar(PULSACION, CANCELAR_ALARMA, BOTON_1); // cancelar alarma revisión
+					FIFO_encolar(DESPULSACION, BOTON_1); // indicar despulsado
 			}
 			break;
+			
 		case NO_PULSADO:
-			// si flag activo (valor 1)
-			if ( eint1_comprobar_pulsado_drv() ){
+			if ( eint1_comprobar_pulsado_drv() )
+			{
 				estado_eint1 = PULSADO;
-				// programar alarma periódica con retardo 100ms
 				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(PULSACION, 0x8000000A, 1);
+				alarma_activar(PULSACION, 0x8000000A, BOTON_1); // alarma periódica revisión cada 100ms
 			}
 			break;
+			
 		default:
 				while(1); // se ha producido un error
 	}
@@ -101,7 +107,7 @@ unsigned int eint2_leer_cuenta_drv (void)
 
 // Reactivar interrupciones de EINT2
 void eint2_reactivar_interrupciones_drv(void)
-{ eint1_reactivar_interrupciones_hal(); }
+{ eint2_reactivar_interrupciones_hal(); }
 
 unsigned int eint2_comprobar_pulsado_drv(void)
 { return eint2_comprobar_flag(); }
@@ -112,24 +118,27 @@ void eint2_gestionar_pulsacion(void)
 	switch(estado_eint2){
 		
 		case PULSADO:
-			// si flag no activo (valor 0)
-			if ( ! eint2_comprobar_pulsado_drv() ) {
+			if ( ! eint2_comprobar_pulsado_drv() ) 
+			{
 					eint2_clear_nueva_pulsacion_drv();
-					estado_eint2 = NO_PULSADO;	// cambiar estado del boton
+				
+					estado_eint2 = NO_PULSADO;	
 					eint2_reactivar_interrupciones_drv();
-					// cancelar alarma
-					alarma_activar(PULSACION, 0x00000000, 2);
+
+				alarma_activar(PULSACION, CANCELAR_ALARMA, BOTON_2); // cancelar alarma revisión
+				FIFO_encolar(DESPULSACION, BOTON_2); // indicar despulsado EINT2
 			}
 			break;
+			
 		case NO_PULSADO:
-			// si flag activo (valor 1)
-			if ( eint2_comprobar_pulsado_drv() ){
+			if ( eint2_comprobar_pulsado_drv() )
+			{
 				estado_eint2 = PULSADO;
-				// programar alarma periódica con retardo 100ms
 				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(PULSACION, 0x8000000A, 2);
+				alarma_activar(PULSACION, 0x8000000A, BOTON_2);	// periódica 100ms revisión
 			}
 			break;
+			
 		default:
 				while(1); // se ha producido un error
 	}

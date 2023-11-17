@@ -6,9 +6,10 @@
 #define TEST_FIFO    0
 #define TEST_GPIO    0
 #define TEST_ALARMAS 0
-#define TEST_BOTONES 1
+#define TEST_BOTONES 0
 #define TEST_CONSUMO 0
-#define DEMOSTRADOR  0
+#define JUEGO  1
+#define HELLO_WORLD_DEMO 0
 	
 void test_FIFO(void);
 void test_GPIO(void);

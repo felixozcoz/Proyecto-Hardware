@@ -10,6 +10,7 @@
 
 #include "cola_FIFO.h"
 
+#define CANCELAR_ALARMA 0
 
 // Número de alarmas activas simultáneamente
 static const uint8_t ALARMAS_MAX = 4;
