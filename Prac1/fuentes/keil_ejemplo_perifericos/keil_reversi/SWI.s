@@ -8,8 +8,9 @@
 ;/* development tools. Nothing else gives you the right to use this software. */
 ;/*****************************************************************************/
 
-T_Bit           EQU     0x20
-I_Bit			EQU		0x80	; bit7 de la CPSR, si 1 inhibe IRQ
+T_Bit        EQU     0x20
+FIQ_Bit		EQU     0x40
+IRQ_Bit	EQU		0x80						; bit7 de la CPSR, si 1 inhibe IRQ
 
                 PRESERVE8                      ; 8-Byte aligned Stack
                 AREA    SWI_Area, CODE, READONLY
@@ -28,21 +29,46 @@ SWI_Handler
                 BICEQ   R12, R12, #0xFF000000  ; Extract SWI Number
 
 ; add code to enable/disable the global IRQ flag
+				;----------------------------------------
+;				LDR		R9, R14					; Leer CPSR del programa
+;				ORR 	R10,r9,#I_Bit 			; Pone a 1 el bit de las IRQ
+;				MSR		R10, R14					; Copiamos el nuevo estado en el registro de estado
+				;----------------------------------------
 				
-                CMP     R12,#0xFF              
-                BEQ     __decrease_var
+				CMP     R12,#0xFF              
+                BEQ     __enable_irq
+
+				CMP     R12,#0xFE              
+                BEQ     __disable_irq
+				
+				CMP     R12,#0xFD              
+                BEQ     __disable_fiq
+
+                CMP     R12,#0xFC              
+                BEQ     __read_IRQ_bit
+
+
 
                 LDR     R8, SWI_Count
                 CMP     R12, R8
-                BHS     SWI_Dead               ; Overflow
+                BHS     SWI_Dead               		; Overflow
                 ADR     R8, SWI_Table
-                LDR     R12, [R8,R12,LSL #2]   ; Load SWI Function Address
-                MOV     LR, PC                 ; Return Address
-                BX      R12                    ; Call SWI Function 
+                LDR     R12, [R8,R12,LSL #2]   	; Load SWI Function Address
+                MOV     LR, PC                 		; Return Address
+                BX      R12                    			; Call SWI Function 
 
+				
+				;----------------------------------------
+;				MRS		R9, R14					; Cargar CPSR original del programa
+				;----------------------------------------
+				
                 LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
                 MSR     SPSR_cxsf, R12         ; Set SPSR
                 LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+
+
+
+
 
 SWI_Dead        B       SWI_Dead               ; None Existing SWI
 
@@ -62,17 +88,97 @@ SWI_Table
 ;               ...
 SWI_End
 
-                EXTERN shared_var [DATA,SIZE=4]
 
-__decrease_var
-                LDR R8, =shared_var
-		LDR R12, [r8]
-                SUB R12, R12, #1
-                STR R12, [R8]
+
+;------------------------------- enable_irq --------------------------------------------------
+__enable_irq	
+
+				MRS		R8, SPSR					; Leer CPSR del programa
+				ORR 	R8,R8,#IRQ_Bit 		; Pone a 1 el bit de las IRQ
+				MSR		R8, SPSR					; Copiamos el nuevo estado en el registro de estado
+
+				; Epilogo SWI
+                LDMFD   SP!, {R8, R12}          ; Load R8, SPSR
+                MSR     SPSR_cxsf, R12        ; Set SPSR
+                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+				;------------------------------
+;-------------------------------------------------------------------------------------------------------
+
+
+;------------------------------- disable_irq --------------------------------------------------
+__disable_irq	
+
+				MRS		R8, SPSR					; Leer CPSR del programa
+				ORR 	R8,R8,#IRQ_Bit 		; Pone a 1 el bit de las IRQ
+				MSR		R8, SPSR					; Copiamos el nuevo estado en el registro de estado
+
+				; Epilogo SWI
                 LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
                 MSR     SPSR_cxsf, R12         ; Set SPSR
                 LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+				;------------------------------
+;-------------------------------------------------------------------------------------------------------
 
+
+;------------------------------- disable_fiq --------------------------------------------------
+__disable_fiq	
+
+				MRS		R8, SPSR					; Leer CPSR del programa
+				ORR 	R8,R8,#FIQ_Bit 		; Pone a 1 el bit de las IRQ
+				MSR		R8, SPSR					; Copiamos el nuevo estado en el registro de estado
+
+				; Epilogo SWI
+                LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+                MSR     SPSR_cxsf, R12         ; Set SPSR
+                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+				;------------------------------
+;-------------------------------------------------------------------------------------------------------
+
+
+;------------------------------- read_IRQ_bit --------------------------------------------------
+EXTERN bit_irq [DATA,SIZE=4]
+	
+__read_IRQ_bit	
+				MRS			R8, SPSR					; Leer CPSR del programa
+				TST			R8, #IRQ_Bit
+				MOVNE	R8, #1
+				MOVEQ 	R8, #0
+				
+				LDR 			R12, =bit_irq
+				STR 		R8, [R12]
+
+				
+				
+
+				; Epilogo SWI
+                LDMFD   SP!, {R8, R12}          ; Load R8, SPSR
+                MSR     SPSR_cxsf, R12        ; Set SPSR
+                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+				;------------------------------
+;-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+;                EXTERN shared_var [DATA,SIZE=4]
+
+;__decrease_var
+;                LDR R8, =shared_var;=
+;				 LDR R12, [r8]
+;                SUB R12, R12, #1
+;                STR R12, [R8]
+;				
+;				; Epilogo SWI
+;                LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+;                MSR     SPSR_cxsf, R12         ; Set SPSR
+;                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+				;------------------------------
 
                 END
 
