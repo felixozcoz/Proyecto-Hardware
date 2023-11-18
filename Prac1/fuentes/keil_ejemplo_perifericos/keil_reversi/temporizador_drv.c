@@ -55,12 +55,12 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(),
 }
 
 
-// Leer el valor del reloj (timer 1)
-uint64_t temporizador1_leer_drv(void){
+uint32_t __swi(0) clock_get_us(void);
+uint32_t __SWI_0 (void) {
 	float ticks = (float)temporizador1_hal_leer();
 	float tiempo = ticks/temporizador_hal_ticks2us;
 	
-	return (uint64_t)tiempo;
+	return (uint32_t)tiempo;
 }
 
 // Detener reloj (timer 1) y devolver count
@@ -76,4 +76,15 @@ void temporizador_drv_callback_reloj(void){
 		// llama a función de callback proporcionada por el temporizador_drv_reloj
 		func_address(evento);
 }
+
+// activar interrupciones irq en el registro de estado
+void __swi(0xFF) enable_irq (void);
+
+// desactivar interrupciones irq en el registro de estado
+void __swi(0xFE) disable_irq(void);
+
+// desactivar interrupciones ifq en el registro de estado
+void __swi(0xFD) disable_fiq(void);
+
+
 
