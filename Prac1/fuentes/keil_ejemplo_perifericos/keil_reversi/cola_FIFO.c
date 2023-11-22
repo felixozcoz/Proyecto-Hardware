@@ -57,17 +57,30 @@ void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
 // En cualquier otro caso, devuelve 0, que indica que
 // la cola está vacía
 uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
+		uint8_t retVal = 0;
+	
+		// deshabilitar interrupciones para atomicidad
+		bit_irq = read_IRQ_bit(); 
+		if ( bit_irq )
+			disable_irq();
+	
     // Verifica si la cola está vacía
     if (fifo_inicio == fifo_fin) {
         // La cola está vacía
-        return 0;
+        retVal = 0;
     } else {
 				// devuelve referencia del evento
         *ID_evento = fifo[fifo_inicio].ID_evento;
         *auxData = fifo[fifo_inicio].auxData;
         fifo_inicio = (fifo_inicio + 1) % MAX_SIZE;
-        return 1;
+        retVal = 1;
     }
+		
+			// restaurar el estado del bit I (disable IRQ interrupt)
+		if ( bit_irq )
+			enable_irq(); 
+		
+		return retVal;
 }
 
 // Devuelve el número de total de veces

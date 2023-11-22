@@ -19,4 +19,8 @@ void __swi(0xFD) disable_fiq(void);
 // leer bit I del SPSR (bit I es IRQ interrupt disable bit)
 int __swi(0xFC) read_IRQ_bit(void);
 
+
+// Función genérica para abastraer las operaciones atómicas
+void operacionAtomica(void (*funcion_atomica)(void));
+
 #endif // __SWI_LLAMADAS_

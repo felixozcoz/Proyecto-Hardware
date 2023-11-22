@@ -22,7 +22,7 @@ void WD_hal_inicializar(uint32_t sec)
 //
 // "Alimentar" Watchdog. Reinicia
 // la cuenta del WD si no ha terminado.
-void WD_hal_feed()
+void WD_hal_feed(void)
 {
 	bit_irq = read_IRQ_bit(); 
 	

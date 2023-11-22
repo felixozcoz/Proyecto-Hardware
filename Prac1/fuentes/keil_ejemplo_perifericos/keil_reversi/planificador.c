@@ -30,8 +30,6 @@ void inicializar_modulos(void);
 void gestionar_eventos(const uint32_t periodo_timer1);
 
 
-
-
 // **** FUNCIONES ****
 
 // Inicilizar cola de eventos
@@ -48,6 +46,8 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1)
 
 void inicializar_modulos(void)
 {
+	disable_fiq(); // desactivar interrupciones FIQ (no utilizadadas)
+	
 	GPIO_inicializar();
 	
 	#if  ! ( TEST_ALARMAS | TEST_BOTONES )

@@ -5,6 +5,7 @@
 #include "GPIO.h"
 #include "tests.h"
 #include "io_reserva.h"
+#include "SWI_llamadas.h"
 
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles

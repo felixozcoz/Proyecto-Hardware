@@ -621,6 +621,26 @@
               <FileType>1</FileType>
               <FilePath>.\WD_hal.c</FilePath>
             </File>
+            <File>
+              <FileName>linea_serie_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\linea_serie_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\linea_serie_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\linea_serie_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\linea_serie_drv.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
