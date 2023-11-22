@@ -10,8 +10,4 @@ void init_serial(void);
 void sendchar(int ch);
 int getchar(void);
 
-
-
-
-
 #endif // _LINEA_SERIE_HAL_H_

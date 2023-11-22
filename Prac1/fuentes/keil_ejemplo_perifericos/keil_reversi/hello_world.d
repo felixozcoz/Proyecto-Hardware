@@ -1,0 +1,13 @@
+.\hello_world.o: hello_world.c
+.\hello_world.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\hello_world.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\hello_world.o: hello_world.h
+.\hello_world.o: GPIO.h
+.\hello_world.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\hello_world.o: io_reserva.h
+.\hello_world.o: alarmas.h
+.\hello_world.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\hello_world.o: cola_FIFO.h
+.\hello_world.o: tests.h
+.\hello_world.o: io_reserva.h
+.\hello_world.o: SWI_llamadas.h
