@@ -8,8 +8,9 @@
 #define TEST_ALARMAS 0
 #define TEST_BOTONES 0
 #define TEST_CONSUMO 0
+#define TEST_WATCHDOG 1
 #define JUEGO  0
-#define HELLO_WORLD_DEMO 1
+#define HELLO_WORLD_DEMO 0
 	
 void test_FIFO(void);
 void test_GPIO(void);

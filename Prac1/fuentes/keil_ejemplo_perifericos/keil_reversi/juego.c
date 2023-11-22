@@ -28,7 +28,7 @@ void inicializar_juego(const int _cuenta, const unsigned int _intervalo){
 
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
-	unsigned int now = temporizador1_leer_drv(); // en ms
+	unsigned int now = clock_get_us(); // en ms
 	intervalo = (now - last_press);
 	last_press = now;
 	
