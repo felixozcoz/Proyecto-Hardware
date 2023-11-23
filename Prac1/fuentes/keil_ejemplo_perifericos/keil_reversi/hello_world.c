@@ -1,6 +1,5 @@
 #include <inttypes.h>
 #include "hello_world.h"
-#include "io_reserva.h"
 #include "alarmas.h"
 
 // Contador para indicar el led

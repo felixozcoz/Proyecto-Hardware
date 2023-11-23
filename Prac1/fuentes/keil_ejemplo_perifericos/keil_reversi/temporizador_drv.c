@@ -7,7 +7,6 @@
 static EVENTO_T evento = EVENTO_VOID;
 
 // Variable que guarda la función de callback
-// static void (*funcion_callback)();
 static void(*func_address)(EVENTO_T) = NULL ;
 
 // ----------- API DRIVER ----------------

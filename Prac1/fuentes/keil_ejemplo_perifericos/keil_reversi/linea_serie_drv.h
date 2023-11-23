@@ -5,10 +5,12 @@
 
 #include "linea_serie_hal.h"
 #include <inttypes.h>
+#include "cola_FIFO.h"
 
+void iniciar_serial(void);
 // fsm que gestiona
-void gestor_serial(uint32_t entrada);
-
+void gestor_serial(void);
+void linea_serie_drv_enviar_array(char *buff);
 
 
 #endif // _LINEA_SERIE_DRV_H_

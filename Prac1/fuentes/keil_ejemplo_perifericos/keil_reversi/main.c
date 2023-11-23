@@ -8,6 +8,7 @@
 #include "alarmas.h"
 #include "WD_hal.h"
 #include "SWI_llamadas.h"
+#include "linea_serie_drv.h"
 
 #define TESTING 1
 
@@ -17,7 +18,9 @@ int __swi(0xFC) read_IRQ_bit(void);
 int main(){
 
 	#if ! TESTING
-		// ...
+		char miMsg[] = "ABCDE";
+		iniciar_serial();
+		linea_serie_drv_enviar_array(miMsg);
 	#else
 		uint32_t periodo_timer1_ms __attribute__((unused)) = 10;
 	

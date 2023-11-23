@@ -1,5 +1,6 @@
 #include "planificador.h"
 #include "visualizar.h"
+#include "SWI_llamadas.h" // mirar libreta quitar
 
 
 // Tiempo para determinar "sin actividad de usuario"

@@ -8,9 +8,9 @@
 ;/* development tools. Nothing else gives you the right to use this software. */
 ;/*****************************************************************************/
 
-T_Bit        	EQU     0x20
-F_Bit			EQU     0x40
-I_Bit			EQU		0x80 ; bit7 de la CPSR, si 1 inhibe IRQ
+T_Bit        	EQU     0x0020
+F_Bit			EQU     0x0040
+I_Bit			EQU		0x0080 ; bit7 de la CPSR, si 1 inhibe IRQ
 
                 PRESERVE8                      ; 8-Byte aligned Stack
                 AREA    SWI_Area, CODE, READONLY

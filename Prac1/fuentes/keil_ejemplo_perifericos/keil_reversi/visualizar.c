@@ -1,8 +1,5 @@
-#include <LPC210x.h>
-#include "juego.h"
-#include "cola_FIFO.h"
-#include "temporizador_drv.h"
-#include "io_reserva.h"
+
+
 
 
 // Localización y número de bits de leds en GPIO

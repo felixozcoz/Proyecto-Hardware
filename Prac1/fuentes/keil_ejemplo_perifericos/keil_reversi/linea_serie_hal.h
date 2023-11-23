@@ -2,12 +2,10 @@
 #define _LINEA_SERIE_HAL_H_
 
 #include <LPC210X.H>
+#include <stddef.h>
 
-// Módulo de gestión de periférico UART0
-// a bajo nivel
-
-void init_serial(void);
-void sendchar(int ch);
-int getchar(void);
+void iniciar_serial_hal( void(*_funcion_callback_transmision)(), void(*_funcion_callback_recepcion)() );
+void sendchar_serie(char ch);
+int getchar_serie(void);
 
 #endif // _LINEA_SERIE_HAL_H_

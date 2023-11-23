@@ -1,13 +1,32 @@
 #include "linea_serie_hal.h"
 
+// función de callback del gestor
+static void(*funcion_callback_transmision)(void) = NULL;
+static void(*funcion_callback_recepcion)(void) = NULL;
+
+
 void UART0_ISR (void) __irq {
-	// ...
-		VICVectAddr = 0;   // Acknowledge interrupt                    
+	// indentificar origen de la interrupción
+	switch(U0IIR & 0xF){ 
+		case 0x2 : // transmisión completada
+			funcion_callback_transmision();
+		break;
+			
+		case 0x4 : // recepción de un caracter
+			funcion_callback_recepcion();
+		break;
+	}
+	
+	VICVectAddr = 0;   // Acknowledge interrupt                    
 }
 
 
-void init_serial(void)
+void iniciar_serial_hal( void(*_funcion_callback_transmision)(), void(*_funcion_callback_recepcion)() )
 {
+	// registrar funciones de callback para interrupciones
+	funcion_callback_transmision = _funcion_callback_transmision; 
+	funcion_callback_recepcion = _funcion_callback_recepcion;
+	
 	// Seleccionar los pines de UART0 en los registros 
 	PINSEL0 = PINSEL0 | 0x5;  
 	
@@ -29,20 +48,18 @@ void init_serial(void)
 	VICIntEnable = VICIntEnable | 0x40;
 }
 
-void sendchar(int ch)
+void sendchar_serie(char ch)
 {	
 	// Transmit Holding Register; Transmite los datos a la UART
 	U0THR = ch;	
-	
-	// TODO: se debería chequear que el dato es válido usando el U0LSR?
 }
 
-int getchar(void)
+int getchar_serie(void)
 {
 	// UART0 Line Status Register: read-only , provides status info on the RX and TX
 	// (see table 89 of the LPC2105 user manual) 
-	while( ! (U0LSR & 0x01) ); // check U0RBR contains valid data on U0RBR
+	// TODO: GESTIONAR, EN VEZ DE ESPERA ACTIVA
+	while(! (U0LSR & 0x01) ); // check contains valid data
 	
 	return U0RBR;
-	
 }

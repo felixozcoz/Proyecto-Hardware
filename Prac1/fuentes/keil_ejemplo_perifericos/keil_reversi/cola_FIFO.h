@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include "GPIO.h"
 #include "tests.h"
-#include "io_reserva.h"
-#include "SWI_llamadas.h"
 
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles
@@ -20,6 +18,8 @@ typedef enum {
 		ev_LATIDO = 7,						// heartbeat cada 10ms
 		HELLO_OVERFLOW = 8,				// activar pin de overflow de la GPIO ( termina ejecución )
 		DESPULSACION = 9, 				// el botón indicado en 'auxData' ha sido despulsado
+		ev_RX_SERIE = 10, 				// recibido comando en linea serie; contenido en 'auxData'
+		ev_TX_SERIE = 11, 				// enviado to el mensaje por línea serie
 		
 		#if TEST_ALARMAS | TEST_FIFO | TEST_FIFO			// eventos artificiales para test de alarmas
 			EVENTO_FICTICIO_1 = -1,

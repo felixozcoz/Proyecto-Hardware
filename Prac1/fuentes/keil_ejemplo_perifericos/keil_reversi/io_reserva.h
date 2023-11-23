@@ -29,3 +29,8 @@
 #define GPIO_BITS_EINT1 1
 #define GPIO_EINT2 15
 #define GPIO_BITS_EINT2 1
+
+
+// Linea serie (UART0)
+#define GPIO_SERIE_ERROR 30
+#define GPIO_SERIE_ERROR_BITS 1

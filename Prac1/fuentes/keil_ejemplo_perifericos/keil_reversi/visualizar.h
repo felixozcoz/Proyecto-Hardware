@@ -2,7 +2,6 @@
 #define __VISUALIZAR_H__
 
 #include <inttypes.h>
-#include "io_reserva.h"
 #include "GPIO.h"
 
 

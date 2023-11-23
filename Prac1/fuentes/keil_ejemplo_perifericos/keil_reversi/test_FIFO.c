@@ -1,5 +1,5 @@
 #include "tests.h"
-
+#include "io_reserva.h" // mirar libreta quitar
 #include "cola_FIFO.h"
 
 static const EVENTO_T E = EVENTO_VOID; 

@@ -1,4 +1,6 @@
 #include "cola_fifo.h"
+#include "SWI_llamadas.h"
+#include "io_reserva.h" // mirar libreta quitar
 
 // Estructura para los 
 // elementos de la cola
