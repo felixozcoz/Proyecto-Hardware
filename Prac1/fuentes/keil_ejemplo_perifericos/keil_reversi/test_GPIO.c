@@ -2,7 +2,7 @@
 
 #include <inttypes.h>
 
-#include "GPIO.h"
+#include "GPIO_hal.h"
 #include "io_reserva.h"
 
 

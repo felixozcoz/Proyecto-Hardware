@@ -1,6 +1,14 @@
 #include "planificador.h"
 #include "visualizar.h"
-#include "SWI_llamadas.h" // mirar libreta quitar
+#include "alarmas.h"
+#include "botones.h"
+#include "hello_world.h"
+#include "juego.h"
+#include "cola_FIFO.h"
+#include "Power_management.h"
+#include "GPIO_hal.h"
+#include "io_reserva.h"
+#include "temporizador_drv.h"
 
 
 // Tiempo para determinar "sin actividad de usuario"
@@ -33,12 +41,13 @@ void gestionar_eventos(const uint32_t periodo_timer1);
 
 // **** FUNCIONES ****
 
-// Inicilizar cola de eventos
-void inicializar_cola_eventos(const uint32_t periodo_timer1) 
+// Iniciar planificador
+void planificador(const uint32_t periodo_timer1) 
 {
 	inicializar_modulos();
 	
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0); // alarma power-down proccessor mode
+	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, REVISAR_ALARMAS);
 	
 	gestionar_eventos(periodo_timer1);
 }
@@ -47,7 +56,6 @@ void inicializar_cola_eventos(const uint32_t periodo_timer1)
 
 void inicializar_modulos(void)
 {
-	disable_fiq(); // desactivar interrupciones FIQ (no utilizadadas)
 	
 	GPIO_inicializar();
 	
@@ -117,7 +125,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					break;
 					
 				case POWER_DOWN:
-					power_hal_deep_sleep();
+					PM_power_down();
 					break;
 				
 				case ev_VISUALIZAR_CUENTA:
@@ -138,7 +146,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 						if( evento < 0) break;
 					#endif
 				
-					power_hal_wait(); // cambio modo IDLE del procesador
+					PM_idle(); // cambio modo IDLE del procesador
 					break;
 			}
 	}

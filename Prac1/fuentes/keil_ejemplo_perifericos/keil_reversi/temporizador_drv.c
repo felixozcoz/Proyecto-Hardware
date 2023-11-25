@@ -44,11 +44,11 @@ uint64_t temporizador_drv_parar(void) {
 
 // Programa el reloj para que encole un evento periódicamente 
 // en la cola del planificador. El periodo se indica en ms
-void temporizador_drv_reloj (uint32_t periodo, void (*funcion_encolar_evento)(), EVENTO_T ID_evento) 
+void temporizador_drv_reloj (uint32_t periodo, void (*funcion_callback)(), EVENTO_T ID_evento) 
 {
 	// guardamos el id del evento a encola en la próxima interrupción del reloj
 	evento = ID_evento;
-	func_address = funcion_encolar_evento;
+	func_address = funcion_callback;
 	// inicializar parte dependiente del hardware
 	temporizador_hal_reloj(periodo, temporizador_drv_callback_reloj);
 }

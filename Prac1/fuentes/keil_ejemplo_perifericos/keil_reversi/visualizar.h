@@ -2,7 +2,7 @@
 #define __VISUALIZAR_H__
 
 #include <inttypes.h>
-#include "GPIO.h"
+#include "GPIO_hal.h"
 
 
 void inicializar_visualizar(GPIO_HAL_PIN_T _gpio_inicial, uint8_t _num_bits );

@@ -3,6 +3,7 @@
 #include "int_external_hal.h"
 #include "botones.h"
 #include <LPC210X.h>
+#include <stddef.h>
 
 // variables para comprobar que se hacen las 
 // interrupciones que deberían hacerse
@@ -14,6 +15,9 @@ static volatile unsigned int eint2_cuenta = 0;
 static volatile unsigned int eint1_nueva_pulsacion = 0;
 static volatile unsigned int eint2_nueva_pulsacion = 0;
 
+// Función de callback para gestión de pulsación
+static void(*func_callback_eint1)(uint8_t) = NULL;
+static void(*func_callback_eint2)(uint8_t) = NULL;
 
 // EINT 1
 
@@ -27,7 +31,7 @@ void eint1_ISR (void) __irq
 	eint1_nueva_pulsacion = 1;
 	
 		// call módulo gestión de pulsaciones 
-	pulsacion_detectada(1);
+	func_callback_eint1(1);
 }
 
 
@@ -61,8 +65,11 @@ unsigned int eint1_comprobar_flag(void)
 	return EXTINT & 2 ? 1 : 0;	// comprobar valor del flag
 }
 
-void eint1_iniciar_hal (void)
+void eint1_iniciar_hal (void(*func_callback)(uint8_t))
 {
+	// registrar función de callback para interrupción
+	func_callback_eint1 = func_callback;
+	
 	// NOTA: según el manual se puede configurar cómo se activan las interrupciones: por flanco o nivel, alta o baja. 
 	// Se usarían los registros EXTMODE y EXTPOLAR. 
 	// Sin embargo parece que el simulador los ignora y no aparecen en la ventana de ocnfiguración de EXT Interrupts
@@ -111,7 +118,7 @@ void eint2_ISR (void) __irq
 	eint2_nueva_pulsacion = 1; 
 	
 		// call módulo gestión de pulsaciones 
-	pulsacion_detectada(2);
+	func_callback_eint2(2);
 }
 
 
@@ -145,8 +152,11 @@ unsigned int eint2_comprobar_flag(void)
 	return EXTINT & 4 ? 1 : 0; // comprobar valor del flag
 }
 	
-void eint2_iniciar_hal (void)
+void eint2_iniciar_hal (void(*funcion_callback)(uint8_t) )
 {
+	// registrar función de callback para interrupción
+	func_callback_eint2 = funcion_callback;
+	
 // NOTA: según el manual se puede configurar cómo se activan las interrupciones: por flanco o nivel, alta o baja. 
 // Se usarían los registros EXTMODE y EXTPOLAR. 
 // Sin embargo parece que el simulador los ignora y no aparecen en la ventana de ocnfiguración de EXT Interrupts

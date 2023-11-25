@@ -1,6 +1,8 @@
-#include "power.h"
+#include "power_hal.h"
 #include "Power_management.h"
 #include <LPC210x.H>  
+
+extern void Switch_to_PLL(void);
 
 // Configurar procesador a 
 // estado IDLE. Puede ser 

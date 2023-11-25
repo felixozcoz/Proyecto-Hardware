@@ -2,6 +2,7 @@
 #include <limits.h>
 #include "alarmas.h"
 
+#include "cola_FIFO.h"
 
 // Alarmas
 static alarma_t alarmas[ALARMAS_MAX];

@@ -3,7 +3,8 @@
 #ifndef __JUEGO_H__
 #define __JUEGO_H__
 
-#include "temporizador_drv.h"
+#include <inttypes.h>
+#include "EVENTOS_T.h"
 
 void inicializar_juego(const int _cuenta, const unsigned int _intervalo);
 

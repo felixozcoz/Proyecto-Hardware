@@ -452,11 +452,6 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>GPIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GPIO.h</FilePath>
-            </File>
-            <File>
               <FileName>io_reserva.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\io_reserva.h</FilePath>
@@ -510,16 +505,6 @@
               <FileName>hello_world.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\hello_world.h</FilePath>
-            </File>
-            <File>
-              <FileName>power.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\power.h</FilePath>
-            </File>
-            <File>
-              <FileName>power.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\power.c</FilePath>
             </File>
             <File>
               <FileName>alarmas.h</FileName>
@@ -577,11 +562,6 @@
               <FilePath>.\visualizar.c</FilePath>
             </File>
             <File>
-              <FileName>test_juego.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_juego.c</FilePath>
-            </File>
-            <File>
               <FileName>test_GPIO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\test_GPIO.c</FilePath>
@@ -592,24 +572,9 @@
               <FilePath>.\test_alarmas.c</FilePath>
             </File>
             <File>
-              <FileName>test_botones.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_botones.c</FilePath>
-            </File>
-            <File>
               <FileName>test_FIFO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\test_FIFO.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWI_llamadas.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\SWI_llamadas.h</FilePath>
-            </File>
-            <File>
-              <FileName>SWI_llamadas.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SWI_llamadas.c</FilePath>
             </File>
             <File>
               <FileName>WD_hal.h</FileName>
@@ -640,6 +605,46 @@
               <FileName>linea_serie_drv.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\linea_serie_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GPIO_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>EVENTOS_T.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\EVENTOS_T.h</FilePath>
+            </File>
+            <File>
+              <FileName>power_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\power_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>power_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\power_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>Power_management.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Power_management.h</FilePath>
+            </File>
+            <File>
+              <FileName>Power_management.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Power_management.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWI_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SWI_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWI_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SWI_hal.h</FilePath>
             </File>
           </Files>
         </Group>

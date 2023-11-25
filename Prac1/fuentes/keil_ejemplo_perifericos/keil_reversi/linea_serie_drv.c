@@ -1,5 +1,9 @@
 #include "linea_serie_drv.h"
-#include "io_reserva.h" // mirar libreta quitar
+
+#include "linea_serie_hal.h"
+#include "EVENTOS_T.h"
+#include "cola_FIFO.h"
+#include <string.h>
 
 #define MAX_LEN_TRAMA 3
 
@@ -16,10 +20,21 @@ static volatile size_t len_buff;
 static volatile size_t index;
 
 
+// Pin inicial de la GPIO y 
+// número de pins desde ese, respectivamente
+static GPIO_HAL_PIN_T pin_inicial;
+static GPIO_HAL_PIN_T num_pins;
+
+
 void linea_serie_drv_continuar_envio(void);
 
 
-void iniciar_serial(void){
+void iniciar_serial(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins){
+		// set GPIO pins
+	pin_inicial = _pin;
+	num_pins = _num_pins;
+	gpio_hal_sentido(pin_inicial, num_pins, GPIO_HAL_PIN_DIR_OUTPUT);
+		// init hal
 	iniciar_serial_hal(linea_serie_drv_continuar_envio ,gestor_serial);
 }
 
@@ -32,7 +47,7 @@ void gestor_serial(void)
 		
 		case inicio:
 			if ( ch == '$' ){
-				gpio_hal_escribir(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS, 0); // desactivar GPIO30
+				gpio_hal_escribir(pin_inicial, num_pins, 0); // desactivar GPIO30
 				trama_len_buff = 0;
 				ESTADO = procesando;
 			}
@@ -61,7 +76,7 @@ void gestor_serial(void)
 					trama_len_buff++;
 				}
 				else{			
-					gpio_hal_escribir(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS, 1); // enceder led GPIO30 GPIO_SERIE_ERROR
+					gpio_hal_escribir(pin_inicial, num_pins, 1); // enceder led GPIO30 GPIO_SERIE_ERROR
 					ESTADO = inicio; // secuencia de cadenas incongruente con comandos permitidos
 				}
 			}
@@ -72,7 +87,7 @@ void gestor_serial(void)
 // Inicializa estructura y envía primer caracter
 void linea_serie_drv_enviar_array(char *buff)
 {
-	len_buff = sizeof(buff) / sizeof(buff[0]);
+	len_buff = strlen(buff);
 	if(len_buff == 0)
 		return; 
 	
@@ -90,10 +105,8 @@ void linea_serie_drv_continuar_envio(void)
 {
 	// Verificar si hemos alcanzado el final del buffer
     if (index < len_buff) {
-				char ch = buffer[index];
-        /// sendchar_serie(buffer[index]); // enviar el siguiente carácter
-				sendchar_serie(ch);
-				//size_t otro_index = index++;
+				size_t ind = index;
+				sendchar_serie(buffer[ind]);
         index++; 	
     } else 
         FIFO_encolar(ev_TX_SERIE, 0); // transmisión completada

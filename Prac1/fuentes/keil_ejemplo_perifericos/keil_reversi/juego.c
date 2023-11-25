@@ -1,12 +1,9 @@
-// juego.c
-
 #include <LPC210x.h>
+
 #include "juego.h"
 #include "cola_FIFO.h"
 #include "temporizador_drv.h"
 #include "botones.h"
-
-#include <inttypes.h>
 
 // Contabiliza las pulsaciones de los botone
 // pulsar EINT1 incrementa en una unidad y

@@ -1,5 +1,8 @@
 #include "linea_serie_hal.h"
 
+#include <LPC210X.H>
+#include <stddef.h>
+
 // función de callback del gestor
 static void(*funcion_callback_transmision)(void) = NULL;
 static void(*funcion_callback_recepcion)(void) = NULL;

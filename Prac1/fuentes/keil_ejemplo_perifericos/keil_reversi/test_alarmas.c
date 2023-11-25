@@ -1,14 +1,11 @@
-// test_alarmas.c
-#include "alarmas.h"
-#include "cola_FIFO.h"
-#include "temporizador_drv.h"
-#include "planificador.h"
 #include "tests.h"
+#include "alarmas.h"
+#include "EVENTOS_T.h"
 
-#define TEST_NORMAL 0
-#define TEST_PERIODICA 0
-#define TEST_PERIODICA_CANCELAR 0
-#define TEST_ALARMA_OVERFLOW 0
+#define TEST_NORMAL 1
+#define TEST_PERIODICA 1
+#define TEST_PERIODICA_CANCELAR 1
+#define TEST_ALARMA_OVERFLOW 1
 
 
 // Parámetros de test
@@ -48,9 +45,9 @@ void test_alarmas(void){
 		#if TEST_ALARMA_OVERFLOW
 				// overflow por creación de alarmas
 				// objetivo: visualizar en la GPIO el resultado de overflow
-			alarma_activar(EVENTO_FICTICIO_1, retardo_periodica, auxData_test);
-			alarma_activar(EVENTO_FICTICIO_2, retardo_periodica, auxData_test);
-			alarma_activar(EVENTO_FICTICIO_3, retardo_periodica, auxData_test);
+			alarma_activar(EVENTO_FICTICIO_1, retardo_periodica_infinito, auxData_test);
+			alarma_activar(EVENTO_FICTICIO_2, retardo_periodica_infinito, auxData_test);
+			alarma_activar(EVENTO_FICTICIO_3, retardo_periodica_infinito, auxData_test);
 			alarma_activar(EVENTO_FICTICIO_4, retardo_normal, auxData_test); 
 			alarma_activar(EVENTO_FICTICIO_5, retardo_normal, auxData_test); 
 		#endif

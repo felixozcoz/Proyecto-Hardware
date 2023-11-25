@@ -8,7 +8,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
-#include "cola_FIFO.h"
+#include "EVENTOS_T.h"
 
 #define CANCELAR_ALARMA 0
 

@@ -1,7 +1,7 @@
 // gpio.h - Archivo de cabecera de la biblioteca GPIO
 
-#ifndef GPIO_H
-#define GPIO_H
+#ifndef GPIO_HAL_H
+#define GPIO_HAL_H
 
 #include <inttypes.h>
 #include <LPC210X.H> // LPC21XX Peripheral Registers
@@ -91,4 +91,4 @@ __inline void gpio_hal_escribir(GPIO_HAL_PIN_T bit_inicial, uint8_t num_bits, ui
 
 
 
-#endif // GPIO_H
+#endif // GPIO_HAL_H

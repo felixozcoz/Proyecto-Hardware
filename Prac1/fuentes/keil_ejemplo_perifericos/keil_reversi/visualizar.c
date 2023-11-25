@@ -1,6 +1,4 @@
-
-
-
+#include "visualizar.h"
 
 // Localización y número de bits de leds en GPIO
 static GPIO_HAL_PIN_T gpio_inicial = 0;

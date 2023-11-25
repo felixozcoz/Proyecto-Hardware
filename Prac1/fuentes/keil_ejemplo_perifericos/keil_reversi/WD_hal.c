@@ -1,5 +1,8 @@
 #include "WD_hal.h"
 
+#include <LPC210x.h>
+#include "SWI_hal.h"
+
 // WD_hal_inicializar
 //
 // Parámetros:

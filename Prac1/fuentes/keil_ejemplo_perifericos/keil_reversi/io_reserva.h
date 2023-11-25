@@ -1,3 +1,6 @@
+#ifndef _IO_RESERVA_H_
+#define _IO_RESERVA_H_
+
 #define GPIO_button 12
 
 // Leds
@@ -30,7 +33,8 @@
 #define GPIO_EINT2 15
 #define GPIO_BITS_EINT2 1
 
-
 // Linea serie (UART0)
 #define GPIO_SERIE_ERROR 30
 #define GPIO_SERIE_ERROR_BITS 1
+
+#endif // _IO_RESERVA_H_

@@ -1,8 +1,9 @@
-#include "botones.h"
 #include <LPC210X.H> // LPC21XX Peripheral Registers
 
+#include "botones.h"
 #include "alarmas.h"
-
+#include "int_external_hal.h"
+#include "cola_FIFO.h"
 
 // Definir tipo para 
 // estados de los botones
@@ -16,20 +17,19 @@ static  estado_t estado_eint1 = NO_PULSADO;
 static  estado_t estado_eint2 = NO_PULSADO;
 
 
-
 // **** Funciones ****
 
 void inicializar_botones(void)
 {
-	eint1_iniciar_drv();
-	eint2_iniciar_drv();
+	eint1_iniciar_drv( pulsacion_detectada );
+	eint2_iniciar_drv( pulsacion_detectada );
 }
 
 // EINT1 (External Interrupt 1)
 
 // iniciar EINT1
-void eint1_iniciar_drv (void)
-{ eint1_iniciar_hal(); }
+void eint1_iniciar_drv (void(*callback)(uint8_t))
+{ eint1_iniciar_hal( callback ); }
 		
 // leer pulsación de EINT1
 unsigned int eint1_leer_nueva_pulsacion_drv (void)
@@ -90,8 +90,8 @@ void eint1_gestionar_pulsacion(void)
 // EINT2 (External Interrupt 2)
 
 // iniciar EINT2
-void eint2_iniciar_drv (void)
-{ eint2_iniciar_hal(); }
+void eint2_iniciar_drv (void(*callback)(uint8_t))
+{ eint2_iniciar_hal( callback ); }
 
 // leer pulsación EINT2
 unsigned int eint2_leer_nueva_pulsacion_drv( void)
