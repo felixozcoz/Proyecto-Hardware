@@ -14,8 +14,8 @@
 #define TEST_BOTONES 1
 #define TEST_CONSUMO 1
 #define TEST_WATCHDOG 1
-#define JUEGO  0
-#define HELLO_WORLD_DEMO 0
+#define JUEGO  1
+#define HELLO_WORLD_DEMO 1
 	
 	
 void test_FIFO(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins);
@@ -23,6 +23,5 @@ void test_GPIO(void);
 void test_alarmas(void);
 void test_botones(void); // TODO
 void test_consumo(void); // TODO
-
 
 #endif // __TEST_H__

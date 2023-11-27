@@ -5,8 +5,9 @@
 
 #include <inttypes.h>
 #include "EVENTOS_T.h"
+#include "tablero.h"
 
-void inicializar_juego(const int _cuenta, const unsigned int _intervalo);
+void inicializar_juego(TABLERO tablero);
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData);
 

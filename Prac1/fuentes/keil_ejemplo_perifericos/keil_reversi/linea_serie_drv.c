@@ -58,12 +58,19 @@ void gestor_serial(void)
 			{
 				int32_t cmd = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
 				
+					// nueva partida
 				if( trama_buffer[0] == 'N' && trama_buffer[1] == 'E' && trama_buffer[2] == 'W'){
 						FIFO_encolar(ev_RX_SERIE, cmd);	// atómico
 				}
+					// terminar partida
 				else if( trama_buffer[0] == 'E' && trama_buffer[1] == 'N' && trama_buffer[2] == 'D'){
 						FIFO_encolar(ev_RX_SERIE, cmd); // atómico
 				}
+					// indica visualizar tablero
+				else if( trama_buffer[0] == 'T' && trama_buffer[1] == 'A' && trama_buffer[2] == 'B'){
+						FIFO_encolar(ev_RX_SERIE, cmd); // atómico
+				}
+					// indica jugada introducida
 				else if( trama_buffer[1] == '-'){
 					if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&  trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
 							FIFO_encolar(ev_RX_SERIE, cmd); // atómico

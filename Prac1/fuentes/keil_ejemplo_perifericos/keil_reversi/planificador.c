@@ -10,7 +10,7 @@
 #include "io_reserva.h"
 #include "temporizador_drv.h"
 
-#define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
+#define TESTING 1 // activar para realizar test de módulos; flags de test en "test.h"
 
 
 // Tiempo para determinar "sin actividad de usuario"
@@ -39,6 +39,14 @@ void inicializar_modulos(void);
 //
 // Gestiona los eventos
 void gestionar_eventos(const uint32_t periodo_timer1);
+
+// Función privada
+//
+// Inicializa los test específicos
+// para los test unitarios de módulos
+// Flag "TESTING" debe estar a 1
+// Resto de flags de control de test en "../Tests/test.h"
+void init_modulos_test(void);
 
 
 // **** FUNCIONES ****
@@ -124,7 +132,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					while(1);
 				
 				case ev_RX_SERIE:
-					// ...
+					juego_tratar_evento(ev_RX_SERIE, auxData);
 					break;
 				
 				case ev_TX_SERIE:
@@ -165,8 +173,6 @@ __inline void activar_overflow_gpio_pin(void) {
 	gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 	
 }
-
-
 
 
 void init_modulos_test(void){

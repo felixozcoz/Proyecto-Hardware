@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>Simulator</TargetName>
+      <TargetName>Conecta_k</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -444,67 +444,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Source Code</GroupName>
+          <GroupName>Include</GroupName>
           <Files>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
-            </File>
             <File>
               <FileName>io_reserva.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\io_reserva.h</FilePath>
-            </File>
-            <File>
-              <FileName>temporizador_hal.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\temporizador_hal.h</FilePath>
-            </File>
-            <File>
-              <FileName>temporizador_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\temporizador_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>temporizador_drv.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\temporizador_drv.h</FilePath>
-            </File>
-            <File>
-              <FileName>temporizador_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\temporizador_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>cola_FIFO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\cola_FIFO.h</FilePath>
-            </File>
-            <File>
-              <FileName>cola_FIFO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\cola_FIFO.c</FilePath>
-            </File>
-            <File>
-              <FileName>planificador.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\planificador.h</FilePath>
-            </File>
-            <File>
-              <FileName>planificador.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\planificador.c</FilePath>
-            </File>
-            <File>
-              <FileName>hello_world.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\hello_world.c</FilePath>
-            </File>
-            <File>
-              <FileName>hello_world.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\hello_world.h</FilePath>
             </File>
             <File>
               <FileName>alarmas.h</FileName>
@@ -512,104 +457,39 @@
               <FilePath>.\alarmas.h</FilePath>
             </File>
             <File>
-              <FileName>alarmas.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\alarmas.c</FilePath>
-            </File>
-            <File>
-              <FileName>tests.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\tests.h</FilePath>
-            </File>
-            <File>
               <FileName>botones.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\botones.h</FilePath>
             </File>
             <File>
-              <FileName>botones.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\botones.c</FilePath>
-            </File>
-            <File>
-              <FileName>int_external_hal.h</FileName>
+              <FileName>celda.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\int_external_hal.h</FilePath>
+              <FilePath>.\celda.h</FilePath>
             </File>
             <File>
-              <FileName>int_external_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\int_external_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>juego.h</FileName>
+              <FileName>cola_FIFO.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\juego.h</FilePath>
+              <FilePath>.\cola_FIFO.h</FilePath>
             </File>
             <File>
-              <FileName>juego.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\juego.c</FilePath>
-            </File>
-            <File>
-              <FileName>visualizar.h</FileName>
+              <FileName>conecta_K_2023.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\visualizar.h</FilePath>
+              <FilePath>.\conecta_K_2023.h</FilePath>
             </File>
             <File>
-              <FileName>visualizar.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\visualizar.c</FilePath>
-            </File>
-            <File>
-              <FileName>test_GPIO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_GPIO.c</FilePath>
-            </File>
-            <File>
-              <FileName>test_alarmas.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_alarmas.c</FilePath>
-            </File>
-            <File>
-              <FileName>test_FIFO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test_FIFO.c</FilePath>
-            </File>
-            <File>
-              <FileName>WD_hal.h</FileName>
+              <FileName>config_conecta_K.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\WD_hal.h</FilePath>
+              <FilePath>.\config_conecta_K.h</FilePath>
             </File>
             <File>
-              <FileName>WD_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\WD_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>linea_serie_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\linea_serie_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>linea_serie_hal.h</FileName>
+              <FileName>entrada.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\linea_serie_hal.h</FilePath>
+              <FilePath>.\entrada.h</FilePath>
             </File>
             <File>
-              <FileName>linea_serie_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\linea_serie_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>linea_serie_drv.h</FileName>
+              <FileName>entradas_test.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\linea_serie_drv.h</FilePath>
-            </File>
-            <File>
-              <FileName>GPIO_hal.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GPIO_hal.h</FilePath>
+              <FilePath>.\entradas_test.h</FilePath>
             </File>
             <File>
               <FileName>EVENTOS_T.h</FileName>
@@ -617,9 +497,39 @@
               <FilePath>.\EVENTOS_T.h</FilePath>
             </File>
             <File>
-              <FileName>power_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\power_hal.c</FilePath>
+              <FileName>GPIO_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\GPIO_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>hello_world.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hello_world.h</FilePath>
+            </File>
+            <File>
+              <FileName>int_external_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\int_external_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>juego.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\juego.h</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\linea_serie_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\linea_serie_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\planificador.h</FilePath>
             </File>
             <File>
               <FileName>power_hal.h</FileName>
@@ -632,6 +542,131 @@
               <FilePath>.\Power_management.h</FilePath>
             </File>
             <File>
+              <FileName>pulsacion.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\pulsacion.h</FilePath>
+            </File>
+            <File>
+              <FileName>reversi8.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\reversi8.h</FilePath>
+            </File>
+            <File>
+              <FileName>SWI_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SWI_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>tablero.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tablero.h</FilePath>
+            </File>
+            <File>
+              <FileName>tablero_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tablero_test.h</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\temporizador_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\temporizador_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\visualizar.h</FilePath>
+            </File>
+            <File>
+              <FileName>WD_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\WD_hal.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Source Code</GroupName>
+          <Files>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\temporizador_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>temporizador_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\temporizador_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>cola_FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cola_FIFO.c</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\planificador.c</FilePath>
+            </File>
+            <File>
+              <FileName>hello_world.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hello_world.c</FilePath>
+            </File>
+            <File>
+              <FileName>alarmas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarmas.c</FilePath>
+            </File>
+            <File>
+              <FileName>botones.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\botones.c</FilePath>
+            </File>
+            <File>
+              <FileName>int_external_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\int_external_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\juego.c</FilePath>
+            </File>
+            <File>
+              <FileName>visualizar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\visualizar.c</FilePath>
+            </File>
+            <File>
+              <FileName>WD_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\WD_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\linea_serie_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>linea_serie_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\linea_serie_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>power_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\power_hal.c</FilePath>
+            </File>
+            <File>
               <FileName>Power_management.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Power_management.c</FilePath>
@@ -641,10 +676,45 @@
               <FileType>1</FileType>
               <FilePath>.\SWI_hal.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Test</GroupName>
+          <Files>
             <File>
-              <FileName>SWI_hal.h</FileName>
+              <FileName>test_alarmas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_alarmas.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_botones.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_botones.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_consumo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_consumo.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_FIFO.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_GPIO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_GPIO.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_juego.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_juego.c</FilePath>
+            </File>
+            <File>
+              <FileName>tests.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\SWI_hal.h</FilePath>
+              <FilePath>.\tests.h</FilePath>
             </File>
           </Files>
         </Group>
