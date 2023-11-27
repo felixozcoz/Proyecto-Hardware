@@ -1,5 +1,3 @@
-// gpio.h - Archivo de cabecera de la biblioteca GPIO
-
 #ifndef GPIO_HAL_H
 #define GPIO_HAL_H
 

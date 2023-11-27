@@ -10,22 +10,21 @@
 enum{ inicio, procesando};
 static volatile unsigned int ESTADO = inicio;
 
-// Buffer de comando
+// Buffer de trama
 static volatile char trama_buffer[MAX_LEN_TRAMA];
 static volatile	size_t trama_len_buff;
 
-// Info del array de char a transmitir
+// Gestión de mensajes por línea serie
 static volatile char *buffer;
 static volatile size_t len_buff;
 static volatile size_t index;
 
 
-// Pin inicial de la GPIO y 
-// número de pins desde ese, respectivamente
+// Pins de GPIO utilizados por línea serie
 static GPIO_HAL_PIN_T pin_inicial;
 static GPIO_HAL_PIN_T num_pins;
 
-
+// (Func privada)
 void linea_serie_drv_continuar_envio(void);
 
 
@@ -41,7 +40,7 @@ void iniciar_serial(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins){
 // se llama cada vez que se quiere procesar un caracter
 void gestor_serial(void)
 {
-	int ch = getchar_serie();	// leer dato de U0RBR, previamente validado
+	int ch = getchar_serie();	// leer dato línea serie
 	
 	switch(ESTADO){
 		
@@ -76,22 +75,23 @@ void gestor_serial(void)
 					trama_len_buff++;
 				}
 				else{			
-					gpio_hal_escribir(pin_inicial, num_pins, 1); // enceder led GPIO30 GPIO_SERIE_ERROR
-					ESTADO = inicio; // secuencia de cadenas incongruente con comandos permitidos
+					gpio_hal_escribir(pin_inicial, num_pins, 1); // enceder led GPIO30 "GPIO_SERIE_ERROR"
+					ESTADO = inicio; // secuencia de cadenas incongruente con tramas fuera del dominio
 				}
 			}
 			break;
 	}
 }
 
-// Inicializa estructura y envía primer caracter
+// Inicializa estructura de gestión de mensajes
+// por línea serie y envíar primer caracter
 void linea_serie_drv_enviar_array(char *buff)
 {
 	len_buff = strlen(buff);
 	if(len_buff == 0)
 		return; 
 	
-	// Inicializar datos ( así en caso de parte no opcional )
+	// inicializar datos ( así en caso de parte no opcional )
 	buffer = buff;
 	index = 0;
 	
@@ -100,7 +100,7 @@ void linea_serie_drv_enviar_array(char *buff)
 	index++;
 }
 
-// Transmite los n-1 caracteres del buffer, donde n es la longitud del buffer
+// Transmite el resto de caracteres del mensaje
 void linea_serie_drv_continuar_envio(void)
 {
 	// Verificar si hemos alcanzado el final del buffer
@@ -109,5 +109,5 @@ void linea_serie_drv_continuar_envio(void)
 				sendchar_serie(buffer[ind]);
         index++; 	
     } else 
-        FIFO_encolar(ev_TX_SERIE, 0); // transmisión completada
+        FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
 }

@@ -21,10 +21,7 @@ void WD_hal_inicializar(uint32_t sec)
 	WDMOD = 0x03;										// Set 'Reset Mode' WD mode (WDEN = 1, WDRESET = 1)
 }
 
-// WD_hal_feed
-//
-// "Alimentar" Watchdog. Reinicia
-// la cuenta del WD si no ha terminado.
+
 void WD_hal_feed(void)
 {
 	bit_irq = read_IRQ_bit(); 

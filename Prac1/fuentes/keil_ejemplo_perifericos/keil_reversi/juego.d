@@ -1,0 +1,13 @@
+.\juego.o: juego.c
+.\juego.o: C:\Keil_v5\ARM\INC\Philips\LPC210x.h
+.\juego.o: juego.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\juego.o: EVENTOS_T.h
+.\juego.o: tests.h
+.\juego.o: GPIO_hal.h
+.\juego.o: io_reserva.h
+.\juego.o: cola_FIFO.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\juego.o: temporizador_drv.h
+.\juego.o: botones.h

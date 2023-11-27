@@ -1,0 +1,10 @@
+.\main.o: main.c
+.\main.o: planificador.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\main.o: planificador.h
+.\main.o: tests.h
+.\main.o: GPIO_hal.h
+.\main.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\main.o: io_reserva.h
+.\main.o: linea_serie_drv.h

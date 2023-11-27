@@ -61,7 +61,6 @@ int getchar_serie(void)
 {
 	// UART0 Line Status Register: read-only , provides status info on the RX and TX
 	// (see table 89 of the LPC2105 user manual) 
-	// TODO: GESTIONAR, EN VEZ DE ESPERA ACTIVA
 	while(! (U0LSR & 0x01) ); // check contains valid data
 	
 	return U0RBR;

@@ -1,6 +1,8 @@
 #ifndef _EVENTOS_T_H_
 #define _EVENTOS_T_H_
 
+#include "tests.h" // definición de estructuras de control de flujo para test unitarios de módulos
+
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles
 typedef enum {

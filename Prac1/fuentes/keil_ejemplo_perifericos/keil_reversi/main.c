@@ -2,8 +2,6 @@
 #include "planificador.h"
 #include "linea_serie_drv.h"
 
-#define TESTING 0
-
 int main(){
 
 	#if ! TESTING

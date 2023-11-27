@@ -15,7 +15,6 @@ static GPIO_HAL_PIN_T pin_inicial;
 static GPIO_HAL_PIN_T num_pins;
 
 
-
 void hello_world_inicializar(const GPIO_HAL_PIN_T _pin_inicial, const GPIO_HAL_PIN_T _num_pins) 
 {
 	contador = 0;

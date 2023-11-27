@@ -10,6 +10,8 @@
 #include "io_reserva.h"
 #include "temporizador_drv.h"
 
+#define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
+
 
 // Tiempo para determinar "sin actividad de usuario"
 // para pasar a estado power-down del procesador
@@ -47,7 +49,7 @@ void planificador(const uint32_t periodo_timer1)
 	inicializar_modulos();
 	
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0); // alarma power-down proccessor mode
-	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, REVISAR_ALARMAS);
+	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, REVISAR_ALARMAS); // inicializar reloj 
 	
 	gestionar_eventos(periodo_timer1);
 }
@@ -56,32 +58,17 @@ void planificador(const uint32_t periodo_timer1)
 
 void inicializar_modulos(void)
 {
-	
 	GPIO_inicializar();
-	
-	#if  ! ( TEST_ALARMAS | TEST_BOTONES )
-	
-		FIFO_inicializar(GPIO_OVERFLOW);
-		alarma_inicializar(); 
-	
-	#endif 
-	
-	#if JUEGO
-	
-		inicializar_juego(0, 0);
-		inicializar_visualizar(GPIO_JUEGO, GPIO_JUEGO_BITS);
-	
-	#endif
-	
-	#if HELLO_WORLD_DEMO
-	
-		hello_world_inicializar();
-		inicializar_visualizar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
-	
-	#endif
-	
 	inicializar_botones(); 
 	
+	#if TESTING	
+		init_modulos_test();
+	#endif
+	
+	// inicializar módulos restante según conveniencia
+	// inicializar_juego(0, 0);
+	// hello_world_inicializar(..., ...);
+	// inicializar_visualizar(..., ...);
 }
 
 
@@ -112,7 +99,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 				case PULSACION:
 					alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0); // reset alarma usuario ausente
 				
-						// revisar estado de botones
+					// revisar estado de botones
 					if ( auxData == BOTON_1 ) eint1_gestionar_pulsacion(); // EINT1
 					else 	eint2_gestionar_pulsacion(); // EINT2	
 				
@@ -123,30 +110,38 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 						juego_tratar_evento(ev_VISUALIZAR_CUENTA, auxData);
 					#endif 
 					break;
-					
-				case POWER_DOWN:
-					PM_power_down();
-					break;
-				
+
 				case ev_VISUALIZAR_CUENTA:
 					visualizar_cuenta(auxData);
 					break;
 				
 				case REVISAR_ALARMAS:
-					alarma_tratar_evento(periodo_timer1); // check alarmas
+					alarma_tratar_evento(periodo_timer1); // comprobar alarmas
 					break;
 				
 				case ALARMAS_OVERFLOW:
-					activar_overflow_gpio_pin();
+					activar_overflow_gpio_pin();	// no hay más alarmas disponibles
 					while(1);
+				
+				case ev_RX_SERIE:
+					// ...
+					break;
+				
+				case ev_TX_SERIE:
+					// ...
+					break;
+				
+				case POWER_DOWN:
+					PM_power_down(); // cambiar modo de estado del procesador a power-down (deep-sleep)
+					break;
 				
 				default: 
 					// para tratar eventos de alarmas
-					#if TEST_ALARMAS
+					#if TESTING && TEST_ALARMAS 
 						if( evento < 0) break;
 					#endif
 				
-					PM_idle(); // cambio modo IDLE del procesador
+					PM_idle(); // cambio modo de estado del procesador a resposo (IDLE)
 					break;
 			}
 	}
@@ -172,7 +167,26 @@ __inline void activar_overflow_gpio_pin(void) {
 }
 
 
-#if TEST_CONSUMO | TEST_BOTONES
+
+
+void init_modulos_test(void){
+		#if  ! ( TEST_ALARMAS | TEST_BOTONES )
+		FIFO_inicializar(GPIO_OVERFLOW);
+		alarma_inicializar(); 
+	#endif 
+	#if JUEGO
+		inicializar_juego(0, 0);
+		inicializar_visualizar(GPIO_JUEGO, GPIO_JUEGO_BITS);
+	#endif
+	#if HELLO_WORLD_DEMO
+		hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+		inicializar_visualizar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	#endif	
+}
+
+
+
+#if TESTING && (TEST_CONSUMO | TEST_BOTONES)
 	void set_retardo_USUARIO_AUSENTE(const unsigned int time)
 	{
 		USUARIO_AUSENTE = time;
