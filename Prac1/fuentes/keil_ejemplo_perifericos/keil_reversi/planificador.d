@@ -14,7 +14,14 @@
 .\planificador.o: botones.h
 .\planificador.o: hello_world.h
 .\planificador.o: juego.h
+.\planificador.o: tablero.h
+.\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\planificador.o: celda.h
+.\planificador.o: config_conecta_K.h
 .\planificador.o: cola_FIFO.h
 .\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\planificador.o: Power_management.h
 .\planificador.o: temporizador_drv.h
+.\planificador.o: linea_serie_drv.h
+.\planificador.o: Mensaje_t.h
+.\planificador.o: tablero_test.h

@@ -351,8 +351,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>0</interw>
-            <Optim>1</Optim>
-            <oTime>0</oTime>
+            <Optim>4</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -547,11 +547,6 @@
               <FilePath>.\pulsacion.h</FilePath>
             </File>
             <File>
-              <FileName>reversi8.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\reversi8.h</FilePath>
-            </File>
-            <File>
               <FileName>SWI_hal.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SWI_hal.h</FilePath>
@@ -585,6 +580,16 @@
               <FileName>WD_hal.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\WD_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>cola_mensajes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\cola_mensajes.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mensaje_t.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Mensaje_t.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -675,6 +680,46 @@
               <FileName>SWI_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\SWI_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>conecta_K_2023.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\conecta_K_2023.c</FilePath>
+            </File>
+            <File>
+              <FileName>tablero.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\tablero.c</FilePath>
+            </File>
+            <File>
+              <FileName>entrada.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\entrada.c</FilePath>
+            </File>
+            <File>
+              <FileName>cola_mensajes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cola_mensajes.c</FilePath>
+            </File>
+            <File>
+              <FileName>conecta_K_buscar_alineamiento_arm.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta_K_buscar_alineamiento_arm.s</FilePath>
+            </File>
+            <File>
+              <FileName>conecta_K_buscar_alineamiento_arm_iterativo.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta_K_buscar_alineamiento_arm_iterativo.s</FilePath>
+            </File>
+            <File>
+              <FileName>conecta_K_hay_linea_arm_arm.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta_K_hay_linea_arm_arm.s</FilePath>
+            </File>
+            <File>
+              <FileName>conecta_K_hay_linea_arm_c.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta_K_hay_linea_arm_c.s</FilePath>
             </File>
           </Files>
         </Group>

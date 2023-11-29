@@ -4,6 +4,7 @@
 #include "EVENTOS_T.h"
 #include "cola_FIFO.h"
 #include <string.h>
+#include "cola_mensajes.h"
 
 #define MAX_LEN_TRAMA 3
 
@@ -15,9 +16,11 @@ static volatile char trama_buffer[MAX_LEN_TRAMA];
 static volatile	size_t trama_len_buff;
 
 // Gestión de mensajes por línea serie
-static volatile char *buffer;
-static volatile size_t len_buff;
-static volatile size_t index;
+static ColaMensajes msg_FIFO;
+// índice dentro de la cola que indica el mensaje
+static Mensaje_t msg_tratando;
+// indica el caracter por el que va escribiendo el mensaje actual
+static int index; 
 
 
 // Pins de GPIO utilizados por línea serie
@@ -33,6 +36,9 @@ void iniciar_serial(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins){
 	pin_inicial = _pin;
 	num_pins = _num_pins;
 	gpio_hal_sentido(pin_inicial, num_pins, GPIO_HAL_PIN_DIR_OUTPUT);
+		// set vars gestión mensajes
+	inicializar_cola_mensajes(&msg_FIFO);
+	index = -1;
 		// init hal
 	iniciar_serial_hal(linea_serie_drv_continuar_envio ,gestor_serial);
 }
@@ -56,24 +62,24 @@ void gestor_serial(void)
 			
 			if( ch == '!' )	// caracter fin de comando
 			{
-				int32_t cmd = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
+				int32_t trama = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
 				
 					// nueva partida
 				if( trama_buffer[0] == 'N' && trama_buffer[1] == 'E' && trama_buffer[2] == 'W'){
-						FIFO_encolar(ev_RX_SERIE, cmd);	// atómico
+						FIFO_encolar(ev_RX_SERIE, trama);	// atómico
 				}
 					// terminar partida
 				else if( trama_buffer[0] == 'E' && trama_buffer[1] == 'N' && trama_buffer[2] == 'D'){
-						FIFO_encolar(ev_RX_SERIE, cmd); // atómico
+						FIFO_encolar(ev_RX_SERIE, trama); // atómico
 				}
 					// indica visualizar tablero
 				else if( trama_buffer[0] == 'T' && trama_buffer[1] == 'A' && trama_buffer[2] == 'B'){
-						FIFO_encolar(ev_RX_SERIE, cmd); // atómico
+						FIFO_encolar(ev_RX_SERIE, trama); // atómico
 				}
 					// indica jugada introducida
 				else if( trama_buffer[1] == '-'){
 					if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&  trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
-							FIFO_encolar(ev_RX_SERIE, cmd); // atómico
+							FIFO_encolar(ev_RX_SERIE, trama); // atómico
 				}
 			}
 			else{
@@ -92,29 +98,38 @@ void gestor_serial(void)
 
 // Inicializa estructura de gestión de mensajes
 // por línea serie y envíar primer caracter
-void linea_serie_drv_enviar_array(char *buff)
+void linea_serie_drv_enviar_array(Mensaje_t msg)
 {
-	len_buff = strlen(buff);
-	if(len_buff == 0)
+		// mensaje vacío
+	if(! strlen(msg) )
 		return; 
 	
-	// inicializar datos ( así en caso de parte no opcional )
-	buffer = buff;
-	index = 0;
-	
-	// enviar primer caracter
-	sendchar_serie(buffer[index]);
-	index++;
+		// si se está tratando un mensaje: encolar
+	if (index != -1){
+		encolar(&msg_FIFO, msg);
+	}
+		// si cola de mensajes vacía: tratar
+	else if( estaVacia(&msg_FIFO) || index == -1){
+			// inicializar variables de mensaje
+		strncpy(msg_tratando, msg, strlen(msg)+1);
+		index = 0;
+			// enviar primer caracter
+		sendchar_serie(msg[index]);
+		index++;
+	}
+	else
+		encolar(&msg_FIFO, msg);	
 }
 
 // Transmite el resto de caracteres del mensaje
 void linea_serie_drv_continuar_envio(void)
 {
 	// Verificar si hemos alcanzado el final del buffer
-    if (index < len_buff) {
-				size_t ind = index;
-				sendchar_serie(buffer[ind]);
+    if (index < strlen(msg_tratando)) {
+				sendchar_serie(msg_tratando[index]);
         index++; 	
-    } else 
+    } else {
         FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
+				index = desencolar(&msg_FIFO, &msg_tratando) ? 0 : -1;
+		}
 }

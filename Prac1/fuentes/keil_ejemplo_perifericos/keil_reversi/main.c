@@ -1,13 +1,16 @@
                   
 #include "planificador.h"
 #include "linea_serie_drv.h"
+#include "juego.h"
+#include "tablero_test.h"
+#include "cola_mensajes.h"
+#include <string.h>
 
 int main(){
-
 	#if ! TESTING
-		char miMsg[] = "ABCDE";
+		inicializar_juego(tablero_test7);
 		iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
-		linea_serie_drv_enviar_array(miMsg);
+		planificador(10);
 	#else
 		uint32_t periodo_timer1_ms __attribute__((unused)) = 10;
 	

@@ -4,6 +4,16 @@
 // Módulo interface de periférico UART0
 
 #include "GPIO_hal.h"
+#include "Mensaje_t.h"
+
+// Tipo trama
+typedef enum { 
+	trama_NEW = ('N' << 16) | ('E' << 8) | 'W', 
+	trama_END = ('E' << 16) | ('N' << 8) | 'D',
+	trama_TAB = ('T' << 16) | ('A' << 8) | 'B',
+	trama_JUGADA, // restante
+	
+} TRAMA_T;
 
 // Inicializa el periférico UART0
 // e inicializa los pines de GPIO utilizados
@@ -18,7 +28,7 @@ void gestor_serial(void);
 // Función de escritura de línea serie.
 // buff apunta a una secuencia de caracteres
 // que eventualmente serán escritos en la UART0. 
-void linea_serie_drv_enviar_array(char *buff);
+void linea_serie_drv_enviar_array(Mensaje_t msg);
 
 
 #endif // _LINEA_SERIE_DRV_H_

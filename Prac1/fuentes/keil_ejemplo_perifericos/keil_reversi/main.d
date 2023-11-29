@@ -8,3 +8,15 @@
 .\main.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\main.o: io_reserva.h
 .\main.o: linea_serie_drv.h
+.\main.o: Mensaje_t.h
+.\main.o: juego.h
+.\main.o: EVENTOS_T.h
+.\main.o: tablero.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\main.o: celda.h
+.\main.o: config_conecta_K.h
+.\main.o: tablero_test.h
+.\main.o: cola_mensajes.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

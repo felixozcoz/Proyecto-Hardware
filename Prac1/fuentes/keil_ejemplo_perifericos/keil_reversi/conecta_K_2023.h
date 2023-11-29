@@ -13,6 +13,14 @@
 // función principal del juego
 void conecta_K_jugar(void);
 
+// visualiza en "pantalla" el contenido del tablero
+void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[NUM_FILAS+1][NUM_COLUMNAS+1]);
+
+// cargar el estado del tablero de entrada en t
+void conecta_K_cargar_tablero(TABLERO *t, uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS]);
+
+
+
 // devuelve la longitud de la línea más larga
 uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t

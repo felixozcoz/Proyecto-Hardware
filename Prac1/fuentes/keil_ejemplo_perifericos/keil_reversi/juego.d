@@ -7,7 +7,14 @@
 .\juego.o: tests.h
 .\juego.o: GPIO_hal.h
 .\juego.o: io_reserva.h
+.\juego.o: tablero.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\juego.o: celda.h
+.\juego.o: config_conecta_K.h
 .\juego.o: cola_FIFO.h
 .\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\juego.o: temporizador_drv.h
 .\juego.o: botones.h
+.\juego.o: conecta_K_2023.h
+.\juego.o: linea_serie_drv.h
+.\juego.o: Mensaje_t.h

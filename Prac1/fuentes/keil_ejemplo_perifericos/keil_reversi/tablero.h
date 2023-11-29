@@ -38,9 +38,6 @@ typedef struct {
     NO_CERO no_ceros[NUM_FILAS];
 } TABLERO;
 
-// tablero denso de celdas, no lo usamos
-// typedef CELDA TABLERO_DENSO[NUM_FILAS][NUM_COLUMNAS];
-
 // inicializar la estructura estatica TABLERO
 
 void tablero_inicializar(TABLERO *t);
@@ -64,17 +61,17 @@ CELDA tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna);
 // funciones de comprobación de rangos
 
 //la columna es valida?
-static inline uint8_t tablero_columna_valida(uint8_t columna) {
+static __inline uint8_t tablero_columna_valida(uint8_t columna) {
 	return columna < NUM_COLUMNAS;
 }
 
 // la fila es valida?
-static inline uint8_t tablero_fila_valida(uint8_t fila) {
+static __inline uint8_t tablero_fila_valida(uint8_t fila) {
   return fila < NUM_FILAS;
 }
 
 // el color es valido?
-static inline uint8_t tablero_color_valido(uint8_t color) {
+static __inline uint8_t tablero_color_valido(uint8_t color) {
 	return (color==1 || color == 2);
 }
 #endif // __TABLERO_H__

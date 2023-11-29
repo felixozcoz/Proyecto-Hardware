@@ -9,7 +9,7 @@ uint8_t n_jugadas_test = 8;
 	
 // Entradas de test 
 
-//	uint8_t entrada[ALIGN_8]
+//	uint8_t entrada[SIZE_ENTRADA]
 // 		entrada[0] = 0; //nueva
 //		entrada[1] = 0; //fila
 //		entrada[2] = 0; //columna

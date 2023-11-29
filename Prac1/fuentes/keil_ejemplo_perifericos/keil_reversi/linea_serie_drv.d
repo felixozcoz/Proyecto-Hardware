@@ -4,6 +4,7 @@
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\linea_serie_drv.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\linea_serie_drv.o: Mensaje_t.h
 .\linea_serie_drv.o: linea_serie_hal.h
 .\linea_serie_drv.o: EVENTOS_T.h
 .\linea_serie_drv.o: tests.h
@@ -11,3 +12,5 @@
 .\linea_serie_drv.o: cola_FIFO.h
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\linea_serie_drv.o: cola_mensajes.h
+.\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

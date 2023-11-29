@@ -9,8 +9,10 @@
 #include "GPIO_hal.h"
 #include "io_reserva.h"
 #include "temporizador_drv.h"
+#include "linea_serie_drv.h"
+#include "tablero_test.h"
 
-#define TESTING 1 // activar para realizar test de módulos; flags de test en "test.h"
+#define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
 
 
 // Tiempo para determinar "sin actividad de usuario"
@@ -68,6 +70,7 @@ void inicializar_modulos(void)
 {
 	GPIO_inicializar();
 	inicializar_botones(); 
+	inicializar_juego(tablero_test7);
 	
 	#if TESTING	
 		init_modulos_test();
@@ -132,7 +135,8 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					while(1);
 				
 				case ev_RX_SERIE:
-					juego_tratar_evento(ev_RX_SERIE, auxData);
+					if (auxData == trama_TAB )
+						juego_tratar_evento(ev_RX_SERIE, auxData);
 					break;
 				
 				case ev_TX_SERIE:
@@ -181,7 +185,7 @@ void init_modulos_test(void){
 		alarma_inicializar(); 
 	#endif 
 	#if JUEGO
-		inicializar_juego(0, 0);
+		inicializar_juego(tablero_test7);
 		inicializar_visualizar(GPIO_JUEGO, GPIO_JUEGO_BITS);
 	#endif
 	#if HELLO_WORLD_DEMO

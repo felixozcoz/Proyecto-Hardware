@@ -4,8 +4,9 @@
 void
 tablero_inicializar(TABLERO *t)
 {
-	for(size_t i = 0; i < NUM_FILAS; ++i){
-		for(size_t j = 0; j < MAX_NO_CERO; ++j) {
+	size_t i,j;
+	for(i = 0; i < NUM_FILAS; ++i){
+		for(j = 0; j < MAX_NO_CERO; ++j) {
 				t->columnas[i][j] = INVALIDO;
 				celda_inicializar(&t->no_ceros[i][j]);
 		}
@@ -15,6 +16,7 @@ tablero_inicializar(TABLERO *t)
 int
 tablero_insertar_celda(TABLERO *t, uint8_t fila, uint8_t columna, CELDA *c)
 {
+	size_t col;
 	// comprobar valided posición
 	if( !tablero_fila_valida(fila) || !tablero_columna_valida(columna)) {
 		return ERROR;
@@ -32,7 +34,7 @@ tablero_insertar_celda(TABLERO *t, uint8_t fila, uint8_t columna, CELDA *c)
 
 	// encontrar primera posición libre en el vector
 	// de columnas de la fila correspondiente
-	size_t col = 0;
+	col = 0;
 	for(; (col < MAX_NO_CERO) && (t->columnas[fila][col] != INVALIDO); ++col);
 
 	// se ha llenado nuestra matriz estática
@@ -49,6 +51,7 @@ tablero_insertar_celda(TABLERO *t, uint8_t fila, uint8_t columna, CELDA *c)
 int
 tablero_insertar_color(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
 {
+	size_t col;
 	// comprobar valided posición
 	if( !tablero_fila_valida(fila) || !tablero_columna_valida(columna)) {
 		return ERROR;
@@ -66,7 +69,7 @@ tablero_insertar_color(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
 	
 	// encontrar primera posición libre en el vector
 	// de columnas de la fila correspondiente
-	size_t col = 0;
+	col = 0;
 	for(; (col < MAX_NO_CERO) && (t->columnas[fila][col] != INVALIDO); ++col);
 
 	// se ha llenado nuestra matriz estática
@@ -84,13 +87,14 @@ tablero_insertar_color(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
 int
 tablero_borrar_celda(TABLERO *t, uint8_t fila, uint8_t columna)
 {
+	size_t col;
 	// comprobar validez posición
 	if( !tablero_fila_valida(fila) || !tablero_columna_valida(columna)) {
 		return ERROR;
 	}
 
 	// hay que mirarlos todos
-	size_t col = 0;
+	col = 0;
 	for(; (col < MAX_NO_CERO) && (t->columnas[fila][col] != columna); ++col);
 
 	if(col == MAX_NO_CERO) {
@@ -105,6 +109,7 @@ tablero_borrar_celda(TABLERO *t, uint8_t fila, uint8_t columna)
 CELDA 
 tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna)
 {
+	size_t col;
 	CELDA celda_invalida;
 
 	// marcar celda como invalidad
@@ -116,7 +121,7 @@ tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna)
 	}
 
 	// buscar si celda es valida
-	size_t col = 0;
+	col = 0;
 	for(; (col < MAX_NO_CERO) && (t->columnas[fila][col] != columna); ++col);
 
 	if(col == MAX_NO_CERO) {
@@ -130,13 +135,14 @@ tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna)
 
 
 int tablero_buscar_color(const TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
+	size_t col;
 	// comprobar validez posición
 	if( !tablero_fila_valida(fila) || !tablero_columna_valida(columna)) {
 		return ERROR;
 	}
 
 	// buscar columna en estructura dispersa
-	size_t col = 0;
+	col = 0;
 	for(; (col < MAX_NO_CERO) && (t->columnas[fila][col] != columna); ++col);
 
 	if(col == MAX_NO_CERO) {
