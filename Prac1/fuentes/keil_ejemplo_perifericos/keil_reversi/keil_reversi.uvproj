@@ -727,6 +727,11 @@
           <GroupName>Test</GroupName>
           <Files>
             <File>
+              <FileName>test_cola_mensajes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_cola_mensajes.c</FilePath>
+            </File>
+            <File>
               <FileName>test_alarmas.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\test_alarmas.c</FilePath>

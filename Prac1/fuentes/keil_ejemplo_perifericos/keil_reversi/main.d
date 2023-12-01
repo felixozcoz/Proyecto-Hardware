@@ -16,7 +16,6 @@
 .\main.o: celda.h
 .\main.o: config_conecta_K.h
 .\main.o: tablero_test.h
-.\main.o: cola_mensajes.h
-.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\main.o: cola_mensajes.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

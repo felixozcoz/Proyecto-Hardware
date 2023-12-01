@@ -30,7 +30,7 @@ void eint1_ISR (void) __irq
 	eint1_cuenta++;
 	eint1_nueva_pulsacion = 1;
 	
-		// call módulo gestión de pulsaciones 
+		// call módulo gestión de ev_PULSACIONes 
 	func_callback_eint1(1);
 }
 
@@ -117,7 +117,7 @@ void eint2_ISR (void) __irq
 	eint2_cuenta++;
 	eint2_nueva_pulsacion = 1; 
 	
-		// call módulo gestión de pulsaciones 
+		// call módulo gestión de ev_PULSACIONes 
 	func_callback_eint2(2);
 }
 

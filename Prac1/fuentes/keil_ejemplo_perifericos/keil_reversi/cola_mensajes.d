@@ -4,3 +4,7 @@
 .\cola_mensajes.o: cola_mensajes.h
 .\cola_mensajes.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\cola_mensajes.o: Mensaje_t.h
+.\cola_mensajes.o: GPIO_hal.h
+.\cola_mensajes.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\cola_mensajes.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\cola_mensajes.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H

@@ -8,20 +8,23 @@
 #include "GPIO_hal.h"
 #include "io_reserva.h"
 	
-#define TEST_FIFO    1
-#define TEST_GPIO    1
-#define TEST_ALARMAS 1
-#define TEST_BOTONES 1
-#define TEST_CONSUMO 1
-#define TEST_WATCHDOG 1
-#define JUEGO  1
-#define HELLO_WORLD_DEMO 1
+#define TEST_FIFO    				0
+#define TEST_GPIO    				0
+#define TEST_ALARMAS 				0
+#define TEST_BOTONES 				0
+#define TEST_CONSUMO 				0
+#define TEST_WATCHDOG 			0
+#define TEST_COLA_MENSAJES 	1
+#define JUEGO  							0	
+#define HELLO_WORLD_DEMO 		0
+
 	
 	
-void test_FIFO(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins);
+void test_FIFO(const GPIO_HAL_PIN_T _pin_overflow);
 void test_GPIO(void);
 void test_alarmas(void);
 void test_botones(void); // TODO
 void test_consumo(void); // TODO
+void test_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow);
 
 #endif // __TEST_H__

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 // Variables para inserción de variables
-static EVENTO_T evento = EVENTO_VOID;
+static EVENTO_T evento = ev_EVENTO_VOID;
 
 // Variable que guarda la función de callback
 static void(*func_address)(EVENTO_T) = NULL ;

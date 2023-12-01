@@ -38,7 +38,7 @@ void alarma_inicializar(void)
 	uint8_t i;
 	for(i = 0 ; i < ALARMAS_MAX; i++){
 							// set evento
-			alarmas[i].ID_evento = EVENTO_VOID;
+			alarmas[i].ID_evento = ev_EVENTO_VOID;
 			alarmas[i].auxData = 0;
 				// set tiempo de duración y contador
 			alarmas[i].inicio = 0; 
@@ -138,7 +138,7 @@ int8_t buscar_alarma_libre(const EVENTO_T _ID_evento, const uint32_t _retardo, c
 	
 	// no hay alarmas libres
 	// generar evento
-	FIFO_encolar(ALARMAS_OVERFLOW, 0);
+	FIFO_encolar(ev_ALARMAS_OVERFLOW, 0);
 	
 	return ALARMAS_OCUPADAS; // return -1;
 	// nota: cuándo lo gestionará el planificador??

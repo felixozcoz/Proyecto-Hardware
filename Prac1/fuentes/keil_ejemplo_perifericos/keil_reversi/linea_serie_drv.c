@@ -15,8 +15,6 @@ static volatile unsigned int ESTADO = inicio;
 static volatile char trama_buffer[MAX_LEN_TRAMA];
 static volatile	size_t trama_len_buff;
 
-// Gestión de mensajes por línea serie
-static ColaMensajes msg_FIFO;
 // índice dentro de la cola que indica el mensaje
 static Mensaje_t msg_tratando;
 // indica el caracter por el que va escribiendo el mensaje actual
@@ -37,7 +35,6 @@ void iniciar_serial(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins){
 	num_pins = _num_pins;
 	gpio_hal_sentido(pin_inicial, num_pins, GPIO_HAL_PIN_DIR_OUTPUT);
 		// set vars gestión mensajes
-	inicializar_cola_mensajes(&msg_FIFO);
 	index = -1;
 		// init hal
 	iniciar_serial_hal(linea_serie_drv_continuar_envio ,gestor_serial);
@@ -106,19 +103,19 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 	
 		// si se está tratando un mensaje: encolar
 	if (index != -1){
-		encolar(&msg_FIFO, msg);
+		encolar(msg);
 	}
 		// si cola de mensajes vacía: tratar
-	else if( estaVacia(&msg_FIFO) || index == -1){
+	else if( estaVacia() || index == -1){
 			// inicializar variables de mensaje
-		strncpy(msg_tratando, msg, strlen(msg)+1);
+		strncpy(msg_tratando, msg, strlen(msg));
 		index = 0;
 			// enviar primer caracter
 		sendchar_serie(msg[index]);
 		index++;
 	}
 	else
-		encolar(&msg_FIFO, msg);	
+		encolar(msg);	
 }
 
 // Transmite el resto de caracteres del mensaje
@@ -130,6 +127,10 @@ void linea_serie_drv_continuar_envio(void)
         index++; 	
     } else {
         FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
-				index = desencolar(&msg_FIFO, &msg_tratando) ? 0 : -1;
+				if( ! estaVacia() ){
+					desencolar(&msg_tratando);
+					index = -1;
+					linea_serie_drv_enviar_array(msg_tratando);
+				}
 		}
 }

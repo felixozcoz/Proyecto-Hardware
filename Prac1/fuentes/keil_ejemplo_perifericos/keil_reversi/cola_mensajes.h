@@ -1,9 +1,9 @@
 #ifndef _COLA_MENSAJES_H_
 #define _COLA_MENSAJES_H_
 
-#include <stdio.h>
 #include <stdbool.h>
 #include "Mensaje_t.h"
+#include "GPIO_hal.h"
 
 
 #define MAX_CAPACIDAD_MSG_FIFO 32
@@ -16,20 +16,15 @@ typedef struct {
 } ColaMensajes;
 
 // Funciones para la cola de mensajes
-void inicializar_cola_mensajes(ColaMensajes *cola);
+void inicializar_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow);
 
-bool estaVacia(ColaMensajes *cola);
+bool estaVacia(void);
 
-bool estaLlena(ColaMensajes *cola);
+bool estaLlena(void);
 
-bool encolar(ColaMensajes *cola, const char *contenido);
+bool encolar(const char *contenido);
 
-bool desencolar(ColaMensajes *cola, Mensaje_t *msg);
-
-	
-	
-
-
+bool desencolar(Mensaje_t *msg);
 
 
 #endif // _COLA_MENSAJES_H_

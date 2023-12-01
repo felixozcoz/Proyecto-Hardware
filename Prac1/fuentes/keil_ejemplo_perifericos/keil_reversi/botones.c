@@ -35,7 +35,7 @@ void eint1_iniciar_drv (void(*callback)(uint8_t))
 unsigned int eint1_leer_nueva_pulsacion_drv (void)
 { return eint1_leer_nueva_pulsacion_hal(); }
 
-// nueva pulsacion de EINT1
+// nueva ev_PULSACION de EINT1
 void eint1_clear_nueva_pulsacion_drv (void)
 { eint1_clear_nueva_pulsacion_hal(); }
 
@@ -65,8 +65,8 @@ void eint1_gestionar_pulsacion(void)
 					estado_eint1 = NO_PULSADO;	// cambiar estado del boton
 					eint1_reactivar_interrupciones_drv();	
 				
-					alarma_activar(PULSACION, CANCELAR_ALARMA, BOTON_1); // cancelar alarma revisión
-					FIFO_encolar(DESPULSACION, BOTON_1); // indicar despulsado
+					alarma_activar(ev_PULSACION, CANCELAR_ALARMA, BOTON_1); // cancelar alarma revisión
+					FIFO_encolar(ev_DESPULSACION, BOTON_1); // indicar despulsado
 			}
 			break;
 			
@@ -75,7 +75,7 @@ void eint1_gestionar_pulsacion(void)
 			{
 				estado_eint1 = PULSADO;
 				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(PULSACION, 0x8000000A, BOTON_1); // alarma periódica revisión cada 100ms
+				alarma_activar(ev_PULSACION, 0x8000000A, BOTON_1); // alarma periódica revisión cada 100ms
 			}
 			break;
 			
@@ -97,7 +97,7 @@ void eint2_iniciar_drv (void(*callback)(uint8_t))
 unsigned int eint2_leer_nueva_pulsacion_drv( void)
 { return eint2_leer_nueva_pulsacion_hal(); }
 
-// limpiar nueva pulsacion de EINT2
+// limpiar nueva ev_PULSACION de EINT2
 void eint2_clear_nueva_pulsacion_drv (void)
 { eint2_clear_nueva_pulsacion_hal(); }
 
@@ -125,8 +125,8 @@ void eint2_gestionar_pulsacion(void)
 					estado_eint2 = NO_PULSADO;	
 					eint2_reactivar_interrupciones_drv();
 
-				alarma_activar(PULSACION, CANCELAR_ALARMA, BOTON_2); // cancelar alarma revisión
-				FIFO_encolar(DESPULSACION, BOTON_2); // indicar despulsado EINT2
+				alarma_activar(ev_PULSACION, CANCELAR_ALARMA, BOTON_2); // cancelar alarma revisión
+				FIFO_encolar(ev_DESPULSACION, BOTON_2); // indicar despulsado EINT2
 			}
 			break;
 			
@@ -135,7 +135,7 @@ void eint2_gestionar_pulsacion(void)
 			{
 				estado_eint2 = PULSADO;
 				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(PULSACION, 0x8000000A, BOTON_2);	// periódica 100ms revisión
+				alarma_activar(ev_PULSACION, 0x8000000A, BOTON_2);	// periódica 100ms revisión
 			}
 			break;
 			
@@ -147,6 +147,6 @@ void eint2_gestionar_pulsacion(void)
 // Función para gestión de pulsación
 void pulsacion_detectada(const uint8_t id_boton)
 {
-		FIFO_encolar(PULSACION, id_boton);
+		FIFO_encolar(ev_PULSACION, id_boton);
 }
 	

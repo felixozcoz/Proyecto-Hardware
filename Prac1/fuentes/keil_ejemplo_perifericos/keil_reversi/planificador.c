@@ -12,9 +12,6 @@
 #include "linea_serie_drv.h"
 #include "tablero_test.h"
 
-#define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
-
-
 // Tiempo para determinar "sin actividad de usuario"
 // para pasar a estado power-down del procesador
 static unsigned int USUARIO_AUSENTE = 12000; // en ms
@@ -58,8 +55,8 @@ void planificador(const uint32_t periodo_timer1)
 {
 	inicializar_modulos();
 	
-	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0); // alarma power-down proccessor mode
-	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, REVISAR_ALARMAS); // inicializar reloj 
+	alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // alarma power-down proccessor mode
+	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
 	
 	gestionar_eventos(periodo_timer1);
 }
@@ -85,11 +82,11 @@ void inicializar_modulos(void)
 
 void gestionar_eventos(const uint32_t periodo_timer1)
 {
-	EVENTO_T evento = EVENTO_VOID; 
+	EVENTO_T evento = ev_EVENTO_VOID; 
 	uint32_t auxData = 0;
 	
 	while(1){
-			evento = EVENTO_VOID; // reset evento
+			evento = ev_EVENTO_VOID; // reset evento
 		
 			FIFO_extraer(&evento, &auxData);
 		
@@ -103,12 +100,8 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					visualizar_cuenta(auxData);
 					break;
 				
-				case HELLO_OVERFLOW:
-					activar_overflow_gpio_pin();
-					while(1);
-				
-				case PULSACION:
-					alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0); // reset alarma usuario ausente
+				case ev_PULSACION:
+					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // reset alarma usuario ausente
 				
 					// revisar estado de botones
 					if ( auxData == BOTON_1 ) eint1_gestionar_pulsacion(); // EINT1
@@ -116,7 +109,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 				
 					break;
 				
-				case DESPULSACION:
+				case ev_DESPULSACION:
 					#if JUEGO 
 						juego_tratar_evento(ev_VISUALIZAR_CUENTA, auxData);
 					#endif 
@@ -126,11 +119,11 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					visualizar_cuenta(auxData);
 					break;
 				
-				case REVISAR_ALARMAS:
+				case ev_REVISAR_ALARMAS:
 					alarma_tratar_evento(periodo_timer1); // comprobar alarmas
 					break;
 				
-				case ALARMAS_OVERFLOW:
+				case ev_ALARMAS_OVERFLOW:
 					activar_overflow_gpio_pin();	// no hay más alarmas disponibles
 					while(1);
 				
@@ -143,7 +136,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					// ...
 					break;
 				
-				case POWER_DOWN:
+				case ev_POWER_DOWN:
 					PM_power_down(); // cambiar modo de estado del procesador a power-down (deep-sleep)
 					break;
 				

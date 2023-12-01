@@ -27,6 +27,7 @@
 ".\conecta_k_buscar_alineamiento_arm_iterativo.o"
 ".\conecta_k_hay_linea_arm_arm.o"
 ".\conecta_k_hay_linea_arm_c.o"
+".\test_cola_mensajes.o"
 ".\test_alarmas.o"
 ".\test_botones.o"
 ".\test_consumo.o"

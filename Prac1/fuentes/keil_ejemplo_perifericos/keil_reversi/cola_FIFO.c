@@ -15,22 +15,20 @@ static FIFO_ELEMENTO_T fifo[MAX_SIZE_FIFO];
 static volatile uint8_t fifo_inicio = 0; // índice de cola fifo del último evento no tratado
 static volatile uint8_t fifo_fin = 0; // índice de cola fifo donde se debe añadidir el siguiente evento
 
-// Pins GPIO
-static GPIO_HAL_PIN_T pin; 
-static GPIO_HAL_PIN_T num_pin; 
+// Pins GPIO (un solo pin)
+static GPIO_HAL_PIN_T pin_overflow; 
 
 // Variable que guarda el número de veces
 // que el evento i se ha encolado
 static uint32_t estadisticas[MAX_SIZE_FIFO] = {0};
 
 
-void FIFO_inicializar(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pin) {
+void FIFO_inicializar(const GPIO_HAL_PIN_T _pin_overflow) {
 		fifo_fin = 0;
 		fifo_inicio = 0;
-		pin = _pin;
-		num_pin = _num_pin;
+		pin_overflow = _pin_overflow;
 		// La cola está llena, manejar el desbordamiento/overflow
-		gpio_hal_sentido(pin, num_pin, GPIO_HAL_PIN_DIR_OUTPUT);
+		gpio_hal_sentido(pin_overflow, 1, GPIO_HAL_PIN_DIR_OUTPUT);
 }
 
 void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
@@ -43,7 +41,7 @@ void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
     // Verifica si la cola está llena antes de encolar un evento
      if ((fifo_fin + 1) % MAX_SIZE_FIFO == fifo_inicio) {
 				// set pin overflow encendido
-				gpio_hal_escribir(pin, num_pin, 1);
+				gpio_hal_escribir(pin_overflow, 1, 1);
 			 
 				// restaurar el estado del bit I (disable IRQ interrupt)
 				if ( bit_irq )
@@ -100,9 +98,9 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
 
 
 uint32_t FIFO_estadisticas(const EVENTO_T ID_evento) {
-    if (ID_evento == EVENTO_VOID) {
-        // Si se solicitan estadísticas para EVENTO_VOID, se devuelve el total de eventos encolados
-        return estadisticas[EVENTO_VOID];
+    if (ID_evento == ev_EVENTO_VOID) {
+        // Si se solicitan estadísticas para ev_EVENTO_VOID, se devuelve el total de eventos encolados
+        return estadisticas[ev_EVENTO_VOID];
     } else {
         return estadisticas[ID_evento];
     }

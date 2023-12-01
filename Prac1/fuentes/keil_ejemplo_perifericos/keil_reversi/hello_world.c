@@ -29,11 +29,6 @@ void hello_world_inicializar(const GPIO_HAL_PIN_T _pin_inicial, const GPIO_HAL_P
 
 void hello_world_tratar_evento(void)
 {
-	if(contador == 0xFF) {
-		FIFO_encolar(HELLO_OVERFLOW, 0);
-		return; 
-	}
-	
 	contador++;
 	contador = contador % 256;
 	
