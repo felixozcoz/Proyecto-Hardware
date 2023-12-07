@@ -6,9 +6,9 @@
 void test_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow){
 		// mensajes de prueba
 	Mensaje_t m1, m2, m3, mdes;
-	char* c1 = "primer mensaje";
-	char* c2 = "segundo mensaje";
-	char* c3 = "tercero mensaje";
+	char* c1 = "primer mensaje\n";
+	char* c2 = "segundo mensaje\n";
+	char* c3 = "tercero mensaje\n";
 	size_t len1 = strlen(c1);
 	size_t len2 = strlen(c2);
 	size_t len3 = strlen(c3);
@@ -30,20 +30,15 @@ void test_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow){
 	desencolar(&m1);
 	while( !estaVacia() ) while(1);
 	
-		// encolar varios y desencolar para observar 
-		// correcta extracción de mensajes
-	encolar(m1);
-	encolar(m2);
-	encolar(m3);
 		// observar mensajes desencolados
-	desencolar(&mdes);
-	linea_serie_drv_enviar_array(mdes);
-	desencolar(&mdes);
-	linea_serie_drv_enviar_array(mdes);
-	desencolar(&mdes);
-	linea_serie_drv_enviar_array(mdes);
+	linea_serie_drv_enviar_array(m1);
+	linea_serie_drv_enviar_array(m2);
+	linea_serie_drv_enviar_array(m3);
+	
 		// overflow
 	while(1){
 		encolar(m1);
+		encolar(m2);
+		encolar(m3);
 	}
 }

@@ -16,7 +16,7 @@ static volatile char trama_buffer[MAX_LEN_TRAMA];
 static volatile	size_t trama_len_buff;
 
 // índice dentro de la cola que indica el mensaje
-static Mensaje_t msg_tratando;
+static Mensaje_t msg_enviar;
 // indica el caracter por el que va escribiendo el mensaje actual
 static int index; 
 
@@ -102,13 +102,12 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 		return; 
 	
 		// si se está tratando un mensaje: encolar
-	if (index != -1){
+	if (index > -1)
 		encolar(msg);
-	}
 		// si cola de mensajes vacía: tratar
 	else if( estaVacia() || index == -1){
 			// inicializar variables de mensaje
-		strncpy(msg_tratando, msg, strlen(msg));
+		strncpy(msg_enviar, msg, strlen(msg));
 		index = 0;
 			// enviar primer caracter
 		sendchar_serie(msg[index]);
@@ -122,15 +121,15 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 void linea_serie_drv_continuar_envio(void)
 {
 	// Verificar si hemos alcanzado el final del buffer
-    if (index < strlen(msg_tratando)) {
-				sendchar_serie(msg_tratando[index]);
+    if (index < strlen(msg_enviar)) {
+				sendchar_serie(msg_enviar[index]);
         index++; 	
     } else {
-        FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
-				if( ! estaVacia() ){
-					desencolar(&msg_tratando);
-					index = -1;
-					linea_serie_drv_enviar_array(msg_tratando);
+      FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
+			index = -1;	
+			if( ! estaVacia() ){
+					desencolar(&msg_enviar);
+					linea_serie_drv_enviar_array(msg_enviar);
 				}
 		}
 }

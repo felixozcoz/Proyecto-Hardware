@@ -11,24 +11,10 @@ void tests(void); // función de test de módulos
 
 // Función principal
 int main(){
-	
-	
-	Mensaje_t m1, m2, mdes;
-	char* c1 = "primer mensaje\n";
-	char* c2 = "segundo mensaje\n";
-	size_t len1 = strlen(c1);
-	size_t len2 = strlen(c2);
-	strncpy(m1, c1, strlen(c1));
-	strncpy(m2, c2, strlen(c2));
-	inicializar_cola_mensajes(31);
-	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
-	linea_serie_drv_enviar_array(m1);
-	linea_serie_drv_enviar_array(m2);
-	
-	
-//	#if TESTING
-//		tests();
-//	#endif
+
+	#if TESTING
+		tests();
+	#endif
 
 ////	inicializar_juego(tablero_test7);
 //		iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
