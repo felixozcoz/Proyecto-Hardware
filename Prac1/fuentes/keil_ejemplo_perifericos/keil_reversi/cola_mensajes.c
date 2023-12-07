@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "cola_mensajes.h"
+#include "SWI_hal.h"
 
 
 // Pins GPIO (solo un pin)
@@ -27,7 +28,11 @@ bool estaLlena(void) {
 }
 
 bool encolar(const char *contenido) {
-		int len = strlen(contenido);
+			// deshabilitar interrupciones para atomicidad
+		bit_irq = read_IRQ_bit(); 
+		if ( bit_irq )
+			disable_irq();
+		
 			// quedan mensajes sin procesar	
 		if ( estaLlena() ) {
 				// overflow de mensajes
@@ -36,8 +41,11 @@ bool encolar(const char *contenido) {
 		}
 		
 		// mensaje demasiado grande
-		if( len > MAX_MENSAJE_LENGTH ) 
+		if( strlen(contenido) > MAX_MENSAJE_LENGTH ){
+			if ( bit_irq )
+				enable_irq();
 			return 0;
+		}
 
     if( estaVacia() ) 
         cola.frente = cola.fin = 0;
@@ -45,13 +53,25 @@ bool encolar(const char *contenido) {
         cola.fin = (cola.fin + 1) % cola.capacidad;
     
     strncpy(cola.elementos[cola.fin], contenido, strlen(contenido)+1);
+			// restaurar interrupciones irq
+		if ( bit_irq )
+			disable_irq();
+		
 		return 1;
 }
 
 bool desencolar(Mensaje_t *msg) {
-    if (estaVacia())
-        return 0;
+				// deshabilitar interrupciones para atomicidad
+		bit_irq = read_IRQ_bit(); 
+		if ( bit_irq )
+			disable_irq();
 		
+    if (estaVacia()){
+					// restaurar interrupciones irq
+				if ( bit_irq )
+					disable_irq();
+        return 0;
+		}
 		// almacenar mensaje
 		strncpy(*msg, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente]));
 
@@ -60,6 +80,10 @@ bool desencolar(Mensaje_t *msg) {
     } else {
         cola.frente = (cola.frente + 1) % cola.capacidad;
     }
+		
+			// restaurar interrupciones irq
+		if ( bit_irq )
+			disable_irq();
 		
 		return 1;
 }
