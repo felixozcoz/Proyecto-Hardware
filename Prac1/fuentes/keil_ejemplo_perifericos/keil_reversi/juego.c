@@ -23,22 +23,128 @@
 // static unsigned int __attribute__((unused)) last_press = 0;
 
 
+typedef enum {
+	LOBBY = 0,
+	ESPERANDO_JUGADA = 1,
+	ESPERANDO_CONFIRMACION = 2,
+	} estadoJuego_t;
+
+	typedef enum {
+	UNDEFINED = 0,
+	VICTORIA = 1,
+	RENDICION_BOTON = 2,
+	RENDICION_COMANDO = 2,
+	} condicionFin_t;
+
+
 // Información juego
-static TABLERO tablero;
-static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; // visualización en memoria
+static estadoJuego_t estado;
+static condicionFin_t condicion;
+static TABLERO tablero;																															// Estado del tablero
+static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 		// Visualizacion en memoria
+static uint8_t turno;																																			// Registra de que jugador es el turno E {0,1}
+	
+// Para contabilizar el timeout de esparando jugada
+static uint64_t tic;
+static uint64_t tac;
+static const uint64_t timeout = 3000000;
 
+// Par guardar probisionalmente la jugada en curso
+static uint32_t fila;
+static uint32_t columna;
 
-// Función auxiliar
+// Añadir variables para kpis
+	
+
+// Función auxiliar (definida despues)
 void imprimir_tablero_linea_serie(void);
+
+// Funcion auxiliar para determinar si una fila-columna son validas y ademas la celda esta libre. (definida despues)
+int jugadaValida(TABLERO *tablero, int fila, int columna);
 
 // Inicializa el tablero del juego conecta_k
 void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS]){
 	tablero_inicializar(&tablero);
 	conecta_K_cargar_tablero(&tablero, tab_input);
+	turno = 0;				// ??
 }
 
 
+
+/*		NOTA: con respecto a la validez o no validez de los comandos.
+			En el guion se especifica que en caso de recibir un comando no valido, se
+			escribira por linea serie "Comando erroneo". Pero por lo que entiendo yo en el driver de linea serie
+			ya se hace esta comprobacion antes de encolar el evento de lectura con el comando el la variable trama.
+			Tal vez habria que quitar esa comprobacion e incluirla en este modulo?
+*/
+
+
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
+	switch(estado){
+		case LOBBY:
+			// Si evento despulsacion o evento lectura linea serie y comando NEW
+			if(ID_evento == ev_DESPULSACION || (ID_evento == ev_RX_SERIE && auxData == ((('N' << 16) | ('E' << 8) | 'W')))) {
+				// Hacer aqui lo que sea necesario para inicializar el juego
+				imprimir_tablero_linea_serie();
+				estado = ESPERANDO_JUGADA;
+			}
+			
+			// Añadir aqui comprobación de comando no valido.			???
+		break;
+		
+			
+		
+		case ESPERANDO_JUGADA:
+			if ( ID_evento == ev_DESPULSACION && auxData == 2) {
+				// kpis y lo que haya que mostrar al terminar la partida
+				condicion = RENDICION_BOTON;
+			} else if(ID_evento == ev_RX_SERIE && auxData == ((('E' << 16) | ('N' << 8) | 'D'))){
+				// kpis y lo que haya que mostrar al terminar la partida
+				condicion = RENDICION_COMANDO;
+			} else if(ID_evento == ev_RX_SERIE && auxData == ((('N' << 16) | ('E' << 8) | 'W'))){
+				// Si el comando es NEW se ignora
+				// Ahora por descarte si llega un comando sera una jugada. (Ver NOTA)
+			} else if(ID_evento == ev_RX_SERIE){
+				fila = (auxData >> 16) & 0xFF;
+				columna = auxData & 0xFF;
+				// Para comprobar que una jugada es valida
+				// - Tablero_fila_valida && tablero_columna_valida (Esto lo hace tambien el driver linea_serie, ver NOTA)
+				// - Comprobar celda vacia.
+				if (jugadaValida(&tablero, fila, columna)){
+					// escribir caracter especial en la casilla selecionada
+					imprimir_tablero_linea_serie();
+					tic = temporizador_drv_leer();
+					estado = ESPERANDO_CONFIRMACION;
+				} else{
+					// Escribir mensaje "Fila-Columna no valida"
+					// Encender GPIO29
+				}
+			} 
+				
+			// Añadir aqui comprobación de comando no valido.				???
+		break;
+				
+				
+			
+		case ESPERANDO_CONFIRMACION:
+			if( ID_evento == ev_LATIDO) {
+				tac = temporizador_drv_leer();
+				if( tac - tic >= timeout) {
+					// Eliminar caracter especial del tablero
+					// Colocar ficha teniendo en cuenta la variable turno para saber de que jugador es
+					tablero_insertar_color(&tablero, fila, columna, turno+1);
+					imprimir_tablero_linea_serie();
+					turno = !turno;																// Cambio de turno
+					// Comprobar alineamiento y proceder
+				}
+			}
+			// Añadir comprobacion de despulsacion de boton 2 y comando end para rendicion		???
+			// Añadir aqui comprobación de comando no valido.
+		break;
+	}
+	
+
+	
 //	unsigned int now = clock_get_us(); // en ms
 //	intervalo = (now - last_press);
 //	last_press = now;
@@ -51,10 +157,27 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 //	FIFO_encolar(ev_VISUALIZAR_CUENTA, cuenta); // visualizar cuenta en GPIO
 	
 	// recibido ev_RX_SERIE
-	if (ID_evento == ev_RX_SERIE){
-			conecta_K_visualizar_tablero(&tablero, pantalla);
-			imprimir_tablero_linea_serie();
-	}
+//	if (ID_evento == ev_RX_SERIE){
+//			conecta_K_visualizar_tablero(&tablero, pantalla);
+//			imprimir_tablero_linea_serie();
+//	}
+}
+
+// Función para comprobar si una casilla está ocupada
+int jugadaValida(TABLERO *tablero, int fila, int columna) {
+    if(!tablero_fila_valida(fila) || !tablero_columna_valida(columna)){
+			return 0;
+		}
+		
+    for (int i = 0; i < NUM_FILAS; i++) {
+        if (tablero->columnas[fila][i] == columna) {
+            // Si se encuentra la columna, la casilla está ocupada
+            return 1;
+        }
+    }
+
+    // Si no se encuentra la columna, la casilla no está ocupada
+    return 0;
 }
 
 
