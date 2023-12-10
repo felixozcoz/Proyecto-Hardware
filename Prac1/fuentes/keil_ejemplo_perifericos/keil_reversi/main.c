@@ -11,7 +11,6 @@ void tests(void); // función de test de módulos
 
 // Función principal
 int main(){
-
 	#if TESTING
 		tests();
 	#endif

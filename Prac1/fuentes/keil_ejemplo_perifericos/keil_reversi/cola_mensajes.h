@@ -18,13 +18,13 @@ typedef struct {
 // Funciones para la cola de mensajes
 void inicializar_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow);
 
-bool estaVacia(void);
+bool estaVacia_msg(void);
 
-bool estaLlena(void);
+bool estaLlena_msg(void);
 
-bool encolar(const char *contenido);
+bool encolar_msg(Mensaje_t mensaje);
 
-bool desencolar(Mensaje_t *msg);
+bool desencolar_msg(Mensaje_t *Mensaje);
 
 
 #endif // _COLA_MENSAJES_H_

@@ -19,22 +19,22 @@ void inicializar_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow) {
 		cola.capacidad = MAX_CAPACIDAD_MSG_FIFO;
 }
 
-bool estaVacia(void) {
+bool estaVacia_msg(void) {
     return (cola.frente == -1);
 }
 
-bool estaLlena(void) {
+bool estaLlena_msg(void) {
     return ((cola.fin + 1) % cola.capacidad == cola.frente);
 }
 
-bool encolar(const char *contenido) {
+bool encolar_msg(Mensaje_t mensaje) {
 			// deshabilitar interrupciones para atomicidad
 		bit_irq = read_IRQ_bit(); 
 		if ( bit_irq )
 			disable_irq();
 		
 			// quedan mensajes sin procesar	
-		if ( estaLlena() ) {
+		if ( estaLlena_msg() ) {
 				// overflow de mensajes
 			gpio_hal_escribir(pin_overflow, 1, 1);
 				// restaurar estado de irq
@@ -45,18 +45,18 @@ bool encolar(const char *contenido) {
 		}
 		
 		// mensaje demasiado grande
-		if( strlen(contenido) > MAX_MENSAJE_LENGTH ){
+		if( strlen(mensaje) > MAX_MENSAJE_LENGTH ){
 			if ( bit_irq )
 				enable_irq();
 			return 0;
 		}
 
-    if( estaVacia() ) 
+    if( estaVacia_msg() ) 
         cola.frente = cola.fin = 0;
     else
         cola.fin = (cola.fin + 1) % cola.capacidad;
     
-    strncpy(cola.elementos[cola.fin], contenido, strlen(contenido)+1);
+    strncpy(cola.elementos[cola.fin], mensaje, strlen(mensaje)+1);
 			// restaurar interrupciones irq
 		if ( bit_irq )
 			disable_irq();
@@ -64,20 +64,20 @@ bool encolar(const char *contenido) {
 		return 1;
 }
 
-bool desencolar(Mensaje_t *msg) {
+bool desencolar_msg(Mensaje_t *mensaje) {
 				// deshabilitar interrupciones para atomicidad
 		bit_irq = read_IRQ_bit(); 
 		if ( bit_irq )
 			disable_irq();
 		
-    if (estaVacia()){
+    if (estaVacia_msg()){
 					// restaurar interrupciones irq
 				if ( bit_irq )
 					disable_irq();
         return 0;
 		}
 		// almacenar mensaje
-		strncpy(*msg, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente])+1);
+		strncpy(*mensaje, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente])+1);
 
     if (cola.frente == cola.fin) {
         cola.frente = cola.fin = -1;

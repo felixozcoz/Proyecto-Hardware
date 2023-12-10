@@ -14,7 +14,7 @@
 #define TEST_BOTONES 				0
 #define TEST_CONSUMO 				0
 #define TEST_WATCHDOG 			0
-#define TEST_COLA_MENSAJES 	0
+#define TEST_COLA_MENSAJES 	1
 #define JUEGO  							0	
 #define HELLO_WORLD_DEMO 		0
 

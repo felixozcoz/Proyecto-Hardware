@@ -136,7 +136,7 @@ tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna)
 
 int tablero_buscar_color(const TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color) {
 	size_t col;
-	// comprobar validez posición
+		// comprobar validez posición
 	if( !tablero_fila_valida(fila) || !tablero_columna_valida(columna)) {
 		return ERROR;
 	}

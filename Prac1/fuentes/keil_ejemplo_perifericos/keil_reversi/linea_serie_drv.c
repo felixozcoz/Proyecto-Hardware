@@ -81,10 +81,8 @@ void gestor_serial(void)
 				ESTADO = inicio; // trama válida o no vuelve a inicio
 			}
 			else{
-				if( trama_len_buff < (MAX_LEN_TRAMA + 1)) {
-					trama_buffer[trama_len_buff] = ch;	// añadir cadena al buffer
-					trama_len_buff++;
-				}
+				if( trama_len_buff < MAX_LEN_TRAMA )
+					trama_buffer[trama_len_buff++] = ch;	// añadir cadena al buffer
 				else{			
 					gpio_hal_escribir(pin_inicial, num_pins, 1); // enceder led GPIO30 "GPIO_SERIE_ERROR"
 					ESTADO = inicio; // secuencia de cadenas incongruente con tramas fuera del dominio
@@ -104,9 +102,9 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 	
 		// si se está tratando un mensaje: encolar
 	if (index > -1)
-		encolar(msg);
+		encolar_msg(msg);
 		// si cola de mensajes vacía: tratar
-	else if( estaVacia() || index == -1){
+	else if( estaVacia_msg() || index == -1){
 			// inicializar variables de mensaje
 		strncpy(msg_enviar, msg, strlen(msg)+1);
 		index = 0;
@@ -115,7 +113,7 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 		index++;
 	}
 	else
-		encolar(msg);	
+		encolar_msg(msg);	
 }
 
 // Transmite el resto de caracteres del mensaje
@@ -128,8 +126,8 @@ void linea_serie_drv_continuar_envio(void)
     } else {
       FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
 			index = -1;	
-			if( ! estaVacia() ){
-					desencolar(&msg_enviar);
+			if( ! estaVacia_msg() ){
+					desencolar_msg(&msg_enviar);
 					linea_serie_drv_enviar_array(msg_enviar);
 				}
 		}

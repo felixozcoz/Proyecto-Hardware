@@ -20,6 +20,7 @@
 // Ultima pulsación
 // static unsigned int __attribute__((unused)) last_press = 0;
 
+#define cadena_turno "Turno de jugador "
 
 typedef enum {
 		LOBBY = 0,	
@@ -99,7 +100,7 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
-	char msj_info[30];
+	char msj_info[30]; // guarda mensajes informativos
 	
 	switch(estado){
 		
@@ -110,9 +111,6 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 					(ID_evento == ev_RX_SERIE && auxData == ((('N' << 16) | ('E' << 8) | 'W')))) {
 					// imprimir tablero
 				imprimir_tablero_linea_serie();
-					// indicar primer turno a jugador 1
-				snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno);
-				linea_serie_drv_enviar_array( msj_info );
 					// actualiza estado
 				estado = ESPERANDO_JUGADA;
 			}
@@ -120,8 +118,9 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 			break;
 		
 		case ESPERANDO_JUGADA:
-				// indicar turno			
-			snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno);
+			
+				// indicar turno (inicia siempre el jugador 1)			
+			snprintf(msj_info, sizeof(msj_info), "%s %u\n", cadena_turno, turno);
 			linea_serie_drv_enviar_array( msj_info );
 				
 			if ( ID_evento == ev_DESPULSACION && auxData == BOTON_2) {
@@ -225,10 +224,27 @@ void imprimir_reglas(void)
 // Determina si el contenido extraído de la línea serie,
 // bien sea comando o jugada, es válido. En caso de que no serlo
 // muestra un mensaje indicándolo por línea seríe así como gpio
-void comprobar_contenido_linea_serie(const uint32_t auxData)
+void comprobar_comando(const uint32_t auxData)
 {
-		
-	
+	int32_t trama = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
+				
+	if( trama_buffer[0] == 'N' && trama_buffer[1] == 'E' && trama_buffer[2] == 'W'){
+			FIFO_encolar(ev_RX_SERIE, trama);	// atómico
+	}
+		// terminar partida
+	else if( trama_buffer[0] == 'E' && trama_buffer[1] == 'N' && trama_buffer[2] == 'D'){
+			FIFO_encolar(ev_RX_SERIE, trama); // atómico
+	}
+		// indica visualizar tablero
+	else if( trama_buffer[0] == 'T' && trama_buffer[1] == 'A' && trama_buffer[2] == 'B'){
+			FIFO_encolar(ev_RX_SERIE, trama); // atómico
+	}
+		// indica jugada introducida
+	else if( trama_buffer[1] == '-'){
+		if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&	trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
+				FIFO_encolar(ev_RX_SERIE, trama); // atómico
+	}
+
 	
 }
 
