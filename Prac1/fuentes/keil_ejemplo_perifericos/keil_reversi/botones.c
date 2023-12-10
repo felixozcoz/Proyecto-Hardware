@@ -75,7 +75,7 @@ void eint1_gestionar_pulsacion(void)
 			{
 				estado_eint1 = PULSADO;
 				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(ev_PULSACION, 0x8000000A, BOTON_1); // alarma periódica revisión cada 100ms
+				alarma_activar(ev_PULSACION, 0x80000064, BOTON_1); // alarma periódica revisión cada 100ms
 			}
 			break;
 			
@@ -134,8 +134,7 @@ void eint2_gestionar_pulsacion(void)
 			if ( eint2_comprobar_pulsado_drv() )
 			{
 				estado_eint2 = PULSADO;
-				// TODO: recordar cambiar el retardo a 100ms
-				alarma_activar(ev_PULSACION, 0x8000000A, BOTON_2);	// periódica 100ms revisión
+				alarma_activar(ev_PULSACION, 0x80000064, BOTON_2);	// periódica 100ms revisión
 			}
 			break;
 			

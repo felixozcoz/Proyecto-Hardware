@@ -23,9 +23,9 @@
 #define GPIO_HELLO_WORLD 0
 #define GPIO_HELLO_WORLD_BITS 8
 
-// Para el juego
-#define GPIO_JUEGO 16
-#define GPIO_JUEGO_BITS 8
+// Para el juego (aviso entrada por linea serie no válida)
+#define GPIO_JUEGO 29
+#define GPIO_JUEGO_BITS 1
 
 // Bits EINT's
 #define GPIO_EINT1 14

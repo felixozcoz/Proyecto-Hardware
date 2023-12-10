@@ -67,7 +67,7 @@ void inicializar_modulos(void)
 {
 	GPIO_inicializar();
 	inicializar_botones(); 
-	inicializar_juego(tablero_test7);
+	inicializar_juego(tablero_test7, GPIO_JUEGO);
 	
 	#if TESTING	
 		init_modulos_test();
@@ -110,9 +110,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					break;
 				
 				case ev_DESPULSACION:
-					#if JUEGO 
-						juego_tratar_evento(ev_VISUALIZAR_CUENTA, auxData);
-					#endif 
+					juego_tratar_evento(ev_DESPULSACION, auxData);
 					break;
 
 				case ev_VISUALIZAR_CUENTA:
@@ -158,9 +156,9 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 void GPIO_inicializar(void)
 {
 	gpio_hal_iniciar();
-		// set GPIO13 (overflow) to output dir
+		// set GPIO31 (overflow) to output dir
 	gpio_hal_sentido(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
-		// set EINT1 y EINT2 pin on pin block to input
+		// set EINT1 y EINT2 pin on pin block to input ???
 	gpio_hal_sentido(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
 }
 

@@ -112,7 +112,7 @@ tablero_leer_celda(const TABLERO *t, uint8_t fila, uint8_t columna)
 	size_t col;
 	CELDA celda_invalida;
 
-	// marcar celda como invalidad
+	// marcar celda como invalida
 	celda_inicializar(&celda_invalida);
 
 	// comprobar validez posición

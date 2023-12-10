@@ -5,7 +5,7 @@
 
 void test_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow){
 		// mensajes de prueba
-	Mensaje_t m1, m2, m3, mdes;
+	Mensaje_t m1, m2, m3;
 	char* c1 = "primer mensaje\n";
 	char* c2 = "segundo mensaje\n";
 	char* c3 = "tercero mensaje\n";
