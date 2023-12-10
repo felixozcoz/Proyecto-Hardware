@@ -37,6 +37,10 @@ bool encolar(const char *contenido) {
 		if ( estaLlena() ) {
 				// overflow de mensajes
 			gpio_hal_escribir(pin_overflow, 1, 1);
+				// restaurar estado de irq
+			if ( bit_irq )
+				enable_irq();
+			
 			while(1);
 		}
 		
@@ -73,7 +77,7 @@ bool desencolar(Mensaje_t *msg) {
         return 0;
 		}
 		// almacenar mensaje
-		strncpy(*msg, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente]));
+		strncpy(*msg, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente])+1);
 
     if (cola.frente == cola.fin) {
         cola.frente = cola.fin = -1;

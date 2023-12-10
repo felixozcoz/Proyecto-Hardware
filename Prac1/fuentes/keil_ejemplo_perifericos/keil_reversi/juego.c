@@ -22,7 +22,7 @@
 
 
 typedef enum {
-		LOBBY = 0,	// muestra información del juego por línea serie (la partida aún no ha empezado)
+		LOBBY = 0,	
 		ESPERANDO_JUGADA = 1, 
 		ESPERANDO_CONFIRMACION = 2,
 	} estadoJuego_t;
@@ -104,20 +104,24 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 	switch(estado){
 		
 		case LOBBY:
-			// Despulsación o comando '$NEW!', iniciar partida
+			
+			// Despulsación ó cmd '$NEW!' (nueva partida) --> iniciar partida
 			if( ID_evento == ev_DESPULSACION || 
 					(ID_evento == ev_RX_SERIE && auxData == ((('N' << 16) | ('E' << 8) | 'W')))) {
-					// iniciar partida
+					// imprimir tablero
 				imprimir_tablero_linea_serie();
+					// indicar primer turno a jugador 1
+				snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno);
+				linea_serie_drv_enviar_array( msj_info );
+					// actualiza estado
 				estado = ESPERANDO_JUGADA;
 			}
 			
-			// Añadir aqui comprobación de comando no valido.			???
-		break;
+			break;
 		
 		case ESPERANDO_JUGADA:
 				// indicar turno			
-			snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u", turno);
+			snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno);
 			linea_serie_drv_enviar_array( msj_info );
 				
 			if ( ID_evento == ev_DESPULSACION && auxData == BOTON_2) {
@@ -146,7 +150,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				} 
 				else{
 						// comando erróneo, se ignora e indica por gpio
-					linea_serie_drv_enviar_array("Comando erroneo");
+					linea_serie_drv_enviar_array("Comando erroneo\n");
 					gpio_hal_escribir(pin_cmd_no_valido, 1, 1); // gpio29 on
 				}
 			} 
@@ -214,7 +218,7 @@ int jugadaValida(TABLERO *tablero, int fila, int columna) {
 
 void imprimir_reglas(void)
 {
-	// ...
+	linea_serie_drv_enviar_array("Aqui van las reglas\n");
 }
 
 

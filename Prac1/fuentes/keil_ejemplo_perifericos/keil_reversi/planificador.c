@@ -11,6 +11,7 @@
 #include "temporizador_drv.h"
 #include "linea_serie_drv.h"
 #include "tablero_test.h"
+#include "cola_mensajes.h"
 
 // Tiempo para determinar "sin actividad de usuario"
 // para pasar a estado power-down del procesador
@@ -21,13 +22,6 @@ static unsigned int USUARIO_AUSENTE = 12000; // en ms
 //
 // Activa el pin de overflow en la GPIO
 void activar_overflow_gpio_pin(void);
-
-// (Función auxiliar)
-//
-// Inicializa GPIO con GPIO31
-// (overflow bit) a output dir
-void GPIO_inicializar(void);
-
 
 // Función privada (modularización)
 //
@@ -62,21 +56,22 @@ void planificador(const uint32_t periodo_timer1)
 }
 
 
-
+// FALTA WATCHDOG
 void inicializar_modulos(void)
 {
-	GPIO_inicializar();
-	inicializar_botones(); 
-	inicializar_juego(tablero_test7, GPIO_JUEGO);
+	gpio_hal_iniciar();
+	alarma_inicializar();
+	FIFO_inicializar(GPIO_OVERFLOW);
+	inicializar_botones();
+	inicializar_cola_mensajes(GPIO_OVERFLOW);
+	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
+	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
 	
 	#if TESTING	
 		init_modulos_test();
 	#endif
 	
 	// inicializar módulos restante según conveniencia
-	// inicializar_juego(0, 0);
-	// hello_world_inicializar(..., ...);
-	// inicializar_visualizar(..., ...);
 }
 
 
@@ -126,8 +121,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					while(1);
 				
 				case ev_RX_SERIE:
-					if (auxData == trama_TAB )
-						juego_tratar_evento(ev_RX_SERIE, auxData);
+					juego_tratar_evento(ev_RX_SERIE, auxData);
 					break;
 				
 				case ev_TX_SERIE:
@@ -152,16 +146,6 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 
 
 // **** Funciones Auxiliares ****
-
-void GPIO_inicializar(void)
-{
-	gpio_hal_iniciar();
-		// set GPIO31 (overflow) to output dir
-	gpio_hal_sentido(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
-		// set EINT1 y EINT2 pin on pin block to input ???
-	gpio_hal_sentido(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
-}
-
 
 __inline void activar_overflow_gpio_pin(void) {
 		// escribir en GPIO31

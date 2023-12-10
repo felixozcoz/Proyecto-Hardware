@@ -78,6 +78,7 @@ void gestor_serial(void)
 					if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&  trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
 							FIFO_encolar(ev_RX_SERIE, trama); // atómico
 				}
+				ESTADO = inicio; // trama válida o no vuelve a inicio
 			}
 			else{
 				if( trama_len_buff < (MAX_LEN_TRAMA + 1)) {
@@ -107,7 +108,7 @@ void linea_serie_drv_enviar_array(Mensaje_t msg)
 		// si cola de mensajes vacía: tratar
 	else if( estaVacia() || index == -1){
 			// inicializar variables de mensaje
-		strncpy(msg_enviar, msg, strlen(msg));
+		strncpy(msg_enviar, msg, strlen(msg)+1);
 		index = 0;
 			// enviar primer caracter
 		sendchar_serie(msg[index]);

@@ -14,7 +14,7 @@
 #define TEST_BOTONES 				0
 #define TEST_CONSUMO 				0
 #define TEST_WATCHDOG 			0
-#define TEST_COLA_MENSAJES 	1
+#define TEST_COLA_MENSAJES 	0
 #define JUEGO  							0	
 #define HELLO_WORLD_DEMO 		0
 
@@ -26,5 +26,6 @@ void test_alarmas(void);
 void test_botones(void); // TODO
 void test_consumo(void); // TODO
 void test_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow);
+void test_whatdog(void); // TODO
 
 #endif // __TEST_H__

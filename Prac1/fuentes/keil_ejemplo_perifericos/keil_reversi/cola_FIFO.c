@@ -27,7 +27,7 @@ void FIFO_inicializar(const GPIO_HAL_PIN_T _pin_overflow) {
 		fifo_fin = 0;
 		fifo_inicio = 0;
 		pin_overflow = _pin_overflow;
-		// La cola está llena, manejar el desbordamiento/overflow
+			// Si la cola está llena, manejar el desbordamiento/overflow
 		gpio_hal_sentido(pin_overflow, 1, GPIO_HAL_PIN_DIR_OUTPUT);
 }
 

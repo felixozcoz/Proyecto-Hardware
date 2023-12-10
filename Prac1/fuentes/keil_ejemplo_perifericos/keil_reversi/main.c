@@ -5,7 +5,7 @@
 #include <string.h>
 #include "cola_mensajes.h"
 
-#define TESTING 1 // activar para realizar test de módulos; flags de test en "test.h"
+#define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
 void tests(void); // función de test de módulos
 
 
@@ -16,10 +16,7 @@ int main(){
 		tests();
 	#endif
 
-////	inicializar_juego(tablero_test7);
-//		iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
-////	planificador(10);
-	
+	planificador(10);
 	while(1);
 }
 
