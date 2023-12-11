@@ -13,7 +13,6 @@
 typedef enum { 
 	trama_NEW = ('N' << 16) | ('E' << 8) | 'W', 
 	trama_END = ('E' << 16) | ('N' << 8) | 'D',
-	trama_TAB = ('T' << 16) | ('A' << 8) | 'B',
 	// trama_JUGADA // no utilizada, por descarte
 } Trama_t;
 

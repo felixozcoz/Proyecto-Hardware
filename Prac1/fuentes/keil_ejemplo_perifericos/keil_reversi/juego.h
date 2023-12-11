@@ -13,4 +13,5 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData);
 void comprobar_trama(const uint32_t inputTrama);
+
 #endif // __JUEGO_H__
