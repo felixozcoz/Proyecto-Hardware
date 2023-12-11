@@ -12,6 +12,7 @@
 #include "GPIO_hal.h"
 #include <string.h>
 #include <stdlib.h>
+#include "tramas.h"
 
 // Guarda el tiempo transcurrido
 // entre las dos últimas pulsaciones
@@ -26,20 +27,23 @@ typedef enum {
 		LOBBY = 0,	
 		ESPERANDO_JUGADA = 1, 
 		ESPERANDO_CONFIRMACION = 2,
-	} estadoJuego_t;
+}  
+estadoJuego_t;
 
-	typedef enum {
+typedef enum {
 		UNDEFINED = 0,
 		VICTORIA = 1,
 		RENDICION_BOTON = 2,
-		RENDICION_COMANDO = 2,
-	} condicionFin_t;
+		RENDICION_COMANDO = 3,
+}  
+condicionFin_t;
 
 
 // Información juego
 static estadoJuego_t estado;
 static uint8_t turno;								// Registra de que jugador es el turno E {0,1}
 static condicionFin_t condicion_fin ;
+
 // Almacenamiento y visualización
 static TABLERO tablero;																			// Estado del tablero
 static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
@@ -91,30 +95,18 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 
 
 
-/*		NOTA: con respecto a la validez o no validez de los comandos.
-			En el guion se especifica que en caso de recibir un comando no valido, se
-			escribira por linea serie "Comando erroneo". Pero por lo que entiendo yo en el driver de linea serie
-			ya se hace esta comprobacion antes de encolar el evento de lectura con el comando el la variable trama.
-			Tal vez habria que quitar esa comprobacion e incluirla en este modulo?
-*/
-
-
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
-	char msj_info[30]; // guarda mensajes informativos
+	char msj_info[30]; // almacena mensajes informativos
 	
 	switch(estado){
 		
 		case LOBBY:
 			
 			// Despulsación ó cmd '$NEW!' (nueva partida) --> iniciar partida
-			if( ID_evento == ev_DESPULSACION || 
-					(ID_evento == ev_RX_SERIE && auxData == ((('N' << 16) | ('E' << 8) | 'W')))) {
-					// imprimir tablero
-				imprimir_tablero_linea_serie();
-					// actualiza estado
-				estado = ESPERANDO_JUGADA;
+			if( ID_evento == ev_DESPULSACION || (ID_evento == ev_RX_SERIE && auxData == trama_NEW)) {
+					imprimir_tablero_linea_serie(); 
+					//estado = ESPERANDO_JUGADA;
 			}
-			
 			break;
 		
 		case ESPERANDO_JUGADA:
@@ -127,7 +119,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				// kpis y lo que haya que mostrar al terminar la partida
 				condicion_fin = RENDICION_BOTON;
 			} 
-			else if(ID_evento == ev_RX_SERIE && auxData == ((('E' << 16) | ('N' << 8) | 'D'))){
+			else if(ID_evento == ev_RX_SERIE && auxData == trama_END){
 				// kpis y lo que haya que mostrar al terminar la partida
 				condicion_fin = RENDICION_COMANDO;
 			} 
@@ -200,7 +192,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 // Función para comprobar si una casilla está ocupada
 int jugadaValida(TABLERO *tablero, int fila, int columna) {
 		size_t i;
-	
+		
     if(!tablero_fila_valida(fila) || !tablero_columna_valida(columna)){
 			return 0;
 		}
@@ -213,43 +205,91 @@ int jugadaValida(TABLERO *tablero, int fila, int columna) {
     return 0;
 }
 
+// esTramaJugadaValida
+//
+// Parámetros:
+// 	trama: contiene codificada en ASCII una trama
+//
+// Devuelve 1 si 'trama' es una trama válida de 
+// acuerdo al formato de trama de tipo jugada
+// acordado e indicado por la siguiente exp. reg. "[0-9]-[0-9]".
+// En cualquier otro caso devuelve 0.
+bool esTramaJugadaValida(uint32_t trama) {
+    // Extrae los caracteres de la trama codificada en ASCII
+    char char1 = (trama >> 16) & 0xFF;
+    char char2 = (trama >> 8) & 0xFF;
+    char char3 = trama & 0xFF;
 
+    // Verifica que char1 y char3 sean dígitos y char2 sea '-'
+    if ((char1 >= '0' && char1 <= '9') &&
+        (char2 == '-') &&
+        (char3 >= '0' && char3 <= '9')) {
+        return 1; // La trama de jugada es válida
+    }
 
+    return 0; // La trama de jugada no es válida
+}
+
+// imprimir_reglas
+//
+// Envía por línea serie las reglas del 
+// juego que eventualmente serán mostradas
+// por línea serie
 void imprimir_reglas(void)
 {
 	linea_serie_drv_enviar_array("Aqui van las reglas\n");
 }
 
 
-// Determina si el contenido extraído de la línea serie,
-// bien sea comando o jugada, es válido. En caso de que no serlo
-// muestra un mensaje indicándolo por línea seríe así como gpio
-void comprobar_comando(const uint32_t auxData)
-{
-	int32_t trama = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
-				
-	if( trama_buffer[0] == 'N' && trama_buffer[1] == 'E' && trama_buffer[2] == 'W'){
-			FIFO_encolar(ev_RX_SERIE, trama);	// atómico
-	}
-		// terminar partida
-	else if( trama_buffer[0] == 'E' && trama_buffer[1] == 'N' && trama_buffer[2] == 'D'){
-			FIFO_encolar(ev_RX_SERIE, trama); // atómico
-	}
-		// indica visualizar tablero
-	else if( trama_buffer[0] == 'T' && trama_buffer[1] == 'A' && trama_buffer[2] == 'B'){
-			FIFO_encolar(ev_RX_SERIE, trama); // atómico
-	}
-		// indica jugada introducida
-	else if( trama_buffer[1] == '-'){
-		if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&	trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
-				FIFO_encolar(ev_RX_SERIE, trama); // atómico
-	}
-
+// comprobar_trama
+//
+// Parámetros:
+//	inputTrama: trama codificada en un uint32_t
+//
+// Si 'inputTrama' corresponde a una trama del 
+// dominio del juego, esta es encolada con su evento
+// correspondiente. En cualquier otro caso, se
+// muestra un mensaje por linea serie así 
+// como por gpio asociado al juego
+void comprobar_trama(const uint32_t inputTrama)
+{					
+	switch(inputTrama){
 	
+		case trama_NEW:
+				// nueva partida
+			if(estado == LOBBY)
+				FIFO_encolar(ev_NUEVA_PARTIDA, inputTrama);
+			break;
+	
+		case trama_END:			
+				// terminar partida
+			if( estado != LOBBY)
+				FIFO_encolar(ev_TERMINAR_PARTIDA, inputTrama);
+			break;
+		
+		case trama_TAB: //???
+				// visualizar tablero
+			FIFO_encolar(ev_MOSTRAR_TABLERO, inputTrama); 
+			break;
+		
+		default:
+			// por defecto: nueva jugada
+			// comprobar validez de jugada
+			if( estado != LOBBY){
+				if( esTramaJugadaValida(inputTrama) )
+					FIFO_encolar(ev_NUEVA_JUGADA, inputTrama);
+			else{
+					linea_serie_drv_enviar_array("Comando erroneo\n");
+					gpio_hal_escribir(pin_cmd_no_valido, 1, 1);	
+			}
 }
 
 
-
+// imprimir_tablero_linea_serie
+//
+// Envía por línea serie el estado actual 
+// del tablero que eventualmente es 
+// impreso en la línea serie
 void imprimir_tablero_linea_serie(void)
 {
 	Mensaje_t msg;

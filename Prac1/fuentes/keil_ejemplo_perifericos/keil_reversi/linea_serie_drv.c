@@ -5,15 +5,14 @@
 #include "cola_FIFO.h"
 #include <string.h>
 #include "cola_mensajes.h"
-
-#define MAX_LEN_TRAMA 3
+#include "tramas.h"
 
 enum{ inicio, procesando};
 static volatile unsigned int ESTADO = inicio;
 
 // Buffer de trama
-static volatile char trama_buffer[MAX_LEN_TRAMA];
-static volatile	size_t trama_len_buff;
+static char trama_buffer[MAX_LEN_TRAMA];
+static size_t trama_len_buff;
 
 // índice dentro de la cola que indica el mensaje
 static Mensaje_t msg_enviar;
@@ -48,7 +47,7 @@ void gestor_serial(void)
 	switch(ESTADO){
 		
 		case inicio:
-			if ( ch == '$' ){
+			if ( ch == CARACTER_INICIO_TRAMA ){
 				gpio_hal_escribir(pin_inicial, num_pins, 0); // desactivar GPIO30
 				trama_len_buff = 0;
 				ESTADO = procesando;
@@ -57,27 +56,9 @@ void gestor_serial(void)
 		
 		case procesando:
 			
-			if( ch == '!' )	// caracter fin de comando
+			if( ch == CARACTER_FIN_TRAMA )	// caracter fin de comando
 			{
-				int32_t trama = (trama_buffer[0] << 16) | (trama_buffer[1] << 8) | trama_buffer[2]; // almacenar comando
-				
-					// nueva partida
-				if( trama_buffer[0] == 'N' && trama_buffer[1] == 'E' && trama_buffer[2] == 'W'){
-						FIFO_encolar(ev_RX_SERIE, trama);	// atómico
-				}
-					// terminar partida
-				else if( trama_buffer[0] == 'E' && trama_buffer[1] == 'N' && trama_buffer[2] == 'D'){
-						FIFO_encolar(ev_RX_SERIE, trama); // atómico
-				}
-					// indica visualizar tablero
-				else if( trama_buffer[0] == 'T' && trama_buffer[1] == 'A' && trama_buffer[2] == 'B'){
-						FIFO_encolar(ev_RX_SERIE, trama); // atómico
-				}
-					// indica jugada introducida
-				else if( trama_buffer[1] == '-'){
-					if( trama_buffer[0] >= '1' && trama_buffer[0] <= '7' &&  trama_buffer[2] >= '1' && trama_buffer[2] <= '7' )
-							FIFO_encolar(ev_RX_SERIE, trama); // atómico
-				}
+				FIFO_encolar(ev_RX_SERIE, tramaToInt(trama_buffer) ); // enviar comando mediante evento
 				ESTADO = inicio; // trama válida o no vuelve a inicio
 			}
 			else{

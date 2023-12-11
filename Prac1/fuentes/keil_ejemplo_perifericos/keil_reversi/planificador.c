@@ -128,6 +128,22 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					// ...
 					break;
 				
+				case ev_NUEVA_JUGADA:
+					// linea_serie_drv_enviar_array("Recibido comando JUGADA");
+					break;
+				
+				case ev_NUEVA_PARTIDA:
+					// linea_serie_drv_enviar_array("Recibido comando NEW");
+					break;
+				
+				case ev_MOSTRAR_TABLERO:
+					// linea_serie_drv_enviar_array("Recibido comando TAB");
+					break;
+				
+				case ev_TERMINAR_PARTIDA:
+					// linea_serie_drv_enviar_array("Recibido comando END");
+					break;
+								
 				case ev_POWER_DOWN:
 					PM_power_down(); // cambiar modo de estado del procesador a power-down (deep-sleep)
 					break;

@@ -591,6 +591,11 @@
               <FileType>5</FileType>
               <FilePath>.\Mensaje_t.h</FilePath>
             </File>
+            <File>
+              <FileName>tramas.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tramas.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -720,6 +725,11 @@
               <FileName>conecta_K_hay_linea_arm_c.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\conecta_K_hay_linea_arm_c.s</FilePath>
+            </File>
+            <File>
+              <FileName>tramas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\tramas.c</FilePath>
             </File>
           </Files>
         </Group>

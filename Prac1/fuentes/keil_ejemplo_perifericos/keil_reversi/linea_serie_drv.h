@@ -6,15 +6,6 @@
 #include "GPIO_hal.h"
 #include "Mensaje_t.h"
 
-// Tipo trama
-typedef enum { 
-	trama_NEW = ('N' << 16) | ('E' << 8) | 'W', 
-	trama_END = ('E' << 16) | ('N' << 8) | 'D',
-	trama_TAB = ('T' << 16) | ('A' << 8) | 'B',
-	trama_JUGADA, // restante
-	
-} TRAMA_T;
-
 // Inicializa el periférico UART0
 // e inicializa los pines de GPIO utilizados
 void iniciar_serial(const GPIO_HAL_PIN_T _pin, const GPIO_HAL_PIN_T _num_pins);

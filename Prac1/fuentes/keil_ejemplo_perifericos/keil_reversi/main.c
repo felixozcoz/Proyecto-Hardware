@@ -4,7 +4,7 @@
 #include "tablero_test.h"
 #include <string.h>
 #include "cola_mensajes.h"
-
+#include "tramas.h"
 #define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
 void tests(void); // función de test de módulos
 
@@ -14,7 +14,6 @@ int main(){
 	#if TESTING
 		tests();
 	#endif
-
 	planificador(10);
 	while(1);
 }
