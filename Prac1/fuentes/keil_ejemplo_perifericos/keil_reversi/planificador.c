@@ -17,6 +17,9 @@
 // para pasar a estado power-down del procesador
 static unsigned int USUARIO_AUSENTE = 12000; // en ms
 
+// Tiempo de alarma que encola evento ev_LATIDO
+static int heartbeat_ms = 0x80000000 | 10 ;
+
 
 // (Función auxiliar)
 //
@@ -49,7 +52,6 @@ void planificador(const uint32_t periodo_timer1)
 {
 	inicializar_modulos();
 	
-	alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // alarma power-down proccessor mode
 	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
 	
 	gestionar_eventos(periodo_timer1);
@@ -66,6 +68,8 @@ void inicializar_modulos(void)
 	inicializar_cola_mensajes(GPIO_OVERFLOW);
 	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
 	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
+	
+	alarma_activar(ev_LATIDO, heartbeat_ms, 0); // heartbeat (periódico) cada 10ms
 	
 	#if TESTING	
 		init_modulos_test();
@@ -88,7 +92,8 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 			switch(evento){
 				
 				case ev_LATIDO:
-					hello_world_tratar_evento();
+					juego_tratar_evento(ev_LATIDO, auxData);
+					//hello_world_tratar_evento();
 					break;
 				
 				case ev_VISUALIZAR_HELLO:
@@ -128,20 +133,19 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					// ...
 					break;
 				
-				case ev_NUEVA_JUGADA:
-					// linea_serie_drv_enviar_array("Recibido comando JUGADA");
-					break;
-				
 				case ev_NUEVA_PARTIDA:
+					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // iniciar alarma usuario ausente
 					// linea_serie_drv_enviar_array("Recibido comando NEW");
 					break;
 				
-				case ev_MOSTRAR_TABLERO:
-					// linea_serie_drv_enviar_array("Recibido comando TAB");
+				case ev_TERMINAR_PARTIDA:
+					alarma_activar(ev_POWER_DOWN, 0, 0); // suprimir alarma usuario ausente
+					// linea_serie_drv_enviar_array("Recibido comando END");
 					break;
 				
-				case ev_TERMINAR_PARTIDA:
-					// linea_serie_drv_enviar_array("Recibido comando END");
+				case ev_NUEVA_JUGADA:
+					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // reset alarma usuario ausente
+					// linea_serie_drv_enviar_array("Recibido comando NUEVA JUGADA");
 					break;
 								
 				case ev_POWER_DOWN:

@@ -19,8 +19,7 @@ typedef enum {
 		ev_TX_SERIE = 11, 				// enviado to el mensaje por línea serie
 		ev_NUEVA_PARTIDA = 12,		
 		ev_TERMINAR_PARTIDA = 13,	
-		ev_MOSTRAR_TABLERO = 14,	
-		ev_NUEVA_JUGADA = 15,
+		ev_NUEVA_JUGADA = 16,
 		
 		#if TEST_ALARMAS | TEST_FIFO | TEST_FIFO			// eventos artificiales para test de alarmas
 			EVENTO_FICTICIO_1 = -1,
