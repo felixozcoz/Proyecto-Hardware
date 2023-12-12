@@ -38,20 +38,46 @@ typedef enum {
 }  
 condicionFin_t;
 
+typedef enum {
+		JUGADOR1 = 0,
+		JUGADOR2 = 1,
+}  
+turno_t;
+
+typedef enum {
+		NO_VALIDO = 0,
+		NEW = 1,
+		END = 2,
+	JUGADA = 3
+}  
+comando_t;
+
 
 // Información juego
 static estadoJuego_t estado;
-static uint8_t turno;								// Registra de que jugador es el turno E {0,1}
+static turno_t turno;																// Registra de que jugador es el turno E {0,1}
 static condicionFin_t condicion_fin ;
 
 // Almacenamiento y visualización
 static TABLERO tablero;																			// Estado del tablero
 static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
 	
-// Para contabilizar el timeout de esperando jugada
-static uint64_t tic;
-static uint64_t tac;
+// Para contabilizar el timeout de esperando confirmación
+static uint64_t ticEsperaConfirmacion;
+static uint64_t tacEsperaConfirmacion;
 static const uint64_t timeout = 3000000;
+
+// Para calcular: tiempo total y media esperando jugada
+static uint64_t ticEsperandoJugada;
+static uint64_t tacEsperandoJugada;
+static uint64_t tTotalEsperandoJugada;
+static uint64_t nVecesEsperandoJugada;
+
+// Para calcular: tiempo total y media en ejecutar conecta_K_hay_linea
+static uint64_t ticHayLinea;
+static uint64_t tacHayLinea;
+static uint64_t tTotalHayLinea;
+static uint64_t nVecesHayLinea;
 
 // Para guardar provisionalmente la jugada en curso
 static int fila;
@@ -85,10 +111,16 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 	tablero_inicializar(&tablero);
 	conecta_K_cargar_tablero(&tablero, tab_input);
 	
+	tTotalEsperandoJugada = 0;
+	nVecesEsperandoJugada = 0;
+	
+	tTotalHayLinea = 0;
+	nVecesHayLinea = 0;
+	
 		// configurar estado de juego
 	estado = LOBBY;  						// no se ha iniciado la partida como tal
 	condicion_fin = UNDEFINED;  // condición de terminación indefinida
-	turno = 0;								// primer turno jugador uno
+	turno = JUGADOR1;
 	fila = -1;
 	columna = -1;
 	
@@ -106,8 +138,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 		case LOBBY:
 			
 			// Despulsación ó cmd '$NEW!' (nueva partida) --> iniciar partida
-			if( ID_evento == ev_DESPULSACION || (ID_evento == ev_RX_SERIE && auxData == trama_NEW)) 
-			{
+			if( ID_evento == ev_DESPULSACION || (ID_evento == ev_RX_SERIE && auxData == trama_NEW)) {
 					linea_serie_drv_enviar_array("--- COMIENZA LA PARTIDA ---\n\n");
 					imprimir_tablero_linea_serie(); 
 						// indicar turno (inicia siempre el jugador 1)			
@@ -115,22 +146,26 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 					linea_serie_drv_enviar_array( msj_info );
 						// actualización de estado
 					estado = ESPERANDO_JUGADA;
+					nVecesEsperandoJugada++;
+					ticEsperandoJugada = clock_get_us();
 			}
 			break;
 		
 		case ESPERANDO_JUGADA:
-			
-				// indicar turno (inicia siempre el jugador 1)			
-			snprintf(msj_info, sizeof(msj_info), "%s %u\n", cadena_turno, turno);
+			// indicar turno (inicia siempre el jugador 1)			
+			snprintf(msj_info, sizeof(msj_info), "%s %u\n", cadena_turno, turno + 1);
 			linea_serie_drv_enviar_array( msj_info );
-				
+			
 			if ( ID_evento == ev_DESPULSACION && auxData == BOTON_2) {
 				// kpis y lo que haya que mostrar al terminar la partida
 				condicion_fin = RENDICION_BOTON;
 				imprimir_stats_finalizacion(); // mostrar stats
 				estado = LOBBY;
-			}
-			else if (ID_evento == ev_RX_SERIE)
+				
+				tacEsperandoJugada = clock_get_us();
+				tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
+				
+			} else if (ID_evento == ev_RX_SERIE)
 				comprobar_trama(auxData);
 			
 			break;
@@ -138,9 +173,9 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 		case ESPERANDO_CONFIRMACION:
 			
 			if( ID_evento == ev_LATIDO) {
-				tac = temporizador_drv_leer();
-				if( tac - tic >= timeout) {
-					tablero_insertar_color(&tablero, fila, columna, turno+1);
+				tacEsperaConfirmacion = clock_get_us();
+				if( tacEsperaConfirmacion - ticEsperaConfirmacion >= timeout) {
+					tablero_insertar_color(&tablero, fila, columna, turno + 1);
 					// escribirlo tmb en pantallas (memoria)
 					fila = -1; columna = -1;
 					imprimir_tablero_linea_serie();
@@ -271,7 +306,7 @@ void comprobar_trama(const uint32_t inputTrama)
 				if( es_trama_jugada_valida(inputTrama) ) 
 				{
 						imprimir_tablero_linea_serie(); // la casilla se añade automáticamente desde dentro de la función
-						tic = temporizador_drv_leer(); 
+						ticEsperaConfirmacion = temporizador_drv_leer(); 
 						estado = ESPERANDO_CONFIRMACION; // actualiza estado
 				}
 				else {	
