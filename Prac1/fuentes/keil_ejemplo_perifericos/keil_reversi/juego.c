@@ -90,19 +90,28 @@ bool esTramaJugada(const uint32_t inputTrama);
 // Función auxiliar
 void cambiarTurno(void);
 
+void inicializarVariables(void);
 
 // ***** FUNCIONES ****
 
 // Inicializa el tablero del juego conecta_k
 void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HAL_PIN_T _pin_cmd_no_valido)
 { 
+	
+	inicializarVariables();
 		// configurar gpio
 	pin_cmd_no_valido = _pin_cmd_no_valido;
 	gpio_hal_sentido(pin_cmd_no_valido, 1, GPIO_HAL_PIN_DIR_OUTPUT);
 	
-		// configurar tablero
 	tablero_inicializar(&tablero);
 	conecta_K_cargar_tablero(&tablero, tab_input);
+	
+
+}
+
+void inicializarVariables(void){
+		// configurar tablero
+	tablero_inicializar(&tablero);
 	
 	tTotalEsperandoJugada = 0;
 	nVecesEsperandoJugada = 0;
@@ -121,7 +130,9 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 	
 		// mostrar reglas del juego a la espera de un evento que inicie la partida
 	imprimir_reglas();
+
 }
+
 
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
@@ -151,9 +162,6 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				condicion_fin = RENDICION_BOTON;
 				imprimir_stats_finalizacion(); // mostrar stats
 				
-				tacEsperandoJugada = clock_get_us();
-				tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
-				
 			} 
 			else if (ID_evento == ev_RX_SERIE){ 				// mensaje recibido por línea serie && tratar trama
 						comprobar_trama(auxData);
@@ -178,28 +186,31 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				{
 						// actualizar tablero
 					tablero_insertar_color(&tablero, fila, columna, turno + 1);
-					fila = -1; columna = -1; // eliminar símbolo de casila pendiente de confirmar
 					
-					turno = !turno;
-					// indicar turno			
-					snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno + 1);
-					linea_serie_drv_enviar_array( msj_info );
-					imprimir_tablero_linea_serie();
-					// actualizar estado
-
+					
 					ticHayLinea = clock_get_us();
-					hayLinea = conecta_K_hay_linea_arm_arm(&tablero, fila, columna, turno + 1);
+					hayLinea = conecta_K_hay_linea_c_c(&tablero, fila, columna, turno + 1);
 					tacHayLinea = clock_get_us();
 					tTotalHayLinea += tacHayLinea - ticHayLinea;
 					nVecesHayLinea ++;
 					
+					fila = -1; columna = -1; // eliminar símbolo de casila pendiente de confirmar
+					
+					turno = !turno;
+
+					// actualizar estado
+					
 					if(hayLinea == TRUE){
+						imprimir_tablero_linea_serie();
 						condicion_fin = VICTORIA;
 						imprimir_stats_finalizacion(); 
 	
 					} else{
 							estado = ESPERANDO_JUGADA;
-			
+							// indicar turno			
+							snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno + 1);
+							linea_serie_drv_enviar_array( msj_info );
+							imprimir_tablero_linea_serie();
 					}
 				}
 			}
@@ -269,8 +280,14 @@ void comprobar_trama(const uint32_t inputTrama)
 				// terminar partida
 			if( estado != LOBBY){
 				// kpis
+				if ( estado == ESPERANDO_JUGADA) {
+						tacEsperandoJugada = clock_get_us();
+						tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
+				}
 				condicion_fin = RENDICION_COMANDO;
 				imprimir_stats_finalizacion(); // mostrar stats
+				
+
 			}
 			break;
 		
@@ -322,13 +339,22 @@ void imprimir_reglas(void)
 //	- Historiograma por tipo de evento
 void imprimir_stats_finalizacion(void){
 		Mensaje_t msg_info;
-		
+		turno_t ganador;
 		linea_serie_drv_enviar_array("Las stats...\n");
-	
+		sprintf(msg_info, "Tiempo total de computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea);
+		linea_serie_drv_enviar_array(msg_info);
+		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea/ nVecesHayLinea);
+		linea_serie_drv_enviar_array(msg_info);
+		sprintf(msg_info, "Tiempo total esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada);
+		linea_serie_drv_enviar_array(msg_info);
+		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada/ nVecesEsperandoJugada);
+		linea_serie_drv_enviar_array(msg_info);
+		
 		switch(condicion_fin){
 			
 			case VICTORIA:
-				sprintf(msg_info, "EL JUGADOR %u HA GANADO!!! \n", turno+1);
+				ganador = !turno;
+				sprintf(msg_info, "EL JUGADOR %u HA GANADO!!! \n", ganador+1);
 				linea_serie_drv_enviar_array(msg_info);
 				break;
 			
@@ -345,8 +371,11 @@ void imprimir_stats_finalizacion(void){
 			default:
 				// no ha podido llegar hasta aquí
 				break;
+			
+			
 		}
-		estado = LOBBY; 
+		estado = LOBBY;
+		inicializarVariables();		
 		// imprimir leyenda para jugar de nuevo()
 		// reiniciar juego
 }
@@ -425,4 +454,7 @@ void imprimir_vista_inicial_nueva_partida(void){
 		snprintf(msg_info, sizeof(msg_info), "Empieza moviendo jugador %u\n\n", turno+1);
 		linea_serie_drv_enviar_array( msg_info );
 }	
+
+
+
 

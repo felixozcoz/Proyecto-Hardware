@@ -5,6 +5,18 @@
 //tableros de test
 // 0: celda vacia, 1: ficha jugador uno, 2: ficha jugador dos
 
+
+static uint8_t 
+tablero_vacio[7][7] =
+{
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0};
+
 static uint8_t 
 tablero_test7[7][7] =
 {

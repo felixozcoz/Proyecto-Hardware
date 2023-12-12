@@ -8,7 +8,7 @@
 #include "celda.h"
 #include "config_conecta_K.h"
 
-enum { MAX_NO_CERO = 6, // máximo número de celdas no vacías por columna
+enum { MAX_NO_CERO = 7, // máximo número de celdas no vacías por columna
     INVALIDO = 255 // indica si una celda es inválida
 };
 
