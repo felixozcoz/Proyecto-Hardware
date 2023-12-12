@@ -70,7 +70,7 @@ void inicializar_modulos(void)
 	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
 	
 	alarma_activar(ev_LATIDO, heartbeat_ms, 0); // heartbeat (periódico) cada 10ms
-	
+	alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0);
 	#if TESTING	
 		init_modulos_test();
 	#endif
@@ -110,6 +110,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					break;
 				
 				case ev_DESPULSACION:
+					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0);
 					juego_tratar_evento(ev_DESPULSACION, auxData);
 					break;
 
@@ -126,6 +127,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					while(1);
 				
 				case ev_RX_SERIE:
+					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0);
 					juego_tratar_evento(ev_RX_SERIE, auxData);
 					break;
 				
@@ -133,21 +135,6 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 					// ...
 					break;
 				
-				case ev_NUEVA_PARTIDA:
-					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // iniciar alarma usuario ausente
-					// linea_serie_drv_enviar_array("Recibido comando NEW");
-					break;
-				
-				case ev_TERMINAR_PARTIDA:
-					alarma_activar(ev_POWER_DOWN, 0, 0); // suprimir alarma usuario ausente
-					// linea_serie_drv_enviar_array("Recibido comando END");
-					break;
-				
-				case ev_NUEVA_JUGADA:
-					alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0); // reset alarma usuario ausente
-					// linea_serie_drv_enviar_array("Recibido comando NUEVA JUGADA");
-					break;
-								
 				case ev_POWER_DOWN:
 					PM_power_down(); // cambiar modo de estado del procesador a power-down (deep-sleep)
 					break;

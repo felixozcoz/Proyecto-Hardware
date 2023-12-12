@@ -38,12 +38,12 @@ turno_t;
 
 // Información juego
 static estadoJuego_t estado;
-static turno_t turno;															
+static turno_t turno = JUGADOR1;															
 static condicionFin_t condicion_fin ;
 
 // Almacenamiento y visualización
 static TABLERO tablero;																			// Estado del tablero
-static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
+// static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
 	
 // Para contabilizar el timeout de esperando confirmación
 static uint64_t ticEsperaConfirmacion;
@@ -82,7 +82,7 @@ bool jugada_valida(TABLERO *tablero, const int fila, const int columna);
 
 // Dada la trama 'inputTrama' determina si es válida y
 // o no y actúa en consecuencia
-bool comprobar_trama(const uint32_t inputTrama);
+void comprobar_trama(const uint32_t inputTrama);
 
 // Función auxiliar que determina si 'inputTrama' es una trama jugada
 bool esTramaJugada(const uint32_t inputTrama);
@@ -116,7 +116,6 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 		// configurar estado de juego
 	estado = LOBBY;  						
 	condicion_fin = UNDEFINED; 
-	turno = JUGADOR1;
 	fila = -1;
 	columna = -1;
 	
@@ -127,6 +126,7 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 	char msj_info[30]; // almacena mensajes informativos
+	uint8_t hayLinea;
 	
 	switch(estado){
 		
@@ -140,6 +140,8 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 					nVecesEsperandoJugada++;
 					ticEsperandoJugada = clock_get_us();
 			}
+			
+
 			break;
 		
 		case ESPERANDO_JUGADA:
@@ -153,11 +155,8 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
 				
 			} 
-				// mensaje recibido por línea serie && tratar trama
-			else if (ID_evento == ev_RX_SERIE && comprobar_trama(auxData)){
-					// indicar turno			
-				snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno + 1);
-				linea_serie_drv_enviar_array( msj_info );
+			else if (ID_evento == ev_RX_SERIE){ 				// mensaje recibido por línea serie && tratar trama
+						comprobar_trama(auxData);
 			}
 			
 			break;
@@ -174,18 +173,34 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				estado = ESPERANDO_JUGADA;
 			}
 			else if(ID_evento == ev_LATIDO){
+				tacEsperaConfirmacion = clock_get_us();
 				if( (tacEsperaConfirmacion - ticEsperaConfirmacion) >= timeout ) 
 				{
 						// actualizar tablero
 					tablero_insertar_color(&tablero, fila, columna, turno + 1);
 					fila = -1; columna = -1; // eliminar símbolo de casila pendiente de confirmar
-					imprimir_tablero_linea_serie();
-						// actualizar estado
+					
 					turno = !turno;
-					estado = ESPERANDO_JUGADA;
-				}
-				else{
-					tacEsperaConfirmacion = clock_get_us();
+					// indicar turno			
+					snprintf(msj_info, sizeof(msj_info), "Turno de jugador %u\n", turno + 1);
+					linea_serie_drv_enviar_array( msj_info );
+					imprimir_tablero_linea_serie();
+					// actualizar estado
+
+					ticHayLinea = clock_get_us();
+					hayLinea = conecta_K_hay_linea_arm_arm(&tablero, fila, columna, turno + 1);
+					tacHayLinea = clock_get_us();
+					tTotalHayLinea += tacHayLinea - ticHayLinea;
+					nVecesHayLinea ++;
+					
+					if(hayLinea == TRUE){
+						condicion_fin = VICTORIA;
+						imprimir_stats_finalizacion(); 
+	
+					} else{
+							estado = ESPERANDO_JUGADA;
+			
+					}
 				}
 			}
 		break;
@@ -246,15 +261,9 @@ bool es_trama_jugada_valida(uint32_t trama) {
 // correspondiente. En cualquier otro caso, se
 // muestra un mensaje por linea serie así 
 // como por gpio asociado al juego
-bool comprobar_trama(const uint32_t inputTrama)
+void comprobar_trama(const uint32_t inputTrama)
 {					
 	switch(inputTrama){
-	
-		case trama_NEW:
-				// nueva partida
-			if(estado == LOBBY)
-				FIFO_encolar(ev_NUEVA_PARTIDA, inputTrama); //  notificar para iniciar de alarma usuario ausente
-			break;
 	
 		case trama_END:			
 				// terminar partida
@@ -262,7 +271,6 @@ bool comprobar_trama(const uint32_t inputTrama)
 				// kpis
 				condicion_fin = RENDICION_COMANDO;
 				imprimir_stats_finalizacion(); // mostrar stats
-				FIFO_encolar(ev_TERMINAR_PARTIDA, inputTrama); //  notificar para finalizar de alarma usuario ausente
 			}
 			break;
 		
@@ -275,8 +283,6 @@ bool comprobar_trama(const uint32_t inputTrama)
 						imprimir_tablero_linea_serie(); 				// la casilla se añade automáticamente desde dentro de la función
 						ticEsperaConfirmacion = clock_get_us(); //temporizador_drv_leer(); 
 						estado = ESPERANDO_CONFIRMACION; 				// actualiza estado
-					
-						FIFO_encolar(ev_NUEVA_JUGADA, inputTrama); //  notificar para reset de alarma usuario ausente
 				}
 				else {	
 						linea_serie_drv_enviar_array("Jugada no valida\n");
@@ -286,12 +292,10 @@ bool comprobar_trama(const uint32_t inputTrama)
 				// cualquier otro comando fuera del dominio del juego
 			else{
 					linea_serie_drv_enviar_array("Comando erroneo\n");
-					gpio_hal_escribir(pin_cmd_no_valido, 1, 1);	
-					return 0; // indica comando erróneo
+					gpio_hal_escribir(pin_cmd_no_valido, 1, 1);
 			}
 			
 		} // switch
-		return 1; // comando dentro del dominio del juego
 }
 
 // imprimir_reglas
