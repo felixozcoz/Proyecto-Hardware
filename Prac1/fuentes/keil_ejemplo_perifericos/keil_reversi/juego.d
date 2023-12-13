@@ -19,5 +19,7 @@
 .\juego.o: linea_serie_drv.h
 .\juego.o: Mensaje_t.h
 .\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\juego.o: tramas.h
 .\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\juego.o: alarmas.h

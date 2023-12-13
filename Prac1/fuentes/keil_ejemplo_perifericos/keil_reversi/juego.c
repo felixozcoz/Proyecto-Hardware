@@ -3,14 +3,17 @@
 #include "juego.h"
 #include "cola_FIFO.h"
 #include "temporizador_drv.h"
-#include "tablero.h"
 #include "botones.h"
+#include "tablero.h"
 #include "conecta_K_2023.h"
 #include "linea_serie_drv.h"
 #include "Mensaje_t.h"
+#include "celda.h"
 #include "GPIO_hal.h"
 #include <string.h>
+#include <stdlib.h>
 #include "tramas.h"
+#include "alarmas.h"
 
 typedef enum {
 		LOBBY = 0,	
@@ -39,12 +42,13 @@ static turno_t turno = JUGADOR1;
 static condicionFin_t condicion_fin ;
 
 // Almacenamiento y visualización
-static TABLERO tablero;
+static TABLERO tablero;																			// Estado del tablero
+// static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
 	
 // Para contabilizar el timeout de esperando confirmación
 static uint64_t ticEsperaConfirmacion;
 static uint64_t tacEsperaConfirmacion;
-const uint64_t timeout = 3000000;
+static const uint64_t timeout = 3000000;
 
 // Para calcular: tiempo total y media esperando jugada
 static uint64_t ticEsperandoJugada;
@@ -125,6 +129,7 @@ void inicializarVariables(void){
 	
 		// mostrar reglas del juego a la espera de un evento que inicie la partida
 	imprimir_reglas();
+
 }
 
 
@@ -164,8 +169,10 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 			
 		case ESPERANDO_CONFIRMACION:
 			
-			if( ID_evento == ev_DESPULSACION && auxData == BOTON_1) {
-				linea_serie_drv_enviar_array( "Movimiento cancelado\n" );
+			if( ID_evento == ev_DESPULSACION && auxData == BOTON_1)
+			{
+				snprintf(msj_info, sizeof(msj_info), "Movimiento cancelado\n");
+				linea_serie_drv_enviar_array( msj_info );
 				
 					// cancelar movimiento y sigue turno de mismo jugador
 				fila_jugada_por_confirmar = -1;  // eliminar símbolo de posición pendiente de confirmar
@@ -173,7 +180,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				imprimir_tablero_linea_serie();
 				estado = ESPERANDO_JUGADA;	
 			}
-			else if(ID_evento == ev_LATIDO) 
+			else if(ID_evento == ev_LATIDO)
 			{
 				tacEsperaConfirmacion = clock_get_us();
 				if( (tacEsperaConfirmacion - ticEsperaConfirmacion) >= timeout ) 
@@ -308,7 +315,8 @@ void comprobar_trama(const uint32_t inputTrama)
 					linea_serie_drv_enviar_array("Comando erroneo\n");
 					gpio_hal_escribir(pin_cmd_no_valido, 1, 1); // indicar por gpio
 			}
-		} 
+			
+		} // switch
 }
 
 // finalizar_partida
@@ -319,10 +327,18 @@ void comprobar_trama(const uint32_t inputTrama)
 void finalizar_partida(void){	
 		estado = LOBBY;
 		inicializarVariables();		
-			// imprimir leyenda de juego
-		linea_serie_drv_enviar_array("Para iniciar una nueva partida escriba '$NEW!' o pulse uno de los botones\n");
+		imprimir_leyenda_juego();
 }
 
+// imprimir_leyenda_juego
+//
+// Envía por línea serie la leyenda
+// del juego para volver a jugar
+void imprimir_leyenda_juego(void)
+{	
+	Mensaje_t leyenda = "Para iniciar una nueva partida escriba '$NEW!' o pulse uno de los botones\n";
+	linea_serie_drv_enviar_array(leyenda);
+}
 
 // imprimir_reglas
 //
@@ -330,9 +346,8 @@ void finalizar_partida(void){
 // juego que eventualmente serán mostradas
 // por línea serie
 void imprimir_reglas(void)
-{	
-	linea_serie_drv_enviar_array(
-										 "Conecta K es un juego donde dos jugadores que\n"
+{
+  Mensaje_t reglas = "Conecta K es un juego donde dos jugadores que\n"
                      "compiten para conectar K fichas\n"
                      "en línea ya sea horizontal, vertical o diagonal.\n\n"
 	
@@ -356,10 +371,14 @@ void imprimir_reglas(void)
 										 "Boton 2 (pin gpio 15) termina la partida en curso por rendición\n\n"
 
 										 "Para iniciar la partida escriba '$NEW!' o pulse uno de los botones\n"
-										 "¡Diviértete jugando!\n\n");
+										 "¡Diviértete jugando!\n\n";
+	
+	linea_serie_drv_enviar_array(reglas);
 }
 
 
+// TODO
+//
 // imprimir_stats
 //
 // Muestra por línea serie:
@@ -372,7 +391,7 @@ void imprimir_reglas(void)
 void imprimir_stats(void){
 		Mensaje_t msg_info;
 	
-	  linea_serie_drv_enviar_array("\nEstadisticas de partida: \n\n");
+		linea_serie_drv_enviar_array("Las stats...\n");
 		sprintf(msg_info, "Tiempo total de computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea);
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea/ nVecesHayLinea);
@@ -381,7 +400,6 @@ void imprimir_stats(void){
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada/ nVecesEsperandoJugada);
 		linea_serie_drv_enviar_array(msg_info);
-	// TODO historiograma
 		
 		switch(condicion_fin){
 			
@@ -403,6 +421,8 @@ void imprimir_stats(void){
 			default:
 				// no ha podido llegar hasta aquí
 				break;
+			
+			
 		}
 }
 	
@@ -411,9 +431,13 @@ void imprimir_stats(void){
 //
 // Devuelve 1 si 'inputTrama' es una trama
 // de tipo jugada
-__inline bool esTramaJugada(const uint32_t inputTrama){
+bool esTramaJugada(const uint32_t inputTrama){
 	return ( inputTrama & 0x00FF00) == trama_JUGADA;
 }
+
+
+
+
 
 // imprimir_tablero_linea_serie
 //

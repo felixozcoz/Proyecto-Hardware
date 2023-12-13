@@ -16,13 +16,14 @@
 
 // Tiempo para determinar "sin actividad de usuario"
 // para pasar a estado power-down del procesador
-const unsigned int USUARIO_AUSENTE = 12000; // en ms
+static const unsigned int USUARIO_AUSENTE = 12000; // en ms
 
 // Tiempo de alarma que encola evento ev_LATIDO
-const uint32_t heartbeat_ms  = 0x8000000A ;
+static const int heartbeat_ms = 0x80000000 | 10 ;
 
-// Tiempo máximo sin procesar ningún mensaje o evento
-const uint32_t timeout_no_action = 1;
+// Tiempo máximo sin procesar ningún mensaje
+// o evento
+// static const uint32_t timeout_no_action = 1000000;
 
 
 // (Función auxiliar)
@@ -56,7 +57,7 @@ void planificador(const uint32_t periodo_timer1)
 {
 	inicializar_modulos();
 	
-	//temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
+	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
 	
 	gestionar_eventos(periodo_timer1);
 }
@@ -72,7 +73,6 @@ void inicializar_modulos(void)
 	inicializar_cola_mensajes(GPIO_OVERFLOW);
 	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
 	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
-	
 	WD_hal_inicializar(timeout_no_action);
 	
 	alarma_activar(ev_LATIDO, heartbeat_ms, 0); // heartbeat (periódico) cada 10ms
