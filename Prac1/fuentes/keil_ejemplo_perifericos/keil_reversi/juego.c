@@ -3,17 +3,14 @@
 #include "juego.h"
 #include "cola_FIFO.h"
 #include "temporizador_drv.h"
-#include "botones.h"
 #include "tablero.h"
+#include "botones.h"
 #include "conecta_K_2023.h"
 #include "linea_serie_drv.h"
 #include "Mensaje_t.h"
-#include "celda.h"
 #include "GPIO_hal.h"
 #include <string.h>
-#include <stdlib.h>
 #include "tramas.h"
-#include "alarmas.h"
 
 typedef enum {
 		LOBBY = 0,	
@@ -42,13 +39,12 @@ static turno_t turno = JUGADOR1;
 static condicionFin_t condicion_fin ;
 
 // Almacenamiento y visualización
-static TABLERO tablero;																			// Estado del tablero
-// static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
+static TABLERO tablero;
 	
 // Para contabilizar el timeout de esperando confirmación
 static uint64_t ticEsperaConfirmacion;
 static uint64_t tacEsperaConfirmacion;
-static const uint64_t timeout = 3000000;
+const uint64_t timeout = 3000000;
 
 // Para calcular: tiempo total y media esperando jugada
 static uint64_t ticEsperandoJugada;
@@ -62,20 +58,20 @@ static uint64_t tacHayLinea;
 static uint64_t tTotalHayLinea;
 static uint64_t nVecesHayLinea;
 
-// Para guardar provisionalmente la jugada en curso
-static int fila;
-static int columna;
+// Para guardar provisionalmente la jugada en curso a espera de confirmación
+// Si fila_jugada_por_confirmar = columna_jugada_por_confirmar = -1, el usuario aún no ha introducido una jugada
+static int fila_jugada_por_confirmar;
+static int columna_jugada_por_confirmar;
 	
 // Pin GPIO indicar comando inválido
 static GPIO_HAL_PIN_T pin_cmd_no_valido;
-
-// Añadir variables para kpis
 	
 // Funciones auxiliares de impresión (definida después)
 void imprimir_tablero_linea_serie(void);
 void imprimir_reglas(void);
-void imprimir_stats_finalizacion(void);
+void imprimir_stats(void);
 void imprimir_vista_inicial_nueva_partida(void);
+void imprimir_leyenda_juego(void);
 
 // Funcion auxiliar para determinar si una fila-columna son validas y ademas la celda esta libre. (definida después)
 bool jugada_valida(TABLERO *tablero, const int fila, const int columna);
@@ -87,10 +83,10 @@ void comprobar_trama(const uint32_t inputTrama);
 // Función auxiliar que determina si 'inputTrama' es una trama jugada
 bool esTramaJugada(const uint32_t inputTrama);
 
-// Función auxiliar
-void cambiarTurno(void);
-
 void inicializarVariables(void);
+
+// Configura una nueva partida e indica cómo actuar en esta situación
+void finalizar_partida(void);
 
 // ***** FUNCIONES ****
 
@@ -105,12 +101,10 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 	
 	tablero_inicializar(&tablero);
 	conecta_K_cargar_tablero(&tablero, tab_input);
-	
-
 }
 
 void inicializarVariables(void){
-		// configurar tablero
+		// inicializar tablero vacío
 	tablero_inicializar(&tablero);
 	
 	tTotalEsperandoJugada = 0;
@@ -125,18 +119,17 @@ void inicializarVariables(void){
 		// configurar estado de juego
 	estado = LOBBY;  						
 	condicion_fin = UNDEFINED; 
-	fila = -1;
-	columna = -1;
+		// indicar que no hay jugada pendiente de confirmación
+	fila_jugada_por_confirmar = -1;
+	columna_jugada_por_confirmar = -1;
 	
 		// mostrar reglas del juego a la espera de un evento que inicie la partida
 	imprimir_reglas();
-
 }
 
 
-
 void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
-	char msj_info[30]; // almacena mensajes informativos
+	Mensaje_t msj_info; // almacena mensajes informativos
 	uint8_t hayLinea;
 	
 	switch(estado){
@@ -146,64 +139,71 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 				// Despulsación ó cmd '$NEW!' (nueva partida) --> iniciar partida
 			if( ID_evento == ev_DESPULSACION || (ID_evento == ev_RX_SERIE && auxData == trama_NEW)) {
 					imprimir_vista_inicial_nueva_partida();
+				
 						// actualización de estado
 					estado = ESPERANDO_JUGADA;
+				
+						// actualizar estadísticas de juego
 					nVecesEsperandoJugada++;
 					ticEsperandoJugada = clock_get_us();
 			}
-			
-
 			break;
 		
 		case ESPERANDO_JUGADA:
 
-			if ( ID_evento == ev_DESPULSACION && auxData == BOTON_2) {
-				// kpis y lo que haya que mostrar al terminar la partida
+			if ( ID_evento == ev_DESPULSACION && auxData == BOTON_2) 
+			{
 				condicion_fin = RENDICION_BOTON;
-				imprimir_stats_finalizacion(); // mostrar stats
-				
+				imprimir_stats();
+				finalizar_partida();
 			} 
-			else if (ID_evento == ev_RX_SERIE){ 				// mensaje recibido por línea serie && tratar trama
+			else if (ID_evento == ev_RX_SERIE) 	// mensaje recibido por línea serie && tratar trama
 						comprobar_trama(auxData);
-			}
 			
 			break;
 			
 		case ESPERANDO_CONFIRMACION:
 			
-			if( ID_evento == ev_DESPULSACION && auxData == BOTON_1)
-			{
-				snprintf(msj_info, sizeof(msj_info), "Movimiento cancelado\n");
-				linea_serie_drv_enviar_array( msj_info );
+			if( ID_evento == ev_DESPULSACION && auxData == BOTON_1) {
+				linea_serie_drv_enviar_array( "Movimiento cancelado\n" );
+				
 					// cancelar movimiento y sigue turno de mismo jugador
-				fila = -1; columna = -1; // eliminar símbolo de casila pendiente de confirmar
+				fila_jugada_por_confirmar = -1;  // eliminar símbolo de posición pendiente de confirmar
+				columna_jugada_por_confirmar = -1; 
 				imprimir_tablero_linea_serie();
-				estado = ESPERANDO_JUGADA;
+				estado = ESPERANDO_JUGADA;	
 			}
-			else if(ID_evento == ev_LATIDO){
+			else if(ID_evento == ev_LATIDO) 
+			{
 				tacEsperaConfirmacion = clock_get_us();
 				if( (tacEsperaConfirmacion - ticEsperaConfirmacion) >= timeout ) 
 				{
 						// actualizar tablero
-					tablero_insertar_color(&tablero, fila, columna, turno + 1);
-					
-					
+					tablero_insertar_color(&tablero, fila_jugada_por_confirmar, columna_jugada_por_confirmar, turno + 1);
+							
 					ticHayLinea = clock_get_us();
-					hayLinea = conecta_K_hay_linea_c_c(&tablero, fila, columna, turno + 1);
+					
+						// buscando solución
+					hayLinea = conecta_K_hay_linea_c_c(&tablero, fila_jugada_por_confirmar, columna_jugada_por_confirmar, turno + 1);
+					
 					tacHayLinea = clock_get_us();
 					tTotalHayLinea += tacHayLinea - ticHayLinea;
 					nVecesHayLinea ++;
 					
-					fila = -1; columna = -1; // eliminar símbolo de casila pendiente de confirmar
+						// jugada confirmada, restaura fila y columna de jugada pendiente
+					fila_jugada_por_confirmar = -1; 
+					columna_jugada_por_confirmar = -1; 
 					
+						// cambiar turno
 					turno = !turno;
 
-					// actualizar estado
-					
-					if(hayLinea == TRUE){
+						// actualizar estado
+					if(hayLinea == TRUE)
+					{
 						imprimir_tablero_linea_serie();
 						condicion_fin = VICTORIA;
-						imprimir_stats_finalizacion(); 
+						imprimir_stats(); 
+						finalizar_partida();
 	
 					} else{
 							estado = ESPERANDO_JUGADA;
@@ -218,7 +218,6 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 	}
 }
 
-
 // jugada_valida
 //
 // Devuelve 1 si la celda (fila, columna) está ocupada.
@@ -230,8 +229,8 @@ bool jugada_valida(TABLERO *tablero, const int _fila, const int _columna) {
 			return 0;
 		
 			// guardar posición provisional de ficha pendiente de confirmar
-    fila = _fila-1; 
-		columna = _columna-1; 
+    fila_jugada_por_confirmar = _fila-1; 
+		columna_jugada_por_confirmar = _columna-1; 
 		
 		return 1;
 }
@@ -279,41 +278,51 @@ void comprobar_trama(const uint32_t inputTrama)
 		case trama_END:			
 				// terminar partida
 			if( estado != LOBBY){
-				// kpis
 				if ( estado == ESPERANDO_JUGADA) {
 						tacEsperandoJugada = clock_get_us();
 						tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
 				}
 				condicion_fin = RENDICION_COMANDO;
-				imprimir_stats_finalizacion(); // mostrar stats
-				
-
+				imprimir_stats();
+				finalizar_partida();
 			}
 			break;
 		
 		default:
-			// por defecto: nueva jugada
+				// comprobar si trama es una jugada
 			if( (estado == ESPERANDO_JUGADA) && esTramaJugada(inputTrama) )
 			{
 				if( es_trama_jugada_valida(inputTrama) ) 
 				{
-						imprimir_tablero_linea_serie(); 				// la casilla se añade automáticamente desde dentro de la función
-						ticEsperaConfirmacion = clock_get_us(); //temporizador_drv_leer(); 
-						estado = ESPERANDO_CONFIRMACION; 				// actualiza estado
+						imprimir_tablero_linea_serie(); 				
+						ticEsperaConfirmacion = clock_get_us(); 
+						estado = ESPERANDO_CONFIRMACION; 			
 				}
 				else {	
 						linea_serie_drv_enviar_array("Jugada no valida\n");
-						gpio_hal_escribir(pin_cmd_no_valido, 1, 1);	
+						gpio_hal_escribir(pin_cmd_no_valido, 1, 1);		// indicar por gpio
 				}
 			}
 				// cualquier otro comando fuera del dominio del juego
 			else{
 					linea_serie_drv_enviar_array("Comando erroneo\n");
-					gpio_hal_escribir(pin_cmd_no_valido, 1, 1);
+					gpio_hal_escribir(pin_cmd_no_valido, 1, 1); // indicar por gpio
 			}
-			
-		} // switch
+		} 
 }
+
+// finalizar_partida
+//
+// Configura una nueva partida y muestra
+// por línea serie cómo puede actuar 
+// el usuario en esta situación
+void finalizar_partida(void){	
+		estado = LOBBY;
+		inicializarVariables();		
+			// imprimir leyenda de juego
+		linea_serie_drv_enviar_array("Para iniciar una nueva partida escriba '$NEW!' o pulse uno de los botones\n");
+}
+
 
 // imprimir_reglas
 //
@@ -321,14 +330,37 @@ void comprobar_trama(const uint32_t inputTrama)
 // juego que eventualmente serán mostradas
 // por línea serie
 void imprimir_reglas(void)
-{
-	linea_serie_drv_enviar_array("Aqui van las reglas\n");
+{	
+	linea_serie_drv_enviar_array(
+										 "Conecta K es un juego donde dos jugadores que\n"
+                     "compiten para conectar K fichas\n"
+                     "en línea ya sea horizontal, vertical o diagonal.\n\n"
+	
+										 "Cada jugador tiene un movimiento en su turno\n"
+										 "en el que debe colocar una ficha en\n"
+										 "uno de los huecos del tablero\n"
+										 "Una vez realizada una jugada dispones de 3s para cancelarla\n"
+										 "sino, se hace efectiva y se muestra en el tablero\n"
+										 "Los movimientos se realizan enviando comandos\n"
+                     "a través de la linea serie o presionando los botones 1 y 2.\n"
+	
+										 "La partida finaliza si ganas o el otro jugador se rinde\n\n"
+	
+										 "Comandos para jugar:\n"
+										 "'$NEW!' inicia una nueva partida\n"
+										 "'$END!' termina la partida en curso por rendición\n"
+										 "'$X-Y!' indica una jugada, donde X es la fila e Y la columna\n"
+										 "Botones:\n"
+										 "Boton 1 (pin gpio 14) permite cancelar una jugada\n"
+										 "valida antes de ser confirmada\n"
+										 "Boton 2 (pin gpio 15) termina la partida en curso por rendición\n\n"
+
+										 "Para iniciar la partida escriba '$NEW!' o pulse uno de los botones\n"
+										 "¡Diviértete jugando!\n\n");
 }
 
 
-// TODO
-//
-// imprimir_stats_finalizacion
+// imprimir_stats
 //
 // Muestra por línea serie:
 // 	- Causa finalización
@@ -337,10 +369,10 @@ void imprimir_reglas(void)
 //	- Total y media ed tiempo que al humano le cuesta pensar jugada
 //	- Total de eventos encolados en esta partida
 //	- Historiograma por tipo de evento
-void imprimir_stats_finalizacion(void){
+void imprimir_stats(void){
 		Mensaje_t msg_info;
-		turno_t ganador;
-		linea_serie_drv_enviar_array("Las stats...\n");
+	
+	  linea_serie_drv_enviar_array("\nEstadisticas de partida: \n\n");
 		sprintf(msg_info, "Tiempo total de computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea);
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea/ nVecesHayLinea);
@@ -349,12 +381,12 @@ void imprimir_stats_finalizacion(void){
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada/ nVecesEsperandoJugada);
 		linea_serie_drv_enviar_array(msg_info);
+	// TODO historiograma
 		
 		switch(condicion_fin){
 			
 			case VICTORIA:
-				ganador = !turno;
-				sprintf(msg_info, "EL JUGADOR %u HA GANADO!!! \n", ganador+1);
+				sprintf(msg_info, "EL JUGADOR %u HA GANADO!!! \n", (!turno)+1);
 				linea_serie_drv_enviar_array(msg_info);
 				break;
 			
@@ -371,13 +403,7 @@ void imprimir_stats_finalizacion(void){
 			default:
 				// no ha podido llegar hasta aquí
 				break;
-			
-			
 		}
-		estado = LOBBY;
-		inicializarVariables();		
-		// imprimir leyenda para jugar de nuevo()
-		// reiniciar juego
 }
 	
 
@@ -385,13 +411,9 @@ void imprimir_stats_finalizacion(void){
 //
 // Devuelve 1 si 'inputTrama' es una trama
 // de tipo jugada
-bool esTramaJugada(const uint32_t inputTrama){
+__inline bool esTramaJugada(const uint32_t inputTrama){
 	return ( inputTrama & 0x00FF00) == trama_JUGADA;
 }
-
-
-
-
 
 // imprimir_tablero_linea_serie
 //
@@ -417,7 +439,7 @@ void imprimir_tablero_linea_serie(void)
      offset += sprintf(msg + offset, "%d|", i);
      for (j = 0; j < NUM_COLUMNAS; j++) {
 							// añadir casilla pendiente de confirmación
-						if( fila+1 == i && columna == j){
+						if( fila_jugada_por_confirmar+1 == i && columna_jugada_por_confirmar == j){
 							offset += sprintf(msg + offset, "*|");
 							continue;
 						}
@@ -445,7 +467,7 @@ void imprimir_tablero_linea_serie(void)
 // del comienzo de la partida, el tablero inicial
 // y un mensaje indicando qué jugador empieza
 void imprimir_vista_inicial_nueva_partida(void){
-		char msg_info[MAX_MENSAJE_LENGTH];
+		Mensaje_t msg_info;
 			// mensaje inicio
 		linea_serie_drv_enviar_array("--- COMIENZA LA PARTIDA ---\n\n");
 		imprimir_tablero_linea_serie(); 
