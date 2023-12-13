@@ -18,10 +18,10 @@
 // para pasar a estado power-down del procesador
 const unsigned int USUARIO_AUSENTE = 12000; // en ms
 
-// Tiempo de alarma que encola evento ev_LATIDO
+// Tiempo de alarma que encola evento ev_LATIDO (10ms)
 const uint32_t heartbeat_ms  = 0x8000000A ;
 
-// Tiempo máximo sin procesar ningún mensaje o evento
+// Tiempo máximo en segundo sin procesar ningún mensaje o evento
 const uint32_t timeout_no_action = 1;
 
 
@@ -56,7 +56,7 @@ void planificador(const uint32_t periodo_timer1)
 {
 	inicializar_modulos();
 	
-	//temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
+	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
 	
 	gestionar_eventos(periodo_timer1);
 }
