@@ -287,6 +287,8 @@ void comprobar_trama(const uint32_t inputTrama)
 		case trama_END:			
 				// terminar partida
 			if( estado != LOBBY){
+				gpio_hal_escribir(pin_cmd_no_valido, 1, 0);
+				
 				if ( estado == ESPERANDO_JUGADA) {
 						tacEsperandoJugada = clock_get_us();
 						tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
@@ -304,6 +306,7 @@ void comprobar_trama(const uint32_t inputTrama)
 				if( es_trama_jugada_valida(inputTrama) ){	
 							// indicar jugada por linea serie
 						Mensaje_t msj_info; char sTrama[MAX_LEN_TRAMA];
+						gpio_hal_escribir(pin_cmd_no_valido, 1, 0);		// indicar por gpio
 						tramaToString(inputTrama, sTrama);
 						snprintf(msj_info, sizeof(msj_info), "\nJugada introducida: %s\n", sTrama);
 						linea_serie_drv_enviar_array( msj_info );
