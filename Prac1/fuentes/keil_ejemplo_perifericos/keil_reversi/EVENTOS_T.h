@@ -2,6 +2,9 @@
 #define _EVENTOS_T_H_
 
 #include "tests.h" // definición de estructuras de control de flujo para test unitarios de módulos
+#include <stdlib.h>
+
+static const size_t N_EVENTOS_REGISTRADOS = 11;
 
 // Definición del tipo de datos EVENTO_T
 // conjunto de eventos posibles
@@ -14,12 +17,9 @@ typedef enum {
 	  ev_POWER_DOWN = 5, 			 	// cambiar a estado power-down del procesador
 		ev_VISUALIZAR_CUENTA = 6, // visualizar campo 'auxData' en la GPIO
 		ev_LATIDO = 7,						// heartbeat cada 10ms
-		ev_DESPULSACION = 9, 			// el botón indicado en 'auxData' ha sido despulsado
-		ev_RX_SERIE = 10, 				// recibido comando en linea serie; contenido en 'auxData'
-		ev_TX_SERIE = 11, 				// enviado to el mensaje por línea serie
-		ev_NUEVA_PARTIDA = 12,		
-		ev_TERMINAR_PARTIDA = 13,	
-		ev_NUEVA_JUGADA = 16,
+		ev_DESPULSACION = 8, 			// el botón indicado en 'auxData' ha sido despulsado
+		ev_RX_SERIE = 9, 				// recibido comando en linea serie; contenido en 'auxData'
+		ev_TX_SERIE = 10, 				// enviado to el mensaje por línea serie
 		
 		#if TEST_ALARMAS | TEST_FIFO | TEST_FIFO			// eventos artificiales para test de alarmas
 			EVENTO_FICTICIO_1 = -1,
@@ -30,6 +30,34 @@ typedef enum {
 		#endif
 	
 } EVENTO_T;
+
+
+// Función para obtener la cadena asociada a un evento
+__inline const char *getEventoString(EVENTO_T evento) {
+    switch (evento) {
+        case ev_EVENTO_VOID: return "ev_EVENTO_VOID";
+        case ev_VISUALIZAR_HELLO: return "ev_VISUALIZAR_HELLO";
+        case ev_ALARMAS_OVERFLOW: return "ev_ALARMAS_OVERFLOW";
+        case ev_REVISAR_ALARMAS: return "ev_REVISAR_ALARMAS";
+        case ev_PULSACION: return "ev_PULSACION";
+        case ev_POWER_DOWN: return "ev_POWER_DOWN";
+        case ev_VISUALIZAR_CUENTA: return "ev_VISUALIZAR_CUENTA";
+        case ev_LATIDO: return "ev_LATIDO";
+        case ev_DESPULSACION: return "ev_DESPULSACION";
+        case ev_RX_SERIE: return "ev_RX_SERIE";
+        case ev_TX_SERIE: return "ev_TX_SERIE";
+
+#if TEST_ALARMAS | TEST_FIFO | TEST_FIFO
+        case EVENTO_FICTICIO_1: return "EVENTO_FICTICIO_1";
+        case EVENTO_FICTICIO_2: return "EVENTO_FICTICIO_2";
+        case EVENTO_FICTICIO_3: return "EVENTO_FICTICIO_3";
+        case EVENTO_FICTICIO_4: return "EVENTO_FICTICIO_4";
+        case EVENTO_FICTICIO_5: return "EVENTO_FICTICIO_5";
+#endif
+
+        default: return "Unknown Evento";
+    }
+}
 
 
 #endif // _EVENTOS_T_H_

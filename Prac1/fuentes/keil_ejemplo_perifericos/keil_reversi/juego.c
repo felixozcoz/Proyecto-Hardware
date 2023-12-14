@@ -8,12 +8,10 @@
 #include "conecta_K_2023.h"
 #include "linea_serie_drv.h"
 #include "Mensaje_t.h"
-#include "celda.h"
 #include "GPIO_hal.h"
 #include <string.h>
 #include <stdlib.h>
 #include "tramas.h"
-#include "alarmas.h"
 
 typedef enum {
 		LOBBY = 0,	
@@ -42,8 +40,7 @@ static turno_t turno = JUGADOR1;
 static condicionFin_t condicion_fin ;
 
 // Almacenamiento y visualización
-static TABLERO tablero;																			// Estado del tablero
-// static uint8_t pantalla[NUM_FILAS + 1][NUM_COLUMNAS + 1]; 	// Visualizacion en memoria
+static TABLERO tablero;						
 	
 // Para contabilizar el timeout de esperando confirmación
 static uint64_t ticEsperaConfirmacion;
@@ -77,14 +74,15 @@ void imprimir_stats(void);
 void imprimir_vista_inicial_nueva_partida(void);
 void imprimir_leyenda_juego(void);
 
-// Funcion auxiliar para determinar si una fila-columna son validas y ademas la celda esta libre. (definida después)
+// Funcion auxiliar para determinar si una fila-columna son validas y ademas la celda esta libre.
 bool jugada_valida(TABLERO *tablero, const int fila, const int columna);
 
-// Dada la trama 'inputTrama' determina si es válida y
-// o no y actúa en consecuencia
+// Determina si 'inputTrama' es un trama válida y ejecuta las acciones asociadas a ella
+// En cualquier otro caso muestra un mensaje informativo por línea serie
 void comprobar_trama(const uint32_t inputTrama);
 
-// Función auxiliar que determina si 'inputTrama' es una trama jugada
+// Devuelve 1 si 'inputTrama' es una trama jugada
+// En cualquier otro caso devuelve 0
 bool esTramaJugada(const uint32_t inputTrama);
 
 void inicializarVariables(void);
@@ -95,7 +93,6 @@ void finalizar_partida(void);
 
 // ***** FUNCIONES ****
 
-// Inicializa el tablero del juego conecta_k
 void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HAL_PIN_T _pin_cmd_no_valido)
 { 
 	
@@ -107,6 +104,7 @@ void inicializar_juego(uint8_t tab_input[NUM_FILAS][NUM_COLUMNAS], const GPIO_HA
 	tablero_inicializar(&tablero);
 	conecta_K_cargar_tablero(&tablero, tab_input);
 }
+
 
 void inicializarVariables(void){
 		// inicializar tablero vacío
@@ -130,7 +128,6 @@ void inicializarVariables(void){
 	
 		// mostrar reglas del juego a la espera de un evento que inicie la partida
 	imprimir_reglas();
-
 }
 
 
@@ -234,7 +231,7 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 
 // jugada_valida
 //
-// Devuelve 1 si la celda (fila, columna) está ocupada.
+// Devuelve 1 si la jugada '_fila'-'_columna' es válida
 // En cualquier otro caso devuelve 0
 bool jugada_valida(TABLERO *tablero, const int _fila, const int _columna) {
 			
@@ -255,8 +252,7 @@ bool jugada_valida(TABLERO *tablero, const int _fila, const int _columna) {
 // 	trama: contiene codificada en ASCII una trama
 //
 // Devuelve 1 si 'trama' es una trama válida de 
-// acuerdo al formato de trama de tipo jugada
-// acordado e indicado por la siguiente exp. reg. "[0-9]-[0-9]".
+// acuerdo al formato de trama definido en "trama.h"
 // En cualquier otro caso devuelve 0.
 bool es_trama_jugada_valida(uint32_t trama) {
     // Extrae los caracteres de la trama codificada en ASCII
@@ -280,10 +276,10 @@ bool es_trama_jugada_valida(uint32_t trama) {
 //	inputTrama: trama codificada en un uint32_t
 //
 // Si 'inputTrama' corresponde a una trama del 
-// dominio del juego, esta es encolada con su evento
-// correspondiente. En cualquier otro caso, se
-// muestra un mensaje por linea serie así 
-// como por gpio asociado al juego
+// dominio del juego definidas en "tramas.h"
+// se ejecuta las acciones asociadas a ella.
+// En cualquier otro caso se envía por línea serie
+// un mensaje informativo notificando el tratamiento
 void comprobar_trama(const uint32_t inputTrama)
 {					
 	switch(inputTrama){
@@ -334,7 +330,7 @@ void comprobar_trama(const uint32_t inputTrama)
 //
 // Configura una nueva partida y muestra
 // por línea serie cómo puede actuar 
-// el usuario en esta situación
+// el usuario para jugar de nuevo
 void finalizar_partida(void){	
 		estado = LOBBY;
 		inicializarVariables();		
@@ -393,7 +389,8 @@ void imprimir_reglas(void)
 //	- Historiograma por tipo de evento
 void imprimir_stats(void){
 		Mensaje_t msg_info;
-		
+		size_t evento;
+	
 		switch(condicion_fin){
 			
 			case VICTORIA:
@@ -425,7 +422,13 @@ void imprimir_stats(void){
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada/ nVecesEsperandoJugada);
 		linea_serie_drv_enviar_array(msg_info);
+		
+		linea_serie_drv_enviar_array("\nHistoriograma de eventos en partida:\n");
 		// falta historiograma de eventos
+		for(evento = 1; evento < N_EVENTOS_REGISTRADOS; evento++){
+				sprintf(msg_info, " %s %u\n", getEventoString(evento), FIFO_estadisticas(evento));
+				linea_serie_drv_enviar_array(msg_info);
+		}
 }
 	
 
@@ -493,7 +496,6 @@ void imprimir_vista_inicial_nueva_partida(void){
 			// mensaje inicio
 		linea_serie_drv_enviar_array("--- COMIENZA LA PARTIDA ---\n\n");
 		imprimir_tablero_linea_serie(); 
-	
 			// indicar turno (inicia siempre el jugador 1)			
 		snprintf(msg_info, sizeof(msg_info), "Empieza moviendo jugador %u\n\n", turno+1);
 		linea_serie_drv_enviar_array( msg_info );

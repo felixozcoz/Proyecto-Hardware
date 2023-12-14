@@ -18,31 +18,24 @@
 // para pasar a estado power-down del procesador
 static const unsigned int USUARIO_AUSENTE = 12000; // en ms
 
-// Tiempo de alarma que encola evento ev_LATIDO
-static const int heartbeat_ms = 0x80000000 | 10 ;
+// Tiempo de alarma de segundos que encola evento ev_LATIDO
+static const uint32_t heartbeat_ms = 0x80000000 | 10 ;
 
 // Tiempo máximo sin procesar ningún mensaje
-// o evento
+// o evento (whatchdog)
 static const uint32_t timeout_no_action = 1;
 
 
-// (Función auxiliar)
-//
+
 // Activa el pin de overflow en la GPIO
 void activar_overflow_gpio_pin(void);
 
-// Función privada (modularización)
-//
 // Inicializa los módulos necesarios
 void inicializar_modulos(void);
 
-// Función privada (modularización)
-//
 // Gestiona los eventos
 void gestionar_eventos(const uint32_t periodo_timer1);
 
-// Función privada
-//
 // Inicializa los test específicos
 // para los test unitarios de módulos
 // Flag "TESTING" debe estar a 1
@@ -56,9 +49,7 @@ void init_modulos_test(void);
 void planificador(const uint32_t periodo_timer1) 
 {
 	inicializar_modulos();
-	
 	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
-	
 	gestionar_eventos(periodo_timer1);
 }
 
@@ -73,6 +64,7 @@ void inicializar_modulos(void)
 	inicializar_cola_mensajes(GPIO_OVERFLOW);
 	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
 	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
+	
 	WD_hal_inicializar(timeout_no_action);
 	
 	alarma_activar(ev_LATIDO, heartbeat_ms, 0); // heartbeat (periódico) cada 10ms
