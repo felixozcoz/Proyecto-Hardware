@@ -59,7 +59,7 @@ bool encolar_msg(Mensaje_t mensaje) {
     strncpy(cola.elementos[cola.fin], mensaje, strlen(mensaje)+1);
 			// restaurar interrupciones irq
 		if ( bit_irq )
-			disable_irq();
+			enable_irq();
 		
 		return 1;
 }
@@ -73,7 +73,7 @@ bool desencolar_msg(Mensaje_t *mensaje) {
     if (estaVacia_msg()){
 					// restaurar interrupciones irq
 				if ( bit_irq )
-					disable_irq();
+					enable_irq();
         return 0;
 		}
 		// almacenar mensaje
@@ -87,7 +87,7 @@ bool desencolar_msg(Mensaje_t *mensaje) {
 		
 			// restaurar interrupciones irq
 		if ( bit_irq )
-			disable_irq();
+			enable_irq();
 		
 		return 1;
 }

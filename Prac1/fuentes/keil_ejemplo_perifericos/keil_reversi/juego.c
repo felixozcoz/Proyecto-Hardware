@@ -347,11 +347,7 @@ void imprimir_leyenda_juego(void)
 // por línea serie
 void imprimir_reglas(void)
 {
-  Mensaje_t reglas = "Conecta K es un juego donde dos jugadores que\n"
-                     "compiten para conectar K fichas\n"
-                     "en línea ya sea horizontal, vertical o diagonal.\n\n"
-	
-										 "Cada jugador tiene un movimiento en su turno\n"
+	linea_serie_drv_enviar_array("Cada jugador tiene un movimiento en su turno\n"
 										 "en el que debe colocar una ficha en\n"
 										 "uno de los huecos del tablero\n"
 										 "Una vez realizada una jugada dispones de 3s para cancelarla\n"
@@ -371,14 +367,10 @@ void imprimir_reglas(void)
 										 "Boton 2 (pin gpio 15) termina la partida en curso por rendición\n\n"
 
 										 "Para iniciar la partida escriba '$NEW!' o pulse uno de los botones\n"
-										 "¡Diviértete jugando!\n\n";
-	
-	linea_serie_drv_enviar_array(reglas);
+										 "¡Diviértete jugando!\n\n");
 }
 
 
-// TODO
-//
 // imprimir_stats
 //
 // Muestra por línea serie:
@@ -434,10 +426,6 @@ void imprimir_stats(void){
 bool esTramaJugada(const uint32_t inputTrama){
 	return ( inputTrama & 0x00FF00) == trama_JUGADA;
 }
-
-
-
-
 
 // imprimir_tablero_linea_serie
 //

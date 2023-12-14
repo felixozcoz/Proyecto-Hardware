@@ -23,7 +23,7 @@ static const int heartbeat_ms = 0x80000000 | 10 ;
 
 // Tiempo máximo sin procesar ningún mensaje
 // o evento
-// static const uint32_t timeout_no_action = 1000000;
+static const uint32_t timeout_no_action = 1;
 
 
 // (Función auxiliar)
@@ -77,6 +77,7 @@ void inicializar_modulos(void)
 	
 	alarma_activar(ev_LATIDO, heartbeat_ms, 0); // heartbeat (periódico) cada 10ms
 	alarma_activar(ev_POWER_DOWN, USUARIO_AUSENTE, 0);
+	
 	#if TESTING	
 		init_modulos_test();
 	#endif
