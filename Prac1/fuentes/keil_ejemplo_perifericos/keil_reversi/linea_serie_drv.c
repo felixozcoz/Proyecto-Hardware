@@ -77,24 +77,29 @@ void gestor_serial(void)
 // por línea serie y envíar primer caracter
 void linea_serie_drv_enviar_array(Mensaje_t msg)
 {
+	Mensaje_t tempMsg;
+	
 		// mensaje vacío
 	if(! strlen(msg) )
 		return; 
 	
+		// extraer contenido de parámetro si excede el tamaño del tipo Mensaje_t
+	setMensaje(tempMsg, msg);
+	
 		// si se está tratando un mensaje: encolar
 	if (index > -1)
-		encolar_msg(msg);
+		encolar_msg(tempMsg);
 		// si cola de mensajes vacía: tratar
 	else if( estaVacia_msg() || index == -1){
 			// inicializar variables de mensaje
-		strncpy(msg_enviar, msg, strlen(msg)+1);
+		setMensaje(msg_enviar, tempMsg);
 		index = 0;
 			// enviar primer caracter
-		sendchar_serie(msg[index]);
+		sendchar_serie(msg_enviar[index]);
 		index++;
 	}
 	else
-		encolar_msg(msg);	
+		encolar_msg(tempMsg);	
 }
 
 // Transmite el resto de caracteres del mensaje
@@ -108,7 +113,7 @@ void linea_serie_drv_continuar_envio(void)
       FIFO_encolar(ev_TX_SERIE, 0); // transmisión del mensaje completo finalizada
 			index = -1;	
 			if( ! estaVacia_msg() ){
-					desencolar_msg(&msg_enviar);
+					desencolar_msg(msg_enviar);
 					linea_serie_drv_enviar_array(msg_enviar);
 				}
 		}

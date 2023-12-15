@@ -59,10 +59,12 @@ void inicializar_modulos(void)
 {
 	gpio_hal_iniciar();
 	alarma_inicializar();
+	inicializar_visualizar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	FIFO_inicializar(GPIO_OVERFLOW);
 	inicializar_botones();
 	inicializar_cola_mensajes(GPIO_OVERFLOW);
 	iniciar_serial(GPIO_SERIE_ERROR, GPIO_SERIE_ERROR_BITS);
+	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	inicializar_juego(tablero_test7, GPIO_JUEGO); // USANDO TABLERO DE TEST PREDETERMINADO
 	
 	WD_hal_inicializar(timeout_no_action);

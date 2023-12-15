@@ -3,11 +3,13 @@
 #include "cola_mensajes.h"
 #include "SWI_hal.h"
 
-
 // Pins GPIO (solo un pin)
 static GPIO_HAL_PIN_T pin_overflow;
 // Cola de mensajes
-static ColaMensajes cola;
+
+static Mensaje_t elementos[MAX_CAPACIDAD_MSG_FIFO];
+static volatile int frente, fin;
+static volatile int capacidad;
 
 // Funciones para la cola de mensajes
 void inicializar_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow) {
@@ -15,16 +17,16 @@ void inicializar_cola_mensajes(const GPIO_HAL_PIN_T _pin_overflow) {
 		pin_overflow = _pin_overflow;
 		gpio_hal_sentido(pin_overflow,1,GPIO_HAL_PIN_DIR_OUTPUT);
 			// init cola
-		cola.frente = cola.fin = -1;
-		cola.capacidad = MAX_CAPACIDAD_MSG_FIFO;
+		frente = fin = -1;
+		capacidad = MAX_CAPACIDAD_MSG_FIFO;
 }
 
 bool estaVacia_msg(void) {
-    return (cola.frente == -1);
+    return (frente == -1);
 }
 
 bool estaLlena_msg(void) {
-    return ((cola.fin + 1) % cola.capacidad == cola.frente);
+    return ((fin + 1) % capacidad == frente);
 }
 
 bool encolar_msg(Mensaje_t mensaje) {
@@ -52,11 +54,11 @@ bool encolar_msg(Mensaje_t mensaje) {
 		}
 
     if( estaVacia_msg() ) 
-        cola.frente = cola.fin = 0;
+        frente = fin = 0;
     else
-        cola.fin = (cola.fin + 1) % cola.capacidad;
+        fin = (fin + 1) % capacidad;
     
-    strncpy(cola.elementos[cola.fin], mensaje, strlen(mensaje)+1);
+		setMensaje(elementos[fin], mensaje);
 			// restaurar interrupciones irq
 		if ( bit_irq )
 			enable_irq();
@@ -64,7 +66,7 @@ bool encolar_msg(Mensaje_t mensaje) {
 		return 1;
 }
 
-bool desencolar_msg(Mensaje_t *mensaje) {
+bool desencolar_msg(Mensaje_t mensaje) {
 				// deshabilitar interrupciones para atomicidad
 		bit_irq = read_IRQ_bit(); 
 		if ( bit_irq )
@@ -77,12 +79,12 @@ bool desencolar_msg(Mensaje_t *mensaje) {
         return 0;
 		}
 		// almacenar mensaje
-		strncpy(*mensaje, cola.elementos[cola.frente], strlen(cola.elementos[cola.frente])+1);
+		setMensaje(mensaje, elementos[frente]);
 
-    if (cola.frente == cola.fin) {
-        cola.frente = cola.fin = -1;
+    if (frente == fin) {
+        frente = fin = -1;
     } else {
-        cola.frente = (cola.frente + 1) % cola.capacidad;
+        frente = (frente + 1) % capacidad;
     }
 		
 			// restaurar interrupciones irq

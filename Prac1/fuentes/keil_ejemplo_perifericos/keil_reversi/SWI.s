@@ -19,7 +19,7 @@ I_Bit			EQU		0x0080 ; bit7 de la CPSR, si 1 inhibe IRQ
                 EXPORT  SWI_Handler
 SWI_Handler   
 
-                STMFD   SP!, {R12, LR}         ; Store R12, LR
+                STMFD   SP!, {R12, LR}     ; Store R12, LR
                 MRS     R12, SPSR              ; Get SPSR
                 STMFD   SP!, {R8, R12}         ; Store R8, SPSR
                 TST     R12, #T_Bit            ; Check Thumb Bit
@@ -50,9 +50,9 @@ SWI_Handler
                 MOV     LR, PC                 ; Return Address
                 BX      R12                    ; Call SWI Function 
 				
-                LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+                LDMFD   SP!, {R8, R12}     ; Load R8, SPSR
                 MSR     SPSR_cxsf, R12         ; Set SPSR
-                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
+                LDMFD   SP!, {R12, PC}^    ; Restore R12 and Return
 
 SWI_Dead        B       SWI_Dead               ; None Existing SWI
 
@@ -80,13 +80,7 @@ __enable_irq
 				ORR 	R8,R8,#I_Bit 			; Escribe 1 en bit I de SPSR (disable interrupt IRQ bit)
 				MSR		SPSR_cxsf, R8				; Copiamos el nuevo estado en el registro de estado
 
-				; Epilogo SWI
-                LDMFD   SP!, {R8, R12}          ; Load R8, SPSR
-                MSR     SPSR_cxsf, R12        	; Set SPSR
-                LDMFD   SP!, {R12, PC}^        	; Restore R12 and Return
-				;------------------------------
-;-------------------------------------------------------------------------------------------------------
-
+				B 		Epilogo_SWI
 
 ;------------------------------- disable_irq --------------------------------------------------
 __disable_irq	
@@ -94,12 +88,7 @@ __disable_irq
 				ORR 	R8,R8,#I_Bit 		   ; Escribe 1 en bit I de SPSR (disable interrupt IRQ bit)
 				MSR		SPSR_cxsf, R8			   ; Copiamos el nuevo estado en el registro de estado
 
-				; Epilogo SWI
-                LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
-                MSR     SPSR_cxsf, R12         ; Set SPSR
-                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
-				;------------------------------
-;-------------------------------------------------------------------------------------------------------
+				B 		Epilogo_SWI
 
 
 ;------------------------------- disable_fiq --------------------------------------------------
@@ -108,16 +97,11 @@ __disable_fiq
 				ORR 	R8,R8,#F_Bit 		   ; Escribe 1 en bit F de SPSR (disable interrupt FIQ bit)
 				MSR		SPSR_cxsf, R8			   ; Copiamos el nuevo estado en el registro de estado
 
-				; Epilogo SWI
-                LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
-                MSR     SPSR_cxsf, R12         ; Set SPSR
-                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
-				;------------------------------
-;-------------------------------------------------------------------------------------------------------
+				B 			Epilogo_SWI
 
 
 ;------------------------------- read_IRQ_bit --------------------------------------------------
-				EXTERN bit_irq [DATA, SIZE=4]
+				EXTERN bit_irq [DATA, SIZE=1]
 	
 __read_IRQ_bit	
 				MRS			R8, SPSR		; Leer CPSR del programa
@@ -126,12 +110,15 @@ __read_IRQ_bit
 				MOVEQ 		R8, #0
 				
 				LDR 		R12, =bit_irq
-				STR 		R8, [R12]		; retornar resultado	
-
+				STRB 		R8, [R12]		; retornar resultado	
+				B 			Epilogo_SWI
+				
+Epilogo_SWI
 				; Epilogo SWI
-                LDMFD   SP!, {R8, R12}      ; Load R8, SPSR
-                MSR     SPSR_cxsf, R12      ; Set SPSR
-                LDMFD   SP!, {R12, PC}^     ; Restore R12 and Return
+                LDMFD   SP!, {R8, R12}          ; Load R8, SPSR
+                MSR     SPSR_cxsf, R12        	; Set SPSR
+                LDMFD   SP!, {R12, PC}^        	; Restore R12 and Return
+				;------------------------------
 				
 				END
 ;-------------------------------------------------------------------------------------------------------

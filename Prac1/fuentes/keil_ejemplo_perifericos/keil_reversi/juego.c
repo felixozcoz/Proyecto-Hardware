@@ -357,27 +357,33 @@ void imprimir_leyenda_juego(void)
 // por línea serie
 void imprimir_reglas(void)
 {
-	linea_serie_drv_enviar_array("Cada jugador tiene un movimiento en su turno\n"
+	Mensaje_t reglas;
+	setMensaje(reglas, "Cada jugador tiene un movimiento en su turno\n"
 										 "en el que debe colocar una ficha en\n"
 										 "uno de los huecos del tablero\n"
-										 "Una vez realizada una jugada dispones de 3s para cancelarla\n"
-										 "sino, se hace efectiva y se muestra en el tablero\n"
+										 "Una vez realizada una jugada dispones de 3s para cancelarla\n");
+	linea_serie_drv_enviar_array(reglas);
+	
+	setMensaje(reglas, "sino, se hace efectiva y se muestra en el tablero\n"
 										 "Los movimientos se realizan enviando comandos\n"
-                     "a través de la linea serie o presionando los botones 1 y 2.\n"
+                     "a través de la linea serie o presionando los botones 1 y 2.\n");
+	linea_serie_drv_enviar_array(reglas);
 	
-										 "La partida finaliza si ganas o el otro jugador se rinde\n\n"
-	
+	setMensaje(reglas, "La partida finaliza si ganas o el otro jugador se rinde\n\n"
 										 "Comandos para jugar:\n"
 										 "'$NEW!' inicia una nueva partida\n"
 										 "'$END!' termina la partida en curso por rendición\n"
-										 "'$X-Y!' indica una jugada, donde X es la fila e Y la columna\n"
-										 "Botones:\n"
+										 "'$X-Y!' indica una jugada, donde X es la fila e Y la columna\n");
+	linea_serie_drv_enviar_array(reglas);
+	
+	setMensaje(reglas, "Botones:\n"
 										 "Boton 1 (pin gpio 14) permite cancelar una jugada\n"
 										 "valida antes de ser confirmada\n"
 										 "Boton 2 (pin gpio 15) termina la partida en curso por rendición\n\n"
 
 										 "Para iniciar la partida escriba '$NEW!' o pulse uno de los botones\n"
 										 "¡Diviértete jugando!\n\n");
+	linea_serie_drv_enviar_array(reglas);
 }
 
 
@@ -455,20 +461,20 @@ void imprimir_tablero_linea_serie(void)
 	int offset = 0;
 	size_t i,j;
 	
-	sprintf(msg + offset, "-|");
+	snprintf(msg + offset, sizeof(msg), "-|");
 	offset+=2;
 		// imprimir fila indicadora de columnas
   for (j = 1; j <= NUM_COLUMNAS; j++) {
-     offset += sprintf(msg + offset, "%d|", j);
+     offset += snprintf(msg + offset, sizeof(msg), "%d|", j);
   }
-	offset += sprintf(msg + offset, "\n");
+	offset += snprintf(msg + offset, sizeof(msg), "\n");
 	
   for (i = 1; i <= NUM_FILAS; i++) {
      offset += sprintf(msg + offset, "%d|", i);
      for (j = 0; j < NUM_COLUMNAS; j++) {
 							// añadir casilla pendiente de confirmación
 						if( fila_jugada_por_confirmar+1 == i && columna_jugada_por_confirmar == j){
-							offset += sprintf(msg + offset, "*|");
+							offset += snprintf(msg + offset, sizeof(msg), "*|");
 							continue;
 						}
 							// leer valor de tablero
@@ -477,15 +483,15 @@ void imprimir_tablero_linea_serie(void)
 						
 							// añadir caracteres según valor
             if (celda == 0)	
-                offset += sprintf(msg + offset, " |");
+                offset += snprintf(msg + offset, sizeof(msg), " |");
             else if (celda == 1)
-                offset += sprintf(msg + offset, "B|");
+                offset += snprintf(msg + offset, sizeof(msg), "B|");
             else if (celda == 2)
-                offset += sprintf(msg + offset, "N|");
+                offset += snprintf(msg + offset, sizeof(msg), "N|");
      }
-     offset += sprintf(msg + offset, "\n"); 
+     offset += snprintf(msg + offset, sizeof(msg), "\n"); 
 	} 
-	offset += sprintf(msg + offset, "\n"); 
+	offset += snprintf(msg + offset, sizeof(msg), "\n"); 
 	linea_serie_drv_enviar_array(msg);
 }
 
@@ -496,11 +502,14 @@ void imprimir_tablero_linea_serie(void)
 // y un mensaje indicando qué jugador empieza
 void imprimir_vista_inicial_nueva_partida(void){
 		Mensaje_t msg_info;
+		char info[30];
 			// mensaje inicio
-		linea_serie_drv_enviar_array("--- COMIENZA LA PARTIDA ---\n\n");
+		setMensaje(msg_info, "--- COMIENZA LA PARTIDA ---\n\n");
+		linea_serie_drv_enviar_array(msg_info);
 		imprimir_tablero_linea_serie(); 
 			// indicar turno (inicia siempre el jugador 1)			
-		snprintf(msg_info, sizeof(msg_info), "Empieza moviendo jugador %u\n\n", turno+1);
+		snprintf(info, sizeof(info), "Empieza moviendo jugador %u\n\n", turno+1);
+		setMensaje(msg_info, info);
 		linea_serie_drv_enviar_array( msg_info );
 }	
 
