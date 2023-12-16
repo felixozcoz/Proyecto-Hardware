@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include "tramas.h"
 
+#include "SWI_hal.h"
+
 typedef enum {
 		LOBBY = 0,	
 		ESPERANDO_JUGADA = 1, 
@@ -191,9 +193,8 @@ void juego_tratar_evento(const EVENTO_T ID_evento, const uint32_t auxData){
 					linea_serie_drv_enviar_array( msj_info );
 						// actualizar tablero
 					tablero_insertar_color(&tablero, fila_jugada_por_confirmar, columna_jugada_por_confirmar, turno + 1);
-							
+				
 					ticHayLinea = clock_get_us();
-					
 						// buscando solución
 					hayLinea = conecta_K_hay_linea_c_c(&tablero, fila_jugada_por_confirmar, columna_jugada_por_confirmar, turno + 1);
 					
@@ -313,11 +314,14 @@ void comprobar_trama(const uint32_t inputTrama)
 							// actualizar estado
 						imprimir_tablero_linea_serie(); 				
 						ticEsperaConfirmacion = clock_get_us(); 
-						estado = ESPERANDO_CONFIRMACION; 			
+						estado = ESPERANDO_CONFIRMACION;
+						tacEsperandoJugada = clock_get_us();
+						tTotalEsperandoJugada += tacEsperandoJugada - ticEsperandoJugada;
 				}
 				else {	
 						linea_serie_drv_enviar_array("\nJugada no valida\n");
 						gpio_hal_escribir(pin_cmd_no_valido, 1, 1);		// indicar por gpio
+
 				}
 			}
 				// cualquier otro comando fuera del dominio del juego
@@ -423,13 +427,13 @@ void imprimir_stats(void){
 		}
 		
 		linea_serie_drv_enviar_array("Estadisticas de partida\n");
-		sprintf(msg_info, "Tiempo total de computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea);
+		sprintf(msg_info, "Tiempo total de computo de conecta_K_hay_linea: %" PRIu64 "us\n", tTotalHayLinea);
 		linea_serie_drv_enviar_array(msg_info);
-		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "\n", tTotalHayLinea/ nVecesHayLinea);
+		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "us\n", tTotalHayLinea/ nVecesHayLinea);
 		linea_serie_drv_enviar_array(msg_info);
-		sprintf(msg_info, "Tiempo total esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada);
+		sprintf(msg_info, "Tiempo total esperando al jugador: %" PRIu64 "\n s", tTotalEsperandoJugada/1000000);
 		linea_serie_drv_enviar_array(msg_info);
-		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n", tTotalEsperandoJugada/ nVecesEsperandoJugada);
+		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n s", tTotalEsperandoJugada/ nVecesEsperandoJugada/1000000);
 		linea_serie_drv_enviar_array(msg_info);
 		
 		linea_serie_drv_enviar_array("\nHistoriograma de eventos en partida:\n");

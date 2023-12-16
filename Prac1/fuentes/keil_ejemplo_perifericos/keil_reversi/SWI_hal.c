@@ -2,6 +2,6 @@
 
 // Almacena el valor del bit I del SPSR
 // antes de modificar SPSR
-volatile int8_t bit_irq = 0;
+volatile uint32_t bit_irq = 0;
 
 

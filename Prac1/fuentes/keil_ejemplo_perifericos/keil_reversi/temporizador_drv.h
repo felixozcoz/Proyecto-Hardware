@@ -17,6 +17,6 @@ void temporizador_drv_callback_reloj(void);
 uint64_t temporizador1_parar_drv(void);
 // llamada al sistema que devuelve el tiempo
 // del reloj
-uint32_t __swi(0) clock_get_us(void);
+uint64_t __swi(0) clock_get_us(void);
 
 #endif // TEMPORIZADOR_DRV_H

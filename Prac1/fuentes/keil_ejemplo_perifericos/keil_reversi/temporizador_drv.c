@@ -25,17 +25,14 @@ void temporizador_drv_empezar(void)
 // Implementa la lectura del tiempo transcurrido
 // y convierte el valor a microsegundos
 uint64_t temporizador_drv_leer(void) {
-	float ticks = (float)temporizador0_hal_leer();
-	float tiempo = ticks/temporizador_hal_ticks2us;
-	
-	return (uint64_t)tiempo;
+	return (uint64_t)temporizador0_hal_leer();
 }
 
 // Implementa la detención del contador y el cálculo
 // del tiempo transcurrido desde el último inicio
 uint64_t temporizador_drv_parar(void) {
-    float ticks = (float)temporizador0_hal_parar();
-		float tiempo = ticks/temporizador_hal_ticks2us;
+    uint64_t ticks = (uint64_t)temporizador0_hal_parar();
+		uint64_t tiempo = ticks * temporizador0_hal_ticks2us;
 	
 		return (uint64_t)tiempo;
 }
@@ -54,12 +51,9 @@ void temporizador_drv_reloj (uint32_t periodo, void (*funcion_callback)(), EVENT
 }
 
 
-uint32_t __swi(0) clock_get_us(void);
-uint32_t __SWI_0 (void) {
-	float ticks = (float)temporizador1_hal_leer();
-	float tiempo = ticks/temporizador_hal_ticks2us;
-	
-	return (uint32_t)tiempo;
+uint64_t __swi(0) clock_get_us(void);
+uint64_t __SWI_0 (void) {
+	return (uint64_t)temporizador_drv_leer();
 }
 
 // Detener reloj (timer 1) y devolver count

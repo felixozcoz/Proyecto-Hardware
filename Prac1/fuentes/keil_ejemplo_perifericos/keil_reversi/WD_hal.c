@@ -24,16 +24,16 @@ void WD_hal_inicializar(uint32_t sec)
 
 void WD_hal_feed(void)
 {
-	bit_irq = read_IRQ_bit(); 
+	uint32_t bit_irq = read_IRQ_bit(); 
 	
-	if ( bit_irq )
+	if ( !bit_irq )
 		disable_irq();
 	
 	// escrituras consecutivas para "alimentar" al WD
 	WDFEED = 0xAA;						   
   WDFEED = 0x55; 
 	
-	if ( bit_irq )
+	if ( !bit_irq )
 		enable_irq(); // restaurar el estado del bit I (disable IRQ interrupt)
 }
 

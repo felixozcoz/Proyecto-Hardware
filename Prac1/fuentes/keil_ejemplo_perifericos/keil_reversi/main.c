@@ -5,6 +5,9 @@
 #include <string.h>
 #include "cola_mensajes.h"
 #include "tramas.h"
+
+
+#include "SWI_HAL.h"
 #define TESTING 0 // activar para realizar test de módulos; flags de test en "test.h"
 void tests(void); // función de test de módulos
 

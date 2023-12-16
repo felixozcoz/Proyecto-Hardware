@@ -50,6 +50,7 @@ void planificador(const uint32_t periodo_timer1)
 {
 	inicializar_modulos();
 	temporizador_drv_reloj(periodo_timer1, FIFO_encolar, ev_REVISAR_ALARMAS); // inicializar reloj 
+	temporizador_drv_iniciar();
 	gestionar_eventos(periodo_timer1);
 }
 

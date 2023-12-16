@@ -34,8 +34,8 @@ void FIFO_inicializar(const GPIO_HAL_PIN_T _pin_overflow) {
 void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
 	
 		// deshabilitar interrupciones para atomicidad
-		bit_irq = read_IRQ_bit(); 
-		if ( bit_irq )
+		uint32_t bit_irq = read_IRQ_bit(); 
+		if ( !bit_irq )
 			disable_irq();
 		
     // Verifica si la cola está llena antes de encolar un evento
@@ -44,7 +44,7 @@ void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
 				gpio_hal_escribir(pin_overflow, 1, 1);
 			 
 				// restaurar el estado del bit I (disable IRQ interrupt)
-				if ( bit_irq )
+				if ( !bit_irq )
 					enable_irq();
 			 
 				while(1);	// terminar ejecución
@@ -60,7 +60,7 @@ void FIFO_encolar( EVENTO_T ID_evento, uint32_t auxData) {
     }
 		
 		// restaurar el estado del bit I (disable IRQ interrupt)
-		if ( bit_irq )
+		if ( !bit_irq )
 			enable_irq();
 }
 
@@ -73,8 +73,8 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
 		uint8_t retVal = 0;
 	
 		// deshabilitar interrupciones para atomicidad
-		bit_irq = read_IRQ_bit(); 
-		if ( bit_irq )
+		uint32_t bit_irq = read_IRQ_bit(); 
+		if ( !bit_irq )
 			disable_irq();
 	
     // Verifica si la cola está vacía
@@ -90,7 +90,7 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
     }
 		
 			// restaurar el estado del bit I (disable IRQ interrupt)
-		if ( bit_irq )
+		if ( !bit_irq )
 			enable_irq(); 
 		
 		return retVal;

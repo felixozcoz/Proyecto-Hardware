@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 // Constante que convierte de tics a ms
-extern const float temporizador_hal_ticks2us;
+extern const float temporizador0_hal_ticks2us;
+
+extern const float temporizador1_hal_ticks2us;
 
 // TIMER 0
 

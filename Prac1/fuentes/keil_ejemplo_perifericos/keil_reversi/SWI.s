@@ -76,48 +76,44 @@ SWI_End
 
 ;------------------------------- enable_irq --------------------------------------------------
 __enable_irq	
-				MRS		R8, SPSR				; Leer CPSR del programa
-				ORR 	R8,R8,#I_Bit 			; Escribe 1 en bit I de SPSR (disable interrupt IRQ bit)
-				MSR		SPSR_cxsf, R8				; Copiamos el nuevo estado en el registro de estado
+				LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+				AND     R12, R12, #0xFFFFFF7F  ; Activar IRQs		
+                MSR     SPSR_cxsf, R12         ; Set SPSR
 
 				B 		Epilogo_SWI
 
 ;------------------------------- disable_irq --------------------------------------------------
 __disable_irq	
-				MRS		R8, SPSR			   ; Leer CPSR del programa
-				ORR 	R8,R8,#I_Bit 		   ; Escribe 1 en bit I de SPSR (disable interrupt IRQ bit)
-				MSR		SPSR_cxsf, R8			   ; Copiamos el nuevo estado en el registro de estado
+				LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+				ORR     R12, R12, #0x80		   ; Desactivar IRQs
+                MSR     SPSR_cxsf, R12         ; Set SPSR
 
 				B 		Epilogo_SWI
 
 
 ;------------------------------- disable_fiq --------------------------------------------------
 __disable_fiq	
-				MRS		R8, SPSR			   ; Leer CPSR del programa
-				ORR 	R8,R8,#F_Bit 		   ; Escribe 1 en bit F de SPSR (disable interrupt FIQ bit)
-				MSR		SPSR_cxsf, R8			   ; Copiamos el nuevo estado en el registro de estado
+				LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+				ORR     R12, R12, #0xC0		   ; Desactivar IRQs y FIQ
+                MSR     SPSR_cxsf, R12         ; Set SPSR
 
 				B 			Epilogo_SWI
 
 
 ;------------------------------- read_IRQ_bit --------------------------------------------------
-				EXTERN bit_irq [DATA, SIZE=1]
 	
 __read_IRQ_bit	
-				MRS			R8, SPSR		; Leer CPSR del programa
-				TST			R8, #I_Bit		; check bit I (disable IRQ interrupt bit)
-				MOVNE		R8, #1						
-				MOVEQ 		R8, #0
-				
-				LDR 		R12, =bit_irq
-				STRB 		R8, [R12]		; retornar resultado	
+				LDMFD   SP!, {R8, R12}         ; Load R8, SPSR
+				MRS r0, SPSR
+				AND r0, r0, #I_Bit
+				MOV r0,r0, LSR #7
+				MSR SPSR_cxsf, R12
+
 				B 			Epilogo_SWI
 				
 Epilogo_SWI
 				; Epilogo SWI
-                LDMFD   SP!, {R8, R12}          ; Load R8, SPSR
-                MSR     SPSR_cxsf, R12        	; Set SPSR
-                LDMFD   SP!, {R12, PC}^        	; Restore R12 and Return
+                LDMFD   SP!, {R12, PC}^        ; Restore R12 and Return
 				;------------------------------
 				
 				END

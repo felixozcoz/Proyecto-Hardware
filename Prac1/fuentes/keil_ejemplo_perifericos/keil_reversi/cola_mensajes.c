@@ -31,8 +31,8 @@ bool estaLlena_msg(void) {
 
 bool encolar_msg(Mensaje_t mensaje) {
 			// deshabilitar interrupciones para atomicidad
-		bit_irq = read_IRQ_bit(); 
-		if ( bit_irq )
+		uint32_t bit_irq = read_IRQ_bit(); 
+		if ( !bit_irq )
 			disable_irq();
 		
 			// quedan mensajes sin procesar	
@@ -40,7 +40,7 @@ bool encolar_msg(Mensaje_t mensaje) {
 				// overflow de mensajes
 			gpio_hal_escribir(pin_overflow, 1, 1);
 				// restaurar estado de irq
-			if ( bit_irq )
+			if ( !bit_irq )
 				enable_irq();
 			
 			while(1);
@@ -48,7 +48,7 @@ bool encolar_msg(Mensaje_t mensaje) {
 		
 		// mensaje demasiado grande
 		if( strlen(mensaje) > MAX_MENSAJE_LENGTH ){
-			if ( bit_irq )
+			if ( !bit_irq )
 				enable_irq();
 			return 0;
 		}
@@ -60,7 +60,7 @@ bool encolar_msg(Mensaje_t mensaje) {
     
 		setMensaje(elementos[fin], mensaje);
 			// restaurar interrupciones irq
-		if ( bit_irq )
+		if ( !bit_irq )
 			enable_irq();
 		
 		return 1;
@@ -68,13 +68,13 @@ bool encolar_msg(Mensaje_t mensaje) {
 
 bool desencolar_msg(Mensaje_t mensaje) {
 				// deshabilitar interrupciones para atomicidad
-		bit_irq = read_IRQ_bit(); 
-		if ( bit_irq )
+		uint32_t bit_irq = read_IRQ_bit(); 
+		if ( !bit_irq )
 			disable_irq();
 		
     if (estaVacia_msg()){
 					// restaurar interrupciones irq
-				if ( bit_irq )
+				if ( !bit_irq )
 					enable_irq();
         return 0;
 		}
@@ -88,7 +88,7 @@ bool desencolar_msg(Mensaje_t mensaje) {
     }
 		
 			// restaurar interrupciones irq
-		if ( bit_irq )
+		if ( !bit_irq )
 			enable_irq();
 		
 		return 1;

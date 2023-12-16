@@ -7,7 +7,8 @@
 // Constante que permite convertir de ticks a microsegundos
 // con una frecuencia de procesador de 60MHz y VPBDIV = 4 (por defecto)
 // algunos periféricos utilizan el PCLK que es frecuencia del procesador / VPBDIV
-const float temporizador_hal_ticks2us =  1.0f/(15000.0f);
+const float temporizador0_hal_ticks2us =  1.0f/(15000.0f);
+const float temporizador1_hal_ticks2us =  1.0f/(15000.0f);
 
 // variable para contabilizar el número de interrupciones
 static volatile unsigned int countTimer0 = 0;
@@ -61,15 +62,14 @@ void temporizador0_hal_iniciar(void)
 	
 		// Timer0 como algún periférico va a una velocidad de 60MHz/VPBDIV ,
 		// donde VPBDIV = 4 por defecto, entonces va a 15MHz
-		T0MR0 = 14999;  // una interrupción cada 1ms
-	
+		T0MR0 = 149;
 	
 		// Genera una interrupción (bit 0)
 		// 	y reinicia TC si T0TC == T0MR0 (bit 1)
     T0MCR = 3;	// Match Control Register
 
 		// Deshabilitar/Detener registro del Timer 0 después de reinicio
-    T0TCR = 0;	// Timer Control Register	
+    T0TCR = 1;	// Timer Control Register	
 	
 		// Configuración del IRQ slot number 0 of 
 		// 	the VIC for Timer 0 Interrupt
@@ -94,7 +94,7 @@ void temporizador0_hal_empezar(void)
 // el contador desde la última vez que se ejecutó 
 // temporizador_hal_empezar  y lo devuelve en ticks.
 uint64_t temporizador0_hal_leer(void) {
-    return countTimer0;
+    return countTimer0 * 10;
 }
 
 // Función para detener el contador y devolver 
@@ -118,7 +118,7 @@ void temporizador_hal_reloj (uint32_t _periodo, void (*_funcion_callback)())
 
 		periodo = _periodo;
 		// Inicializar contador con periodo en ticks
-		T1MR0 = periodo / temporizador_hal_ticks2us;
+		T1MR0 = periodo / temporizador1_hal_ticks2us;	// Cada 10 ms
 		
 		// Genera una interrupción (bit 0)
 		// 	y reinicia TC si T1TC == T0MR1 (bit 1)
