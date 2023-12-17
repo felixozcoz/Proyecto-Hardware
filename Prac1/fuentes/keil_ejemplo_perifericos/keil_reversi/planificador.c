@@ -96,7 +96,7 @@ void gestionar_eventos(const uint32_t periodo_timer1)
 				
 				case ev_LATIDO:
 					juego_tratar_evento(ev_LATIDO, auxData);
-					//hello_world_tratar_evento();
+					hello_world_tratar_evento();
 					break;
 				
 				case ev_VISUALIZAR_HELLO:
