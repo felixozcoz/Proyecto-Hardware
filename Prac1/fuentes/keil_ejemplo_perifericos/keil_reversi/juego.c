@@ -431,9 +431,9 @@ void imprimir_stats(void){
 		linea_serie_drv_enviar_array(msg_info);
 		sprintf(msg_info, "Tiempo medio computo de conecta_K_hay_linea: %" PRIu64 "us\n", tTotalHayLinea/ nVecesHayLinea);
 		linea_serie_drv_enviar_array(msg_info);
-		sprintf(msg_info, "Tiempo total esperando al jugador: %" PRIu64 "\n s", tTotalEsperandoJugada/1000000);
+		sprintf(msg_info, "Tiempo total esperando al jugador: %" PRIu64 "s\n", tTotalEsperandoJugada/1000000);
 		linea_serie_drv_enviar_array(msg_info);
-		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "\n s", tTotalEsperandoJugada/ nVecesEsperandoJugada/1000000);
+		sprintf(msg_info, "Tiempo medio esperando al jugador: %" PRIu64 "s\n", tTotalEsperandoJugada/ nVecesEsperandoJugada/1000000);
 		linea_serie_drv_enviar_array(msg_info);
 		
 		linea_serie_drv_enviar_array("\nHistoriograma de eventos en partida:\n");
